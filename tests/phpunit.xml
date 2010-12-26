@@ -1,0 +1,34 @@
+<phpunit bootstrap="./bootstrap.php" colors="true">
+	<testsuite name="Application">
+		<directory>./application/</directory>
+	</testsuite>
+	<!-- <testsuite name="Library">
+		<directory>./library/</directory>
+	</testsuite> -->
+	<testsuite name="Selenium">
+		<directory>./selenium/</directory>
+	</testsuite>
+	<selenium>
+		<browser name="Firefox" browser="*firefox"
+			host="localhost" timeout="30000" port="4444" />
+	</selenium>
+	<php>
+	  <var name="browserUrl" value="http://localhost/~protezis/axn_oszi/public/" />
+	</php>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../application/</directory>
+			<directory suffix=".php">../library/</directory>
+			<exclude>
+				<file>../application/Bootstrap.php</file>
+				<file>../application/controllers/ErrorController.php</file>
+				<directory suffix=".phtml">../application/</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-html" target="./log/report" charset="UTF-8"
+			yui="true" highlight="true" lowUpperBound="50" highLowerBound="80" />
+		<log type="testdox-html" target="./log/testdox.html" />
+	</logging>
+</phpunit>

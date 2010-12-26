@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://www.symfony-project.org/schema/dic/services'
+   xsi:schemaLocation='http://www.symfony-project.org/schema/dic/services ../../library/Symfony/Component/DependencyInjection/Loader/schema/dic/services/services-1.0.xsd'>
+
+   <parameters>
+     <parameter key="cache.data.backend">File</parameter>
+     <parameter key="cache.data.lifetime">7200</parameter>
+     <parameter key="cache.system.backend">File</parameter>
+     <parameter key="cache.system.lifetime">7200</parameter>
+     <parameter key="translate.adapter">Factory_Translate_Adapter_FullPath</parameter>
+     <parameter key="translate.content"><const name="APPLICATION_PATH" />/lang/other</parameter>
+     <parameter key="translate.scan">filename</parameter>
+     <parameter key="validation.translate.adapter">array</parameter>
+     <parameter key="validation.translate.content"><const name="APPLICATION_PATH" />/lang/validation</parameter>
+     <parameter key="validation.translate.scan">filename</parameter>
+     <parameter key="messages.translate.adapter">array</parameter>
+     <parameter key="messages.translate.content"><const name="APPLICATION_PATH" />/lang/messages</parameter>
+     <parameter key="messages.translate.scan">filename</parameter>
+     <parameter key="locale.default">hu_HU</parameter>
+     <parameter key="mailer.class">Factory_Mail</parameter>
+     <parameter key="mailer.defaultFrom.email">info@factory.hu</parameter>
+     <parameter key="mailer.defaultFrom.name">Factory Creative Studio</parameter>
+     <parameter key="mail.transport.username">develop@factory-dev.hu</parameter>
+     <parameter key="mail.transport.password">develoop</parameter>
+     <parameter key="log.writer">Stream</parameter>
+     <parameter key="log.writer.file"><const name="APPLICATION_PATH" />/../data/logs/<const name="CURRENT_DATE" /></parameter>
+     <parameter key="translatelog.writer">Untranslated</parameter>
+     <parameter key="translatelog.writer.file"><const name="APPLICATION_PATH" />/../data/logs/untranslated.log</parameter>
+     <parameter key="translatelog.writer.writerNamespace">Factory_Log_Writer</parameter>
+     <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ApcCache</parameter>
+     <parameter key="doctrine.autogenerateproxyclasses">true</parameter>
+     <parameter key="doctrine.driver">pdo_mysql</parameter>
+     <parameter key="doctrine.user">root</parameter>
+     <parameter key="doctrine.password">1master</parameter>
+     <parameter key="doctrine.dbname">equcms</parameter>
+     <parameter key="doctrine.charset">UTF8</parameter>
+   </parameters>
+   
+   <services>
+     <service id="acl" class="Equ\Acl">
+       <argument type="service" id="doctrine.entitymanager" />
+     </service>
+     <service id="mvc" class="Default_Service_Mvc" />
+     <service id="doctrine.entitymanager" class="Doctrine\ORM\EntityManager" factory-method="create">
+       <argument type="collection">
+         <argument key="driver">%doctrine.driver%</argument>
+         <argument key="user">%doctrine.user%</argument>
+         <argument key="password">%doctrine.password%</argument>
+         <argument key="dbname">%doctrine.dbname%</argument>
+         <argument key="charset">%doctrine.charset%</argument>
+       </argument>
+       <argument type="service" id="doctrine.configuration" />
+       <argument type="service" id="doctrine.eventmanager" />
+     </service>
+     <service id="doctrine.eventmanager" class="Doctrine\Common\EventManager" />
+     <service id="doctrine.cache" class="%doctrine.cache.class%" />
+     <service id="doctrine.configuration" class="Doctrine\ORM\Configuration">
+       <call method="setMetadataCacheImpl">
+         <argument type="service" id="doctrine.cache" />
+       </call>
+       <call method="setQueryCacheImpl">
+         <argument type="service" id="doctrine.cache" />
+       </call>
+       <call method="setAutoGenerateProxyClasses">
+         <argument>%doctrine.autogenerateproxyclasses%</argument>
+       </call>
+     </service>
+     <service id="translatelog" class="Zend_Log" factory-method="factory">
+       <argument type="collection">
+         <argument type="collection">
+           <argument key="writerName">%translatelog.writer%</argument>
+           <argument key="writerNamespace">%translatelog.writer.writerNamespace%</argument>
+           <argument key="writerParams" type="collection">
+             <argument key="stream">%translatelog.writer.file%</argument>
+             <argument key="mode">a</argument>
+           </argument>
+         </argument>
+       </argument>
+     </service>
+     <service id="log" class="Zend_Log" factory-method="factory">
+       <argument type="collection">
+         <argument type="collection" key="error">
+           <argument key="writerName">%log.writer%</argument>
+           <argument key="writerParams" type="collection">
+             <argument key="stream">%log.writer.file%.error.log</argument>
+             <argument key="mode">a</argument>
+           </argument>
+           <argument key="filterName">Priority</argument>
+           <argument key="filterParams" type="collection">
+             <argument key="priority">Zend_Log::ERR</argument>
+           </argument>
+         </argument>
+         <argument type="collection" key="warn">
+           <argument key="writerName">%log.writer%</argument>
+           <argument key="writerParams" type="collection">
+             <argument key="stream">%log.writer.file%.warn.log</argument>
+             <argument key="mode">a</argument>
+           </argument>
+           <argument key="filterName">Priority</argument>
+           <argument key="filterParams" type="collection">
+             <argument key="priority">Zend_Log::WARN</argument>
+             <argument key="operator">=</argument>
+           </argument>
+         </argument>
+         <argument type="collection" key="notice">
+           <argument key="writerName">%log.writer%</argument>
+           <argument key="writerParams" type="collection">
+             <argument key="stream">%log.writer.file%.notice.log</argument>
+             <argument key="mode">a</argument>
+           </argument>
+           <argument key="filterName">Priority</argument>
+           <argument key="filterParams" type="collection">
+             <argument key="priority">Zend_Log::NOTICE</argument>
+             <argument key="operator">=</argument>
+           </argument>
+         </argument>
+         <argument type="collection" key="info">
+           <argument key="writerName">%log.writer%</argument>
+           <argument key="writerParams" type="collection">
+             <argument key="stream">%log.writer.file%.info.log</argument>
+             <argument key="mode">a</argument>
+           </argument>
+           <argument key="filterName">Priority</argument>
+           <argument key="filterParams" type="collection">
+             <argument key="priority">Zend_Log::INFO</argument>
+             <argument key="operator">=</argument>
+           </argument>
+         </argument>
+         <argument type="collection" key="debug">
+           <argument key="writerName">%log.writer%</argument>
+           <argument key="writerParams" type="collection">
+             <argument key="stream">%log.writer.file%.debug.log</argument>
+             <argument key="mode">a</argument>
+           </argument>
+           <argument key="filterName">Priority</argument>
+           <argument key="filterParams" type="collection">
+             <argument key="priority">Zend_Log::DEBUG</argument>
+             <argument key="operator">=</argument>
+           </argument>
+         </argument>
+       </argument>
+     </service>
+     <service id="cache.data" class="Zend_Cache" factory-method="factory">
+       <argument>Core</argument>
+       <argument>%cache.data.backend%</argument>
+       <argument type="collection">
+         <argument key="lifetime">%cache.data.lifetime%</argument>
+         <argument key="automatic_serialization">true</argument>
+       </argument>
+       <argument type="collection">
+         <argument key="cache_dir"><const name="APPLICATION_PATH" />/../data/cache</argument>
+       </argument>
+     </service>
+     <service id="cache.system" class="Zend_Cache" factory-method="factory">
+       <argument>Core</argument>
+       <argument>%cache.system.backend%</argument>
+       <argument type="collection">
+         <argument key="lifetime">%cache.system.lifetime%</argument>
+         <argument key="automatic_serialization">true</argument>
+       </argument>
+       <argument type="collection">
+         <argument key="cache_dir"><const name="APPLICATION_PATH" />/../data/cache</argument>
+       </argument>
+     </service>
+     <service id="mail.transport" class="Zend_Mail_Transport_Smtp">
+       <argument>s1.netfactory.hu</argument>
+       <argument type="collection">
+         <argument key="auth">login</argument>
+         <argument key="username">%mail.transport.username%</argument>
+         <argument key="password">%mail.transport.password%</argument>
+       </argument>
+     </service>
+     <service id="mailer" class="%mailer.class%" shared="false">
+       <call method="setDefaultTransport">
+         <argument type="service" id="mail.transport" />
+       </call>
+       <call method="setDefaultFrom">
+         <argument>%mailer.defaultFrom.email%</argument>
+         <argument>%mailer.defaultFrom.name%</argument>
+       </call>
+     </service>
+     <service id="locale" class="Zend_Locale">
+       <argument>%locale.default%</argument>
+       <call method="setCache">
+         <argument type="service" id="cache.system" />
+       </call>
+     </service>
+     <service id="registry" class="Zend_Registry" factory-method="getInstance">
+       <call method="offsetSet">
+         <argument>Zend_Translate</argument>
+         <argument type="service" id="translate" />
+       </call>
+       <call method="offsetSet">
+         <argument>Zend_Locale</argument>
+         <argument type="service" id="locale" />
+       </call>
+       <call method="offsetSet">
+         <argument>Zend_Log</argument>
+         <argument type="service" id="log" />
+       </call>
+     </service>
+     <service id="translate" class="Zend_Translate">
+       <argument type="collection">
+         <argument key="adapter">%translate.adapter%</argument>
+         <argument key="content">%translate.content%</argument>
+         <argument key="scan">%translate.scan%</argument>
+         <argument key="logUntranslated">true</argument>
+         <argument key="log" type="service" id="translatelog" />
+       </argument>
+       <call method="setCache">
+         <argument type="service" id="cache.system" />
+       </call>
+       <call method="addTranslation">
+         <argument type="collection">
+           <argument key="content" type="service" id="messages.translate" />
+         </argument>
+       </call>
+       <call method="addTranslation">
+         <argument type="collection">
+           <argument key="content" type="service" id="validation.translate" />
+         </argument>
+       </call>
+     </service>
+     <service id="messages.translate" class="Zend_Translate">
+       <argument type="collection">
+         <argument key="adapter">%messages.translate.adapter%</argument>
+         <argument key="content">%messages.translate.content%</argument>
+         <argument key="scan">%messages.translate.scan%</argument>
+       </argument>
+     </service>
+     <service id="validation.translate" class="Zend_Translate">
+       <argument type="collection">
+         <argument key="adapter">%validation.translate.adapter%</argument>
+         <argument key="content">%validation.translate.content%</argument>
+         <argument key="scan">%validation.translate.scan%</argument>
+       </argument>
+     </service>
+   </services>
+ </container>

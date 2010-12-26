@@ -1,0 +1,7 @@
+Default_Model_Lang:
+  Lang_en:
+    code: en
+    index: 0
+  Lang_hu:
+    code: hu
+    index: 1

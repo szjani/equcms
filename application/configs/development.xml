@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xmlns='http://www.symfony-project.org/schema/dic/services'
+   xsi:schemaLocation='http://www.symfony-project.org/schema/dic/services ../../library/Symfony/Component/DependencyInjection/Loader/schema/dic/services/services-1.0.xsd'>
+
+  <imports>
+    <import resource="production.xml" />
+  </imports>
+  <parameters>
+    <parameter key="cache.data.lifetime">10</parameter>
+    <parameter key="cache.system.backend">File</parameter>
+    <parameter key="cache.system.lifetime">10</parameter>
+    <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ArrayCache</parameter>
+  </parameters>
+</container>
