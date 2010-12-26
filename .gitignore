@@ -4,3 +4,4 @@ tests/log/*
 .project
 .settings
 .buildpath
+nbproject
