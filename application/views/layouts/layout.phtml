@@ -27,13 +27,23 @@ Thank You for visiting this Source Code!-->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <?php
+$this->dojo()
+        ->setDjConfigOption('usePlainJson',true)
+        ->setDjConfigOption('locale', Zend_Controller_Front::getInstance()->getRequest()->getParam('lang'))
+        ->addStylesheetModule('dijit.themes.soria')
+        ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+        ->setCdnVersion('1.5')
+        ->requireModule('dojo.i18n');
+echo $this->dojo();
+?>
+<?php
   $this->headScript()
     ->prependFile($this->baseUrl('/scripts/jquery-1.4.2.min.js'), 'text/javascript');
   $this->headLink()
     ->appendStylesheet($this->baseUrl('/styleSheets/reset.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/RMSforms-v0.5.css'))
-    ->appendStylesheet($this->baseUrl('/styleSheets/style.css'))
-    ->appendStylesheet($this->baseUrl('/styleSheets/crud.css'));
+    ->appendStylesheet($this->baseUrl('/styleSheets/crud.css'))
+    ->appendStylesheet($this->baseUrl('/styleSheets/style.css'));
   
   echo 
     $this->headTitle('$$projectname$$') .
@@ -42,7 +52,7 @@ Thank You for visiting this Source Code!-->
     $this->headScript();
 ?>
 </head>
-<body>
+<body class="soria">
   <?php echo $this->navigation()->menu() ?>
   <?php print $this->layout()->content?>
 </body>

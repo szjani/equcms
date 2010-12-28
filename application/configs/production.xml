@@ -41,6 +41,8 @@
      <service id="acl" class="Equ\Acl">
        <argument type="service" id="doctrine.entitymanager" />
      </service>
+     <service id="user" class="Default_Service_User" />
+     <service id="usergroup" class="Default_Service_UserGroup" />
      <service id="mvc" class="Default_Service_Mvc" />
      <service id="doctrine.entitymanager" class="Doctrine\ORM\EntityManager" factory-method="create">
        <argument type="collection">
@@ -187,18 +189,18 @@
        </call>
      </service>
      <service id="registry" class="Zend_Registry" factory-method="getInstance">
-       <call method="offsetSet">
-         <argument>Zend_Translate</argument>
-         <argument type="service" id="translate" />
-       </call>
-       <call method="offsetSet">
-         <argument>Zend_Locale</argument>
-         <argument type="service" id="locale" />
-       </call>
-       <call method="offsetSet">
-         <argument>Zend_Log</argument>
-         <argument type="service" id="log" />
-       </call>
+<!--       <call method="offsetSet">-->
+<!--         <argument>Zend_Locale</argument>-->
+<!--         <argument type="service" id="locale" />-->
+<!--       </call>-->
+<!--       <call method="offsetSet">-->
+<!--         <argument>Zend_Translate</argument>-->
+<!--         <argument type="service" id="translate" />-->
+<!--       </call>-->
+<!--       <call method="offsetSet">-->
+<!--         <argument>Zend_Log</argument>-->
+<!--         <argument type="service" id="log" />-->
+<!--       </call>-->
      </service>
      <service id="translate" class="Zend_Translate">
        <argument type="collection">
@@ -208,13 +210,11 @@
          <argument key="logUntranslated">true</argument>
          <argument key="log" type="service" id="translatelog" />
        </argument>
+       <call method="setLocale">
+         <argument type="service" id="locale" />
+       </call>
        <call method="setCache">
          <argument type="service" id="cache.system" />
-       </call>
-       <call method="addTranslation">
-         <argument type="collection">
-           <argument key="content" type="service" id="messages.translate" />
-         </argument>
        </call>
        <call method="addTranslation">
          <argument type="collection">
@@ -222,19 +222,15 @@
          </argument>
        </call>
      </service>
-     <service id="messages.translate" class="Zend_Translate">
-       <argument type="collection">
-         <argument key="adapter">%messages.translate.adapter%</argument>
-         <argument key="content">%messages.translate.content%</argument>
-         <argument key="scan">%messages.translate.scan%</argument>
-       </argument>
-     </service>
      <service id="validation.translate" class="Zend_Translate">
        <argument type="collection">
          <argument key="adapter">%validation.translate.adapter%</argument>
          <argument key="content">%validation.translate.content%</argument>
          <argument key="scan">%validation.translate.scan%</argument>
        </argument>
+       <call method="setLocale">
+         <argument type="service" id="locale" />
+       </call>
      </service>
    </services>
  </container>

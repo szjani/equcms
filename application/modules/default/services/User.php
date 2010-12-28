@@ -21,13 +21,15 @@ class Default_Service_User extends Service {
   }
 
   public function __construct() {
+    $formBuilder = new Default_Form_UserBuilder($this->getEntityManager());
+    $formBuilder->setElementCreatorFactory(new \Equ\Entity\ElementCreator\Dojo\Factory());
     $this
-      ->setMainFormBuilder(new Default_Form_UserBuilder($this->getEntityManager()))
+      ->setMainFormBuilder($formBuilder)
       ->setEntityBuilder(new Default_Service_UserEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
   }
 
-//  public function createEmptyForm() {
-//    return new Default_Form_User();
-//  }
+  public function createEmptyForm() {
+    return new Default_Form_User();
+  }
 
 }

@@ -1,10 +1,10 @@
 <?php
-class Default_Form_User extends \Equ\Form {
+class Default_Form_User extends \Equ\DojoForm {
 
   public function init() {
-    $visible = new Zend_Form_Element_Checkbox('visible');
-    $visible->setLabel('Visible');
-    $this->addElement($visible);
+//    $visible = new Zend_Form_Element_Text('visible');
+//    $visible->setLabel('Visible');
+//    $this->addElement($visible);
   }
 
 //  protected $_model = 'Entity\User';

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dictionary><![CDATA[---]]>
+	<Entity>
+		<User>
+			<email><![CDATA[E-mail]]></email>
+			<password><![CDATA[Jelszó]]></password>
+			<parent><![CDATA[Szülő]]></parent>
+		</User>
+	  <Mvc>
+	    <module><![CDATA[Module]]></module>
+	    <controller><![CDATA[Controller]]></controller>
+	    <action><![CDATA[Action]]></action>
+	    <parent><![CDATA[Szülő]]></parent>
+	    <save><![CDATA[Mentés]]></save>
+	  </Mvc>
+	  <UserGroup>
+	    <name><![CDATA[Név]]></name>
+	    <parent><![CDATA[Szülő]]></parent>
+	    <save><![CDATA[Mentés]]></save>
+	  </UserGroup>
+	</Entity>
+</Dictionary>

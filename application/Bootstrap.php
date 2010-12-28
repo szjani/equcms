@@ -68,8 +68,9 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
     /* @var $view Zend_View */
     $view = $this->getResource('view');
+    Zend_Dojo::enableView($view);
     $view->getHelper('navigation')->setContainer($container);
-    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
+//    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
 //    $container->
   }
 

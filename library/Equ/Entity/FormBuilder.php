@@ -83,15 +83,23 @@ class FormBuilder implements \Equ\EntityVisitor {
     return $creator;
   }
 
+  /**
+   * @param ElementCreator\Factory $factory
+   * @return FormBuilder
+   */
   public function setElementCreatorFactory(ElementCreator\Factory $factory) {
     $this->elementCreatorFactory = $factory;
     return $this;
   }
 
+  /**
+   * @return ElementCreator\Factory
+   */
   public function getElementCreatorFactory() {
     if ($this->elementCreatorFactory === null) {
       $this->elementCreatorFactory = new ElementCreator\Builtin\Factory();
     }
+    $this->elementCreatorFactory->setNamespace(str_replace(array('\\', '_'), '/', get_class($this->entity)) . '/');
     return $this->elementCreatorFactory;
   }
 
@@ -170,10 +178,8 @@ class FormBuilder implements \Equ\EntityVisitor {
       if ($this->isIgnoredField($fieldName) || !$def['isOwningSide']) {
         continue;
       }
-      $select = new \Zend_Form_Element_Select($fieldName);
-      $select
-        ->addMultiOption('0', '---')
-        ->setLabel($fieldName);
+      $select = $this->getElementCreatorFactory()->createArrayCreator()->createElement($fieldName);
+      $select->addMultiOption('0', '---');
       $targetMetaData = $this->entityManager->getClassMetadata($def['targetEntity']);
       foreach ($this->entityManager->getRepository($def['targetEntity'])->findAll() as $entity) {
         $select->addMultiOption(
@@ -197,8 +203,7 @@ class FormBuilder implements \Equ\EntityVisitor {
     $this->createNormalElements();
     $this->createForeignElements();
     if (!($this->form instanceof \Zend_Form_SubForm)) {
-      $save = new \Zend_Form_Element_Submit('save');
-      $save->setLabel('Save');
+      $save = $this->getElementCreatorFactory()->createSubmitCreator()->createElement('save');
       $this->form->addElement($save);
     }
   }

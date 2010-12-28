@@ -2,7 +2,7 @@
 class UserController extends Equ\Crud\Controller {
 
   protected function getService() {
-    return new Default_Service_User();
+    return $this->_helper->serviceContainer('user');
   }
 
   public function loginAction() {
