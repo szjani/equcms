@@ -51,8 +51,18 @@ class User extends Role {
     parent::__construct();
     $this
       ->setEmail($email)
-      ->setPassword($password)
-      ->setActivationCode($this->generateString(12));
+      ->setPassword($password);
+  }
+  
+  public function init() {
+    $emailValidator = new \Zend_Validate_EmailAddress();
+    try {
+      $emailValidator->setValidateMx(true);
+    } catch (\Zend_Validate_Exception $e) {}
+    
+    $this
+      ->setActivationCode($this->generateString(12))
+      ->addFieldValidator('email', $emailValidator);
   }
 
   /**
@@ -111,13 +121,6 @@ class User extends Role {
    * @return User
    */
   public function setEmail($email) {
-    $validator = new \Zend_Validate_EmailAddress();
-    try {
-      $validator->setValidateMx(true);
-    } catch (\Zend_Validate_Exception $e) {}
-    if (!$validator->isValid($email)) {
-      throw new Exception("Invalid e-mail address '$email'");
-    }
     $this->email = $email;
     return $this;
   }

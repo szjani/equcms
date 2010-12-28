@@ -28,8 +28,4 @@ class Default_Service_User extends Service {
       ->setEntityBuilder(new Default_Service_UserEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
   }
 
-  public function createEmptyForm() {
-    return new Default_Form_User();
-  }
-
-}
+  public function createEmpty

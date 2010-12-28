@@ -5,3 +5,4 @@ tests/log/*
 .settings
 .buildpath
 nbproject
+application/Entity/Proxy/*

@@ -65,6 +65,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   private $lvl;
 
   public function __construct() {
+    parent::__construct();
     $this->roleResources = new ArrayCollection();
     $this->children      = new ArrayCollection();
   }

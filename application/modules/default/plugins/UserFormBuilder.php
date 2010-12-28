@@ -1,10 +1,14 @@
 <?php
-class Default_Form_UserBuilder extends Equ\Entity\FormBuilder {
+use Equ\Entity\FormBuilder;
+
+class Default_Plugin_UserFormBuilder extends FormBuilder {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'passwordHash', 'activationCode');
 
-//  protected $fieldLabels   = array('email' => 'E-mail');
-
+  public function preVisit() {
+    
+  }
+  
   public function postVisit() {
     $password = new Zend_Dojo_Form_Element_PasswordTextBox('password');
     $password
@@ -15,5 +19,5 @@ class Default_Form_UserBuilder extends Equ\Entity\FormBuilder {
       ->setOrder(1);
     $this->getForm()->addElement($password);
   }
-  
+
 }

@@ -5,4 +5,3 @@ interface EntityVisitor {
 
   public function visitEntity(Entity\Visitable $entity);
 
-}
