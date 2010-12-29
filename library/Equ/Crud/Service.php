@@ -180,7 +180,11 @@ abstract class Service extends \Equ\AbstractService {
   protected function getEntity($id = null) {
     if ($this->entity === null || $id != $this->getFieldValue($this->entity, $this->getIdentifierFieldName())) {
       if ($id === null) {
-        $this->entity = $this->getEntityManager()->getClassMetadata($this->getEntityClass())->newInstance();
+        $entity = $this->getEntityManager()->getClassMetadata($this->getEntityClass())->newInstance();
+        if ($entity instanceof \Equ\Entity\FormBase) {
+          $entity->init();
+        }
+        $this->entity = $entity;
       } else {
         $entity = $this->getEntityManager()->getRepository($this->getEntityClass())->find($id);
         if (!$entity) {
@@ -256,6 +260,8 @@ abstract class Service extends \Equ\AbstractService {
       $entityBuilder = $this->getEntityBuilder();
       $form->accept($entityBuilder);
       $entity = $entityBuilder->getEntity();
+//      \Doctrine\Common\Util\Debug::dump($entity);
+//      exit;
       $this->getEntityManager()->persist($entity);
       $this->getEntityManager()->flush();
       $this->postCreate();
@@ -397,4 +403,4 @@ abstract class Service extends \Equ\AbstractService {
       throw $e;
     }
   }
-}                                                                                                                                                                                         
+}
