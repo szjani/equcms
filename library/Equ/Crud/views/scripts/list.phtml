@@ -12,10 +12,14 @@
       <?php foreach ($this->keys as $key): ?>
         <td>
         <?php
+//        var_dump($record->getId());
         $field = $record[$key];
         if (is_bool($field)) {
           echo $field ? $this->translate('Crud/True') : $this->translate('Crud/False');
-        } else {
+        } elseif (is_object($field)) {
+          echo (string)$field;
+        }
+        else {
           echo $field;
         }
         ?>
@@ -23,8 +27,8 @@
       <?php endforeach ?>
       <td>
         <div class="methods-list">
-          <a href="<?php echo $this->url(array('action' => 'update', 'id' => reset($record))) ?>"><?php echo $this->translate('Crud/Update/Label') ?></a>
-          | <a onclick="javascript: return confirm('<?php echo $this->translate('Crud/Delete/Confirm')?>')" href="<?php echo $this->url(array('action' => 'delete', 'id' => reset($record))) ?>"><?php echo $this->translate('Crud/Delete/Label') ?></a>
+          <a href="<?php echo $this->url(array('action' => 'update', 'id' => $record->getId())) ?>"><?php echo $this->translate('Crud/Update/Label') ?></a>
+          | <a onclick="javascript: return confirm('<?php echo $this->translate('Crud/Delete/Confirm')?>')" href="<?php echo $this->url(array('action' => 'delete', 'id' => $record->getId())) ?>"><?php echo $this->translate('Crud/Delete/Label') ?></a>
         </div>
       </td>
     </tr>

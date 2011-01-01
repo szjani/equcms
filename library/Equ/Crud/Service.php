@@ -156,7 +156,13 @@ abstract class Service extends \Equ\AbstractService {
    */
   public function getTableFieldNames() {
     $metadata = $this->getEntityManager()->getClassMetadata($this->getEntityClass());
-    $fields = $metadata->fieldNames;
+    $fields = array_diff($metadata->fieldNames, $metadata->identifier);
+    foreach ($metadata->associationMappings as $fieldName => $def) {
+      if ($def['isOwningSide']) {
+        $fields[] = $fieldName;
+      }
+    }
+//    $fields = array_merge($fields, array_keys($metadata->associationMappings));
 //    $discColumn = isset($metadata->discriminatorColumn['name']) ? array($metadata->discriminatorColumn['name']) : array();
     return $fields;
   }
@@ -339,7 +345,7 @@ abstract class Service extends \Equ\AbstractService {
       if ($query === null) {
         $query = $this->getListQuery($filters, $sort, $order);
       }
-      $query->setHydrationMode(Query::HYDRATE_ARRAY);
+//      $query->setHydrationMode(Query::HYDRATE_ARRAY);
       $adapter = new \Equ\Paginator\Adapter\Doctrine($query);
       $paginator = new \Zend_Paginator($adapter);
       $paginator
@@ -359,16 +365,22 @@ abstract class Service extends \Equ\AbstractService {
    */
   public function getListQuery(array $filters = array(), $sort = null, $order = 'ASC') {
     try {
+      $metadata = $this->getEntityManager()->getClassMetadata($this->getEntityClass());
+
       $queryBuilder = new QueryBuilder($this->getEntityManager());
       $queryBuilder
         ->select('m')
         ->from($this->getEntityClass(), 'm');
 
+      foreach (array_keys($metadata->associationMappings) as $relatedName) {
+        $queryBuilder->leftJoin("m.$relatedName", $relatedName);
+        $queryBuilder->addSelect($relatedName);
+      }
+
       if ($sort !== null) {
         $queryBuilder->orderBy('m.' . $sort, $order == 'ASC' ? 'ASC' : 'DESC');
       }
 
-      $metadata = $this->getEntityManager()->getClassMetadata($this->getEntityClass());
       if ($form = $this->getFilterForm()) {
         if (!empty($filters) && $form->isValid($filters)) {
           foreach ($form->getElements() as $element) {

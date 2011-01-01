@@ -1,9 +1,9 @@
 <?php
-namespace Entity;
+namespace entities;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Abstract Role class to handle roles (users, groups hierarchy)
+ * Resource entity
  *
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        $Link$
@@ -12,12 +12,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @Entity(repositoryClass="Gedmo\Tree\Repository\TreeNodeRepository")
- * @Table(name="`role`")
+ * @Table(name="`resource`")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"user" = "User", "usergroup" = "UserGroup"})
+ * @DiscriminatorMap({"mvc" = "Mvc"})
  */
-abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
+abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interface {
 
   /**
    * @Column(name="id", type="integer")
@@ -29,16 +29,16 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 
   /**
    * @gedmo:TreeParent
-   * @ManyToOne(targetEntity="UserGroup", inversedBy="children")
-   * @var UserGroup
+   * @ManyToOne(targetEntity="Resource", inversedBy="children")
+   * @var Resource
    */
   private $parent;
 
   /**
-   * @OneToMany(targetEntity="Role", mappedBy="parent")
+   * @OneToMany(targetEntity="Resource", mappedBy="parent")
    * @var Doctrine\Common\Collections\ArrayCollection
    */
-  protected $children;
+  private $children;
 
   /**
    * @gedmo:TreeLeft
@@ -53,35 +53,34 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   private $rgt;
 
   /**
-   * @OneToMany(targetEntity="RoleResource", mappedBy="role")
-   * @var ArrayCollection
-   */
-  private $roleResources;
-
-  /**
    * @gedmo:TreeLevel
    * @Column(name="lvl", type="integer")
    */
   private $lvl;
+  
+  /**
+   * @OneToMany(targetEntity="RoleResource", mappedBy="resource")
+   * @var ArrayCollection
+   */
+  private $roleResources;
 
   public function __construct() {
-    parent::__construct();
     $this->roleResources = new ArrayCollection();
     $this->children      = new ArrayCollection();
   }
 
   /**
-   * @return UserGroup
+   * @return Resource
    */
   public function getParent() {
     return $this->parent;
   }
 
   /**
-   * @param UserGroup $parent
-   * @return Role
+   * @param Resource $parent
+   * @return Resource
    */
-  public function setParent(UserGroup $parent) {
+  public function setParent(Resource $parent) {
     $this->parent = $parent;
     return $this;
   }
@@ -94,7 +93,11 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   }
 
   public function __toString() {
-    return $this->getRoleId();
+    return $this->getResourceId();
+  }
+
+  public function getId() {
+    return $this->id;
   }
 
 }

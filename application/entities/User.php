@@ -1,5 +1,5 @@
 <?php
-namespace Entity;
+namespace entities;
 
 /**
  * User entity
@@ -17,13 +17,13 @@ class User extends Role {
   
   const PASSWORD_SALT = 'dfJko$~346958rg!DFT]AEtzserf9giq)3/TAeg;aDFa43';
 
-  /**
-   * @Column(name="id", type="integer")
-   * @Id
-   * @GeneratedValue
-   * @var int
-   */
-  private $id;
+//  /**
+//   * @Column(name="id", type="integer")
+//   * @Id
+//   * @GeneratedValue
+//   * @var int
+//   */
+//  private $id;
 
   /**
    * @Column(name="email", type="string", unique="true")
@@ -102,12 +102,12 @@ class User extends Role {
     return md5($password . self::PASSWORD_SALT);
   }
 
-  /**
-   * @return int
-   */
-  public function getId() {
-    return $this->id;
-  }
+//  /**
+//   * @return int
+//   */
+//  public function getId() {
+//    return $this->id;
+//  }
 
   /**
    * @return string

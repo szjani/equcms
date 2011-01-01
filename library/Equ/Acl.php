@@ -1,10 +1,10 @@
 <?php
 namespace Equ;
 use Doctrine\ORM\EntityManager;
-use Entity\Role;
-use Entity\UserGroup;
-use Entity\Resource;
-use Entity\Mvc;
+use entities\Role;
+use entities\UserGroup;
+use entities\Resource;
+use entities\Mvc;
 use Equ\Acl\Exception;
 
 class Acl extends \Zend_Acl {
@@ -36,19 +36,19 @@ class Acl extends \Zend_Acl {
    */
   public function __construct(EntityManager $em) {
     $this->setEntityManager($em);
-    $roles = $em->getRepository('Entity\Role')->findAll();
+    $roles = $em->getRepository('entities\Role')->findAll();
     /* @var $role Role */
     foreach ($roles as $role) {
       $this->addRole($role, $role->getParent());
     }
 
-    $resources = $em->getRepository('Entity\Resource')->findAll();
+    $resources = $em->getRepository('entities\Resource')->findAll();
     /* @var $resource Resource */
     foreach ($resources as $resource) {
       $this->add($resource, $resource->getParent());
     }
 
-    $roleResources = $em->getRepository('Entity\RoleResource')->findAll();
+    $roleResources = $em->getRepository('entities\RoleResource')->findAll();
     /* @var $roleResource RoleResource */
     foreach ($roleResources as $roleResource) {
       $this->allow($roleResource->getRole(), $roleResource->getResource(), $roleResource->getPrivilege());

@@ -1,7 +1,9 @@
 <?php
+namespace services;
 use Equ\Crud\Service;
+use plugins\UserFormBuilder;
 
-class Index_Service_UserEntityBuilder extends \Equ\Form\EntityBuilder {
+class UserEntityBuilder extends \Equ\Form\EntityBuilder {
 
   public function preVisit() {
     $form = $this->form;
@@ -13,10 +15,10 @@ class Index_Service_UserEntityBuilder extends \Equ\Form\EntityBuilder {
 
 }
 
-class Index_Service_User extends Service {
+class User extends Service {
 
   public function getEntityClass() {
-    return 'Entity\User';
+    return 'entities\User';
   }
   
 public function getMainForm($id = null, $refresh = false) {
@@ -28,11 +30,11 @@ public function getMainForm($id = null, $refresh = false) {
   }
 
   public function __construct() {
-    $formBuilder = new Index_Plugin_UserFormBuilder($this->getEntityManager());
+    $formBuilder = new UserFormBuilder($this->getEntityManager());
     $formBuilder->setElementCreatorFactory(new \Equ\Entity\ElementCreator\Dojo\Factory());
     $this
       ->setMainFormBuilder($formBuilder)
-      ->setEntityBuilder(new Index_Service_UserEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
+      ->setEntityBuilder(new UserEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
   }
 
 //  public function createEmptyForm() {

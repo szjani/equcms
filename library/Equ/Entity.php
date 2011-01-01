@@ -12,7 +12,7 @@ namespace Equ;
  * @MappedSuperclass
  * @HasLifecycleCallbacks
  */
-abstract class Entity implements Entity\FormBase {
+abstract class Entity implements Entity\FormBase, \ArrayAccess {
 
   private $fieldValidators = array();
   
@@ -78,5 +78,26 @@ abstract class Entity implements Entity\FormBase {
       }
     }
   }
+
+  public function offsetExists($offset) {
+    $method = 'get' . \ucfirst($offset);
+    return \method_exists($this, $method);
+  }
+
+  public function offsetGet($offset) {
+    $method = 'get' . \ucfirst($offset);
+    if (\method_exists($this, $method)) {
+      return $this->$method();
+    }
+  }
+
+  public function offsetSet($offset, $value) {
+    throw new Exception("ArrayAccess readonly!");
+  }
+
+  public function offsetUnset($offset) {
+    throw new Exception("ArrayAccess readonly!");
+  }
+
 
 }

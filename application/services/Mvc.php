@@ -1,13 +1,13 @@
 <?php
-namespace modules\index\services;
+namespace services;
 use Equ\Crud\Service;
-use modules\index\plugins\MvcFormBuilder;
+use plugins\MvcFormBuilder;
 use Equ\Entity\ElementCreator\Dojo;
 
 class Mvc extends Service {
 
   public function getEntityClass() {
-    return 'Entity\Mvc';
+    return 'entities\Mvc';
   }
 
   public function __construct() {

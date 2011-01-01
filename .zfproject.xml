@@ -6,7 +6,7 @@
       <apisDirectory enabled="false"/>
       <configsDirectory>
         <applicationConfigFile type="ini"/>
-		<yamlSchemaDirectory/>
+        <yamlSchemaDirectory/>
         <dataFixturesDirectory/>
         <migrationsDirectory/>
         <sqlDirectory/>
@@ -18,6 +18,23 @@
         <moduleDirectory moduleName="default">
           <apisDirectory enabled="false"/>
           <configsDirectory enabled="false"/>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
+          <viewsDirectory>
+            <viewScriptsDirectory/>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="admin">
+          <apisDirectory enabled="false"/>
+          <configsDirectory enabled="false">
+            <yamlSchemaDirectory enabled="false"/>
+            <dataFixturesDirectory enabled="false"/>
+            <migrationsDirectory enabled="false"/>
+            <sqlDirectory enabled="false"/>
+          </configsDirectory>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
           <modelsDirectory/>

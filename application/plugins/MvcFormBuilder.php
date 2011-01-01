@@ -1,5 +1,5 @@
 <?php
-namespace modules\index\plugins;
+namespace plugins;
 use Equ\Entity\FormBuilder;
 
 //class Index_Plugin_MvcFormBuilder extends FormBuilder {

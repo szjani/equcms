@@ -1,5 +1,5 @@
 <?php
-namespace Entity;
+namespace entities;
 
 /**
  * Group entity
@@ -15,13 +15,13 @@ namespace Entity;
  */
 class UserGroup extends Role {
 
-  /**
-   * @Column(name="id", type="integer")
-   * @Id
-   * @GeneratedValue
-   * @var int
-   */
-  private $id;
+//  /**
+//   * @Column(name="id", type="integer")
+//   * @Id
+//   * @GeneratedValue
+//   * @var int
+//   */
+//  private $id;
 
   /**
    * @Column(name="name", type="string", length=255)
@@ -41,9 +41,9 @@ class UserGroup extends Role {
     return $this->name;
   }
 
-    public function getId() {
-    return $this->id;
-  }
+//  public function getId() {
+//    return $this->id;
+//  }
 
   public function getName() {
     return $this->name;

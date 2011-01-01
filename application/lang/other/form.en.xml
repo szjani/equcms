@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Dictionary><![CDATA[---]]>
+<Dictionary>
 	<Default>
 		<Form>
 			<User>
@@ -9,3 +9,4 @@
 			</User>
 		</Form>
 	</Default>
+</Dictionary>

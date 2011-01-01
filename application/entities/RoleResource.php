@@ -1,5 +1,5 @@
 <?php
-namespace Entity;
+namespace entities;
 
 /**
  * JoinClass between Role and Resource entities
@@ -25,14 +25,14 @@ class RoleResource extends \Equ\Entity {
 
   /**
    * @ManyToOne(targetEntity="Role", inversedBy="roleResources")
-   * @JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
+   * @JoinColumn(name="id", referencedColumnName="id", nullable=false)
    * @var Role
    */
   private $role;
 
   /**
    * @ManyToOne(targetEntity="Resource", inversedBy="roleResources")
-   * @JoinColumn(name="resource_id", referencedColumnName="id", nullable=false)
+   * @JoinColumn(name="id", referencedColumnName="id", nullable=false)
    * @var Resource
    */
   private $resource;

@@ -12,6 +12,8 @@ namespace Equ\Crud;
  */
 abstract class Controller extends \Factory_Controller {
 
+  protected $ignoredFields = array();
+
   /**
    * Adds general CRUD script path
    */
@@ -21,6 +23,10 @@ abstract class Controller extends \Factory_Controller {
     $title = $this->view->pageTitle =
     	"Navigation/{$this->_getParam('module')}/{$this->_getParam('controller')}/{$this->_getParam('action')}/label";
     $this->view->headTitle($this->view->translate($title));
+  }
+
+  public function getIgnoredFields() {
+    return $this->ignoredFields;
   }
 
   /**
@@ -47,7 +53,6 @@ abstract class Controller extends \Factory_Controller {
 
   public function indexAction() {
     $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
-//    $this->_forward('list');
   }
   
   /**
@@ -77,7 +82,7 @@ abstract class Controller extends \Factory_Controller {
     $id   = $this->_getParam('id');
     $form = null;
     
-    $updatePage = new \Entity\Mvc();
+    $updatePage = new \entities\Mvc();
     $updatePage
       ->setModule($this->_getParam('module'))
       ->setController($this->_getParam('controller'))
@@ -132,7 +137,7 @@ abstract class Controller extends \Factory_Controller {
       $this->_getParam('order', 'ASC')
 //      $this->_getAllParams()
     );
-    $this->view->keys        = $this->getService()->getTableFieldNames();
+    $this->view->keys        = \array_diff($this->getService()->getTableFieldNames(), $this->getIgnoredFields());
     $this->view->currentSort = $this->_getParam('sort');
     $this->view->nextOrder   = $this->_getParam('order', 'ASC') == 'ASC' ? 'DESC' : 'ASC';
     $this->view->filterForm  = $filterForm;

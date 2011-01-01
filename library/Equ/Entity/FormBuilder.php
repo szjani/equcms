@@ -186,6 +186,8 @@ class FormBuilder implements \Equ\EntityVisitor {
       $select = $this->getElementCreatorFactory()->createArrayCreator()->createElement($fieldName);
       $select->addMultiOption('0', '---');
       $targetMetaData = $this->entityManager->getClassMetadata($def['targetEntity']);
+//      var_dump($def);
+//      exit;
       foreach ($this->entityManager->getRepository($def['targetEntity'])->findAll() as $entity) {
         $select->addMultiOption(
           $targetMetaData->getFieldValue(
