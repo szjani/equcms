@@ -15,11 +15,13 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-//define('DOCTRINE_PATH', '/development/Frameworks/doctrine2-orm/lib/');
-
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
+  realpath(APPLICATION_PATH),
   realpath(APPLICATION_PATH . '/../library'),
   '/development/Frameworks/ZF_1.11_svn/library',
+  '/development/Frameworks/Doctrine-2.0',
+  '/development/Frameworks/beberlei/DoctrineExtensions/lib',
+  '/development/Frameworks/doctrine2-extensions/lib',
   get_include_path()
 )));

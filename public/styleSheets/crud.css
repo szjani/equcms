@@ -9,13 +9,13 @@ table {
 tr.deleted td {
 	background-color: #FFDDDD;
 }
-ul.navigation {
-	padding: 10px;
-}
-ul.navigation li {
-	margin: 4px;
-	display: inline;
-}
+/*ul.navigation {*/
+/*	padding: 10px;*/
+/*}*/
+/*ul.navigation li {*/
+/*	margin: 4px;*/
+/*	display: inline;*/
+/*}*/
 td {
 	border: 1px solid #ccc;
 	padding: 5px;
@@ -30,9 +30,9 @@ th {
 	padding: 4px;
 }
 a {
-  color: #007700;
+  color: #20759c;
   text-decoration: none;
-  font-weight: bold;
+/*  font-weight: bold;*/
 }
 #wrapper, #filter-form-content, #content, #header-content, #messages {
 	width: 900px;

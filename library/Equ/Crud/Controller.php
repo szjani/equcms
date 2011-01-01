@@ -18,6 +18,9 @@ abstract class Controller extends \Factory_Controller {
   public function init() {
     parent::init();
     $this->view->addScriptPath(dirname(__FILE__) . '/views/scripts');
+    $title = $this->view->pageTitle =
+    	"Navigation/{$this->_getParam('module')}/{$this->_getParam('controller')}/{$this->_getParam('action')}/label";
+    $this->view->headTitle($this->view->translate($title));
   }
 
   /**
@@ -43,9 +46,10 @@ abstract class Controller extends \Factory_Controller {
   protected abstract function getService();
 
   public function indexAction() {
-    $this->_forward('list');
+    $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
+//    $this->_forward('list');
   }
-
+  
   /**
    * Calls create method of service with form values
    */
@@ -60,7 +64,7 @@ abstract class Controller extends \Factory_Controller {
       }
       $this->view->createForm = $form;
     } catch (\Exception $e) {
-        $this->addMessage('Crud/Create/UnSuccess');
+        $this->addMessage('Crud/Create/UnSuccess', 'default', $type = \Factory_Message::ERROR);
         $this->view->createForm = $form;
     }
     $this->renderScript('create.phtml');
@@ -72,6 +76,17 @@ abstract class Controller extends \Factory_Controller {
   public function updateAction() {
     $id   = $this->_getParam('id');
     $form = null;
+    
+    $updatePage = new \Entity\Mvc();
+    $updatePage
+      ->setModule($this->_getParam('module'))
+      ->setController($this->_getParam('controller'))
+      ->setAction($this->_getParam('action'));
+    $navigation = $this->_helper->serviceContainer('navigation');
+    $navigation
+      ->findById("{$this->_getParam('module')}_{$this->_getParam('controller')}")
+      ->addPage($updatePage->getNavigationPage()->setParams(array('id' => $id)));
+      
     try {
       $form = $this->getService()->getMainForm($id);
       if ($this->_request->isPost()) {
@@ -81,7 +96,7 @@ abstract class Controller extends \Factory_Controller {
       }
       $this->view->updateForm = $form;
     } catch (\Exception $e) {
-      $this->addMessage('Crud/Update/UnSuccess');
+      $this->addMessage('Crud/Update/UnSuccess', 'default', $type = \Factory_Message::ERROR);
       $this->view->updateForm = $form;
     }
     $this->renderScript('update.phtml');
@@ -97,7 +112,7 @@ abstract class Controller extends \Factory_Controller {
       $this->addMessage('Crud/Delete/Success');
       $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
     } catch (Exception $e) {
-      $this->addMessage('Crud/Delete/UnSuccess');
+      $this->addMessage('Crud/Delete/UnSuccess', 'default', $type = \Factory_Message::ERROR);
     }
     $this->renderScript('delete.phtml');
   }
@@ -107,6 +122,8 @@ abstract class Controller extends \Factory_Controller {
    * lists items with Zend_Paginator
    */
   public function listAction() {
+//    $this->addMessage('Crud/Create/Success');
+//    $this->addMessage('Crud/Create/UnSuccess', 'default', $type = \Factory_Message::ERROR);
     $filterForm = $this->getService()->getFilterForm($this->_getAllParams());
     $this->view->paginator = $this->getService()->getPagePaginator(
       $this->_getParam('page', 1),

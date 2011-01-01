@@ -3,5 +3,6 @@ namespace Equ;
 
 interface EntityVisitor {
 
-  public function visitEntity(Entity\Visitable $entity);
+  public function visitEntity(Entity\FormBase $entity);
 
+}

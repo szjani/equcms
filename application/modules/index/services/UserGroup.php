@@ -1,7 +1,7 @@
 <?php
 use Equ\Crud\Service;
 
-class Default_Service_UserGroup extends Service {
+class Index_Service_UserGroup extends Service {
 	
 	/**
    * @see Equ\Crud.Service::getEntityClass()
@@ -11,7 +11,7 @@ class Default_Service_UserGroup extends Service {
   }
 
   public function __construct() {
-    $formBuilder = new Default_Plugin_UserGroupFormBuilder($this->getEntityManager());
+    $formBuilder = new Index_Plugin_UserGroupFormBuilder($this->getEntityManager());
     $formBuilder->setElementCreatorFactory(new \Equ\Entity\ElementCreator\Dojo\Factory());
     $this->setMainFormBuilder($formBuilder);
   }

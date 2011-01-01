@@ -10,72 +10,72 @@ interface Factory {
   public function setNamespace($ns);
   
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createStringCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createIntegerCreator();
   
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createSmallintCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createBigintCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createDecimalCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createFloatCreator();
   
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createBooleanCreator();
   
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createDateCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createTimeCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createDateTimeCreator();
   
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createTextCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createObjectCreator();
 
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createArrayCreator();
   
   /**
-   * @return \Zend_Form_Element
+   * @return AbstractCreator
    */
   public function createSubmitCreator();
 

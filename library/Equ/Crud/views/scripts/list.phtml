@@ -1,9 +1,5 @@
+<h2><?php echo $this->translate($this->pageTitle) ?></h2>
 <?php //echo $this->filterForm ?>
-<div class="methods">
-  <?php $newUrl = $this->url(array('action' => 'new', 'controller' => 'user'), null, true) ?>
-  <a href="<?php echo $this->url(array('action' => 'create')) ?>"><?php echo $this->translate('Crud/Create/Label') ?></a>
-</div>
-<?php echo $this->flashMessenger() ?>
 <table>
   <tr>
     <?php foreach ($this->keys as $key): ?>
