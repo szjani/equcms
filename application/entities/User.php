@@ -17,14 +17,6 @@ class User extends Role {
   
   const PASSWORD_SALT = 'dfJko$~346958rg!DFT]AEtzserf9giq)3/TAeg;aDFa43';
 
-//  /**
-//   * @Column(name="id", type="integer")
-//   * @Id
-//   * @GeneratedValue
-//   * @var int
-//   */
-//  private $id;
-
   /**
    * @Column(name="email", type="string", unique="true")
    * @var string
@@ -65,13 +57,6 @@ class User extends Role {
       ->addFieldValidator('email', $emailValidator);
   }
 
-  /**
-   * @return string
-   */
-  public function getRoleId() {
-    return $this->email;
-  }
-
     /**
    * Generates a random password
    *
@@ -102,13 +87,6 @@ class User extends Role {
     return md5($password . self::PASSWORD_SALT);
   }
 
-//  /**
-//   * @return int
-//   */
-//  public function getId() {
-//    return $this->id;
-//  }
-
   /**
    * @return string
    */
@@ -122,6 +100,7 @@ class User extends Role {
    */
   public function setEmail($email) {
     $this->email = $email;
+    $this->setRoleId($email);
     return $this;
   }
 

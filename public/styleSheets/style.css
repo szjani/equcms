@@ -87,7 +87,7 @@ dl dd ul.errors li {
 	text-align: left;
 	font-size: small;
 }
-#mainMenu ul.navigation a:hover {
+#mainMenu ul.navigation a:hover, #mainMenu ul.navigation li.active a {
   background: #2580a2 url("/images/hover.gif") left center no-repeat;
   color: #fff;
   padding-bottom: 8px;
@@ -100,6 +100,10 @@ dl dd ul.errors li {
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	margin: 4px 0px 12px 0px;
+  -moz-box-shadow: 0px -2px 2px #ddd;
+  -webkit-box-shadow: 0px -2px 2px #888;
+  box-shadow: 0px -2px 2px #888;
+  border: 1px solid #ccc;
 }
 #breadcrumbs a:hover {
 	text-decoration: underline;
@@ -111,7 +115,7 @@ dl dd ul.errors li {
 }
 #submenu li {
 	float: left;
-	padding-right: 4px;
+	margin-right: 4px;
 }
 #submenu li a {
 	background-color: #EEEEF2;
@@ -135,6 +139,9 @@ dl dd ul.errors li {
 	background-color: white;
 /*	border-bottom: none;*/
 	color: black;
+  -moz-box-shadow: 0px -2px 2px #ddd;
+  -webkit-box-shadow: 0px -2px 2px #888;
+  box-shadow: 0px -2px 2px #888;
 }
 .messages {
 	clear: both;

@@ -156,7 +156,8 @@ abstract class Service extends \Equ\AbstractService {
    */
   public function getTableFieldNames() {
     $metadata = $this->getEntityManager()->getClassMetadata($this->getEntityClass());
-    $fields = array_diff($metadata->fieldNames, $metadata->identifier);
+//    $fields = array_diff($metadata->fieldNames, $metadata->identifier);
+    $fields = $metadata->fieldNames;
     foreach ($metadata->associationMappings as $fieldName => $def) {
       if ($def['isOwningSide']) {
         $fields[] = $fieldName;
@@ -262,6 +263,8 @@ abstract class Service extends \Equ\AbstractService {
   public function create(array $values = array()) {
     $this->preCreate($values);
     $form = $this->getMainForm();
+    var_dump($values);
+    exit;
     try {
       if (!$form->isValid($values)) {
         throw new Exception('Invalid values');

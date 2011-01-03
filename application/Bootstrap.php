@@ -60,6 +60,10 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     foreach ($leaves as $mvc) {
       $parent = $mvc->getParent();
       while ($parent !== null) {
+//        var_dump((string)$mvc->getNavigationPage()->getResource());
+        if (false !== strpos((string)$mvc->getNavigationPage()->getResource(), 'update')) {
+          $mvc->getNavigationPage()->setVisible(false);
+        }
         $parent->getNavigationPage()->addPage($mvc->getNavigationPage());
         $mvc = $parent;
         $parent = $mvc->getParent();
@@ -71,8 +75,31 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $view = $this->getResource('view');
     Zend_Dojo::enableView($view);
     $view->getHelper('navigation')->setContainer($container);
-//    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
-//    $container->
+    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
+    $view->getHelper('navigation')->setRole('szjani@szjani.hu');
+//    $view->getHelper('navigation')->setRole('szjani@gmail.com');
+//    $acl = new Zend_Acl();
+//    $acl
+//      ->addRole('szjani@gmail.com')
+//      ->addResource('mvc:')
+//      ->addResource('mvc:admin', 'mvc:')
+//      ->addResource('mvc:admin.mvc', 'mvc:admin')
+//      ->addResource('mvc:admin.mvc.list', 'mvc:admin.mvc')
+//      ->addResource('mvc:admin.mvc.create', 'mvc:admin.mvc')
+//      ->addResource('mvc:admin.user-group', 'mvc:admin')
+//      ->addResource('mvc:admin.user-group.create', 'mvc:admin.user-group')
+//      ->addResource('mvc:admin.user-group.list', 'mvc:admin.user-group')
+//      ->addResource('mvc:admin.user', 'mvc:admin')
+//      ->addResource('mvc:admin.user.create', 'mvc:admin.user')
+//      ->addResource('mvc:admin.user.list', 'mvc:admin.user')
+//      ->addResource('mvc:admin.role-resource', 'mvc:admin')
+//      ->addResource('mvc:admin.role-resource.create', 'mvc:admin.role-resource')
+//      ->addResource('mvc:admin.role-resource.list', 'mvc:admin.role-resource')
+//      ->addResource('mvc:admin.role-resource.update', 'mvc:admin.role-resource')
+//      ->allow('szjani@gmail.com', 'mvc:')
+//      ->deny('szjani@gmail.com', 'mvc:admin.user');
+//    $view->getHelper('navigation')->setAcl($acl);
+//    $view->getHelper('navigation')->setRole('szjani@gmail.com');
   }
 
 }

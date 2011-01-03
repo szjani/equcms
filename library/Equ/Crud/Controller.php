@@ -14,6 +14,10 @@ abstract class Controller extends \Factory_Controller {
 
   protected $ignoredFields = array();
 
+  public function getIgnoredFields() {
+    return $this->ignoredFields;
+  }
+
   /**
    * Adds general CRUD script path
    */
@@ -25,8 +29,16 @@ abstract class Controller extends \Factory_Controller {
     $this->view->headTitle($this->view->translate($title));
   }
 
-  public function getIgnoredFields() {
-    return $this->ignoredFields;
+  protected function initHiddenNavigationItemWithId($id) {
+    $navigation = $this->_helper->serviceContainer('navigation');
+    $page = $navigation->findById(
+      "{$this->_getParam('module')}_{$this->_getParam('controller')}_{$this->_getParam('action')}"
+    );
+    if ($page) {
+      $page
+        ->setParams(array('id' => $id))
+        ->setVisible(true);
+    }
   }
 
   /**
@@ -81,17 +93,7 @@ abstract class Controller extends \Factory_Controller {
   public function updateAction() {
     $id   = $this->_getParam('id');
     $form = null;
-    
-    $updatePage = new \entities\Mvc();
-    $updatePage
-      ->setModule($this->_getParam('module'))
-      ->setController($this->_getParam('controller'))
-      ->setAction($this->_getParam('action'));
-    $navigation = $this->_helper->serviceContainer('navigation');
-    $navigation
-      ->findById("{$this->_getParam('module')}_{$this->_getParam('controller')}")
-      ->addPage($updatePage->getNavigationPage()->setParams(array('id' => $id)));
-      
+    $this->initHiddenNavigationItemWithId($id);
     try {
       $form = $this->getService()->getMainForm($id);
       if ($this->_request->isPost()) {
@@ -112,6 +114,7 @@ abstract class Controller extends \Factory_Controller {
    */
   public function deleteAction() {
     $id = $this->_getParam('id');
+    $this->initHiddenNavigationItemWithId($id);
     try {
       $this->getService()->delete($id);
       $this->addMessage('Crud/Delete/Success');

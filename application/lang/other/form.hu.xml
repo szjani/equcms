@@ -5,6 +5,7 @@
 			<privilege><![CDATA[Jogosultsági szint]]></privilege>
 			<role><![CDATA[Szereplő]]></role>
 			<resource><![CDATA[Menüpont]]></resource>
+      <allowed><![CDATA[Engedélyezve]]></allowed>
 	    <save><![CDATA[Mentés]]></save>
 		</RoleResource>
 		<User>

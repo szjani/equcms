@@ -25,23 +25,29 @@ class RoleResource extends \Equ\Entity {
 
   /**
    * @ManyToOne(targetEntity="Role", inversedBy="roleResources")
-   * @JoinColumn(name="id", referencedColumnName="id", nullable=false)
+   * @JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
    * @var Role
    */
   private $role;
 
   /**
    * @ManyToOne(targetEntity="Resource", inversedBy="roleResources")
-   * @JoinColumn(name="id", referencedColumnName="id", nullable=false)
+   * @JoinColumn(name="resource_id", referencedColumnName="id", nullable=false)
    * @var Resource
    */
   private $resource;
 
   /**
+   * @Column(name="allowed", type="boolean")
+   * @var boolean
+   */
+  private $allowed;
+
+  /**
    * @Column(name="privilege", type="string", length=255, nullable=true)
    * @var string
    */
-  private $privilege;
+  private $privilege = false;
 
   public function getId() {
     return $this->id;
@@ -70,10 +76,24 @@ class RoleResource extends \Equ\Entity {
   }
 
   public function setPrivilege($privilege) {
+    if (\strlen($privilege) == 0) {
+      $privilege = null;
+    }
     $this->privilege = $privilege;
     return $this;
   }
 
+  public function isAllowed() {
+    return $this->allowed;
+  }
 
+  /**
+   * @param boolean $allow
+   * @return RoleResource
+   */
+  public function setAllow($allow = true) {
+    $this->allowed = (boolean)$allow;
+    return $this;
+  }
 
 }

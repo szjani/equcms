@@ -1,7 +1,7 @@
 <?php
 class Admin_UserController extends Equ\Crud\Controller {
 
-  protected $ignoredFields = array('lft', 'rgt', 'lvl');
+  protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
 
   protected function getService() {
     return $this->_helper->serviceContainer('user');

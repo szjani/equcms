@@ -57,6 +57,12 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
    * @Column(name="lvl", type="integer")
    */
   private $lvl;
+
+  /**
+   * @Column(name="resource", type="string", length=255, nullable=false)
+   * @var string
+   */
+  private $resource;
   
   /**
    * @OneToMany(targetEntity="RoleResource", mappedBy="resource")
@@ -90,6 +96,15 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
    */
   public function getRoleResources() {
     return $this->roleResources;
+  }
+
+  public function getResourceId() {
+    return $this->resource;
+  }
+
+  protected function setResourceId($resource) {
+    $this->resource = (string)$resource;
+    return $this;
   }
 
   public function __toString() {

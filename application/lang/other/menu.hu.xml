@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dictionary>
+  <Navigation>
+    <main>
+      <label><![CDATA[Főoldal]]></label>
+    </main>
+    <admin>
+      <label><![CDATA[Adminisztrációs főoldal]]></label>
+      <role-resource>
+        <label><![CDATA[Jogosultságok]]></label>
+        <title><![CDATA[Jogosultságok]]></title>
+        <list>
+          <label><![CDATA[Jogosultságok listája]]></label>
+          <title><![CDATA[title]]></title>
+        </list>
+        <create>
+          <label><![CDATA[Új jogosultság]]></label>
+          <title><![CDATA[title]]></title>
+        </create>
+        <update>
+          <label><![CDATA[Jogosultság szerkesztése]]></label>
+          <title><![CDATA[title]]></title>
+        </update>
+      </role-resource>
+      <mvc>
+        <label><![CDATA[Menüpontok]]></label>
+        <create>
+	        <label><![CDATA[Menüpont létrehozása]]></label>
+        </create>
+        <list>
+	        <label><![CDATA[Menüpontok listája]]></label>
+        </list>
+        <update>
+	        <label><![CDATA[Menüpont szerkesztése]]></label>
+        </update>
+      </mvc>
+      <user>
+        <label><![CDATA[Felhasználók]]></label>
+        <create>
+	        <label><![CDATA[Felhasználó létrehozása]]></label>
+        </create>
+        <list>
+	        <label><![CDATA[Felhasználók listája]]></label>
+        </list>
+        <update>
+	        <label><![CDATA[Felhasználó szerkesztése]]></label>
+        </update>
+      </user>
+      <user-group>
+        <label><![CDATA[Csoportok]]></label>
+        <create>
+	        <label><![CDATA[Csoport létrehozása]]></label>
+        </create>
+        <list>
+	        <label><![CDATA[Csoportok listája]]></label>
+        </list>
+        <update>
+	        <label><![CDATA[Csoport szerkesztése]]></label>
+        </update>
+      </user-group>
+    </admin>
+  </Navigation>
+</Dictionary>

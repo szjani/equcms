@@ -66,14 +66,14 @@ echo $this->dojo();
       	</div>
       </div>
       <div class="grid_3" id="mainMenu">
-        <?php echo $this->navigation()->menu()->renderMenu(null, array('minDepth' => 1, 'maxDepth' => 1)) ?>
+        <?php echo $this->navigation()->menu()->renderMenu(null, array('minDepth' => 2, 'maxDepth' => 2)) ?>
       </div>
       <div class="grid_9">
       	<div id="breadcrumbs">
       	  <?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?>
       	</div>
       	<div id="submenu">
-      		<?php echo $this->navigation()->menu()->renderMenu(null, array('minDepth' => 2, 'maxDepth' => 2, 'onlyActiveBranch' => true)) ?>
+      		<?php echo $this->navigation()->menu()->renderMenu(null, array('minDepth' => 3, 'maxDepth' => 3, 'onlyActiveBranch' => true)) ?>
       	</div>
         <div class="clear"></div>
       	<?php echo $this->flashMessenger() ?>
@@ -86,3 +86,15 @@ echo $this->dojo();
   </div>
 </body>
 </html>
+<?php
+$roles = $this->navigation()->getAcl()->getRoles();
+foreach ($roles as $role) {
+//  var_dump((string)$role);
+}
+$resources = $this->navigation()->getAcl()->getResources();
+foreach ($resources as $resource) {
+//  var_dump((string)$resource);
+}
+
+//var_dump($this->navigation()->getAcl()->isAllowed('szjani@gmail.com', 'mvc:admin.mvc.list'));
+?>

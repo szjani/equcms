@@ -21,14 +21,6 @@ class Mvc extends Resource {
   protected $defaultController = 'index';
   protected $defaultAction     = 'index';
 
-//  /**
-//   * @Column(name="id", type="integer")
-//   * @Id
-//   * @GeneratedValue
-//   * @var int
-//   */
-//  private $id;
-
   /**
    * @Column(name="module", type="string", length=84, nullable=true)
    * @var string
@@ -48,26 +40,15 @@ class Mvc extends Resource {
   private $action;
 
   /**
-   * @Column(name="url", type="string", length=255, unique=true)
-   * @var string
+   * @var \Zend_Navigation_Page_Mvc
    */
-  private $url;
-
   private $navigationPage = null;
 
   protected function generateUrl() {
-    $this->url = (string)$this->module;
-    if (!empty($this->controller)) {
-      $this->url .= self::SEPARATOR . $this->controller;
-    }
-    if (!empty($this->action)) {
-      $this->url .= self::SEPARATOR . $this->action;
-    }
+    $resource = 'mvc:';
+    $resource .= $this->createPath('.');
+    $this->setResourceId($resource);
   }
-
-//  public function getId() {
-//    return $this->id;
-//  }
 
   public function getModule() {
     return $this->module;
@@ -84,7 +65,7 @@ class Mvc extends Resource {
   }
 
   public function setController($controller) {
-    if (empty($this->module)) {
+    if (!empty($controller) && empty($this->module)) {
       $this->setModule($this->defaultModule);
     }
     $this->controller = (string)$controller;
@@ -105,22 +86,21 @@ class Mvc extends Resource {
     return $this;
   }
 
-  public function __toString() {
-    return $this->getResourceId();
-  }
-
-  /**
-   * @return string
-   */
-  public function getResourceId() {
-    return $this->url;
+  protected function createPath($separator = self::SEPARATOR) {
+    $path = $this->getModule();
+    if (!empty($this->controller)) {
+      $path .= $separator . $this->controller;
+    }
+    if (!empty($this->action)) {
+      $path .= $separator . $this->action;
+    }
+    return $path;
   }
 
   /**
    * @return \Zend_Navigation_Page_Mvc
    */
   public function getNavigationPage($refresh = false) {
-//    var_dump(\str_replace(self::SEPARATOR, '_', $this->url));
     if ($this->navigationPage === null || $refresh) {
       $page = new \Zend_Navigation_Page_Mvc();
       $page
@@ -128,9 +108,16 @@ class Mvc extends Resource {
         ->setController($this->controller)
         ->setAction($this->action)
         ->setResource($this)
-        ->setLabel('Navigation' . self::SEPARATOR . $this->url . self::SEPARATOR . 'label')
-        ->setId(\str_replace(self::SEPARATOR, '_', $this->url))
-        ->setTitle('Navigation' . self::SEPARATOR . $this->url . self::SEPARATOR . 'title');
+        ->setId($this->createPath('_'));
+      if ($this->getResourceId() == 'mvc:') {
+        $page
+          ->setLabel('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'label')
+          ->setTitle('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'title');
+      } else {
+        $page
+          ->setLabel('Navigation' . self::SEPARATOR . $this->createPath() . self::SEPARATOR . 'label')
+          ->setTitle('Navigation' . self::SEPARATOR . $this->createPath() . self::SEPARATOR . 'title');
+      }
       $this->navigationPage = $page;
     }
     return $this->navigationPage;

@@ -57,7 +57,7 @@ class Factory extends \Equ\Entity\ElementCreator\AbstractFactory {
    * @return \Zend_Form_Element
    */
   public function createBooleanCreator() {
-    return new StringCreator($this->getNamespace());
+    return new CheckboxCreator($this->getNamespace());
   }
   
   /**

@@ -64,6 +64,12 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
    */
   private $lvl;
 
+  /**
+   * @Column(name="role", type="string", length=255, nullable=false)
+   * @var string
+   */
+  private $role;
+
   public function __construct() {
     parent::__construct();
     $this->roleResources = new ArrayCollection();
@@ -91,6 +97,15 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
    */
   public function getRoleResources() {
     return $this->roleResources;
+  }
+
+  public function getRoleId() {
+    return $this->role;
+  }
+
+  protected function setRoleId($roleId) {
+    $this->role = (string)$roleId;
+    return $this;
   }
 
   public function __toString() {

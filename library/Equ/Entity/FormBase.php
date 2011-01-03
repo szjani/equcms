@@ -11,4 +11,6 @@ interface FormBase extends Visitable {
   
   public function init();
 
+  public function getId();
+
 }

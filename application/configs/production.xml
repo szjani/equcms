@@ -38,7 +38,7 @@
    </parameters>
    
    <services>
-     <service id="acl" class="Equ\Acl">
+     <service id="acl" class="Equ\LazyAcl">
        <argument type="service" id="doctrine.entitymanager" />
      </service>
      <service id="navigation" class="Zend_Navigation" />
@@ -69,6 +69,9 @@
        <call method="setAutoGenerateProxyClasses">
          <argument>%doctrine.autogenerateproxyclasses%</argument>
        </call>
+       <call method="setSQLLogger">
+         <argument type="service" id="doctrine.log" />
+       </call>
      </service>
      <service id="translatelog" class="Zend_Log" factory-method="factory">
        <argument type="collection">
@@ -81,6 +84,9 @@
            </argument>
          </argument>
        </argument>
+     </service>
+     <service id="doctrine.log" class="Equ\Log\Doctrine">
+       <argument type="service" id="log" />
      </service>
      <service id="log" class="Zend_Log" factory-method="factory">
        <argument type="collection">

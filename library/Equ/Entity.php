@@ -69,7 +69,7 @@ abstract class Entity implements Entity\FormBase, \ArrayAccess {
    * @PrePersist @PreUpdate
    */
   public function validate() {
-    foreach ($this as $field) {
+    foreach ($this as $field => $value) {
       /* @var $validator \Zend_Validate_Abstract */
       foreach ($this->getFieldValidators($field) as $validator) {
         if (!$validator->isValid($this->$field)) {

@@ -15,14 +15,6 @@ namespace entities;
  */
 class UserGroup extends Role {
 
-//  /**
-//   * @Column(name="id", type="integer")
-//   * @Id
-//   * @GeneratedValue
-//   * @var int
-//   */
-//  private $id;
-
   /**
    * @Column(name="name", type="string", length=255)
    * @var string
@@ -41,16 +33,13 @@ class UserGroup extends Role {
     return $this->name;
   }
 
-//  public function getId() {
-//    return $this->id;
-//  }
-
   public function getName() {
     return $this->name;
   }
 
   public function setName($name) {
     $this->name = $name;
+    $this->setRoleId($name);
     return $this;
   }
 
