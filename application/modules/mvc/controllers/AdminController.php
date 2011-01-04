@@ -1,7 +1,7 @@
 <?php
 use Equ\Crud\Controller;
 
-class Admin_MvcController extends Controller {
+class Mvc_AdminController extends Controller {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'resource');
 

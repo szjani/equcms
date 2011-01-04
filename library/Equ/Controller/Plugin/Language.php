@@ -21,13 +21,8 @@ class Language extends \Zend_Controller_Plugin_Abstract {
       array('lang' => '[a-z]{2}')
     );
 
-    // default route
-    $routeDefault = new \Zend_Controller_Router_Route_Module(
-      array(),
-      $front->getDispatcher(),
-      $front->getRequest()
-    );
-    $router->addRoute('default', $routeDefault);
+    // default routes
+    $router->addDefaultRoutes();
 
     // create chain routes
     foreach ($router->getRoutes() as $name => $route) {

@@ -6,10 +6,6 @@
       <apisDirectory enabled="false"/>
       <configsDirectory>
         <applicationConfigFile type="ini"/>
-        <yamlSchemaDirectory/>
-        <dataFixturesDirectory/>
-        <migrationsDirectory/>
-        <sqlDirectory/>
       </configsDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
@@ -29,12 +25,18 @@
         </moduleDirectory>
         <moduleDirectory moduleName="admin">
           <apisDirectory enabled="false"/>
-          <configsDirectory enabled="false">
-            <yamlSchemaDirectory enabled="false"/>
-            <dataFixturesDirectory enabled="false"/>
-            <migrationsDirectory enabled="false"/>
-            <sqlDirectory enabled="false"/>
-          </configsDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
+          <viewsDirectory>
+            <viewScriptsDirectory/>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="mvc">
+          <apisDirectory enabled="false"/>
+          <configsDirectory enabled="false"/>
           <formsDirectory enabled="false"/>
           <layoutsDirectory enabled="false"/>
           <modelsDirectory/>

@@ -6,11 +6,14 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
       'namespace' => 'Application',
       'basePath'  => dirname(__FILE__),
     ));
-    $autoloader
-      ->addResourceType('lib', 'library', 'Library');
-//      ->addResourceType('entities', 'entities', 'Entity')
-//      ->addResourceType('proxies', 'proxies', 'Proxy');
+    $autoloader->addResourceType('lib', 'library', 'Library');
     return $autoloader;
+  }
+
+  protected function _initAdminroute() {
+    $this->bootstrap('frontController');
+    $frontController = $this->getResource('frontController');
+    $frontController->registerPlugin(new \Equ\Controller\Plugin\AdminRoute(), 30);
   }
 
   protected function _initLangPlugin() {
@@ -18,31 +21,18 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
     /* @var $frontController \Zend_Controller_Front */
-    $frontController->registerPlugin(new \Equ\Controller\Plugin\Language());
+    $frontController->registerPlugin(new \Equ\Controller\Plugin\Language(), 40);
     return $this->getContainer()->get('registry');
   }
-
-//  protected function _initServiceContainerHelper() {
-//    $this->bootstrap('frontController');
-//    $frontController = $this->getResource('frontController');
-//    /* @var $frontController Zend_Controller_Front */
-//    $frontController->re
-//    $frontController->registerPlugin(new \Equ\Controller\Action\Helper\ServiceContainer());
-//  }
 
   protected function _initDefaultLog() {
     libxml_use_internal_errors(true);
     /* @var $log Zend_Log */
     $log = $this->getContainer()->get('log');
-//    new Factory_EventLogger($log);
     $log->registerErrorHandler();
     return $log;
   }
   
-  protected function _initRegistry() {
-    return $this->getContainer()->get('registry');
-  }
-
   protected function _initDoctrine() {
     $config = $this->getContainer()->get('doctrine.configuration');
     $driverImpl = $config->newDefaultAnnotationDriver(APPLICATION_PATH . '/entities');
@@ -56,6 +46,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
 
   protected function _initAcl() {
+    $this->bootstrap('doctrine');
     /* @var $cache Zend_Cache_Core */
     $cache = $this->getContainer()->get('cache.system');
     $acl = null;
@@ -70,6 +61,13 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 //    var_dump($acl->isAllowed('szjani@szjani.hu', 'mvc:admin.user-group.create'));
   }
 
+  protected function _initDojo() {
+    $this->bootstrap('view');
+    /* @var $view Zend_View */
+    $view = $this->getResource('view');
+    Zend_Dojo::enableView($view);
+  }
+
   protected function _initNavigation() {
     $this->bootstrap('frontController');
     $this->bootstrap('view');
@@ -78,9 +76,6 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     /* @var $frontController \Zend_Controller_Front */
     $frontController->registerPlugin(new \Equ\Controller\Plugin\Navigation());
 
-    /* @var $view Zend_View */
-    $view = $this->getResource('view');
-    Zend_Dojo::enableView($view);
 //    $view->getHelper('navigation')->setContainer($this->getContainer()->get('navigation'));
 //    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
 //    $view->getHelper('navigation')->setRole('szjani@szjani.hu');
