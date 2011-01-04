@@ -263,8 +263,6 @@ abstract class Service extends \Equ\AbstractService {
   public function create(array $values = array()) {
     $this->preCreate($values);
     $form = $this->getMainForm();
-    var_dump($values);
-    exit;
     try {
       if (!$form->isValid($values)) {
         throw new Exception('Invalid values');

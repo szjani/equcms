@@ -136,4 +136,21 @@ class User extends Role {
     return $this;
   }
 
+  public function serialize() {
+    $res = \unserialize(parent::serialize());
+    $res['id']    = $this->getId();
+    $res['email'] = $this->email;
+    $res['passwordHash'] = $this->passwordHash;
+    $res['activationCode'] = $this->activationCode;
+    return $res;
+  }
+
+  public function unserialize($serialized) {
+    parent::unserialize($serialized);
+    $serialized = \unserialize($serialized);
+    $this->email = $serialized['email'];
+    $this->passwordHash = $serialized['passwordHash'];
+    $this->activationCode = $serialized['activationCode'];
+  }
+
 }

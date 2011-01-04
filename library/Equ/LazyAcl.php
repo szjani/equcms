@@ -7,7 +7,7 @@ use entities\UserGroup;
 use entities\Resource;
 use entities\Mvc;
 
-class LazyAcl extends \Zend_Acl {
+class LazyAcl extends \Zend_Acl implements \Serializable {
 
   /**
    * @var EntityManager
@@ -39,7 +39,7 @@ class LazyAcl extends \Zend_Acl {
     $resources = $em->getRepository('entities\Resource')->findAll();
     /* @var $resource Resource */
     foreach ($resources as $resource) {
-      $this->add($resource, $resource->getParent());
+      $this->addResource($resource->getResourceId(), $resource->getParent());
     }
   }
 
@@ -65,5 +65,18 @@ class LazyAcl extends \Zend_Acl {
       }
     }
   }
+
+  public function serialize() {
+    return serialize(array(
+      '_resources' => $this->_resources,
+    ));
+  }
+
+  public function unserialize($serialized) {
+    $serialized = unserialize($serialized);
+    $this->_resources = $serialized['_resources'];
+    $this->_roleRegistry = new RoleRegistry($this);
+  }
+
 
 }

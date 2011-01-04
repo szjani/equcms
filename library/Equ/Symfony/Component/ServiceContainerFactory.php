@@ -20,17 +20,12 @@ class ServiceContainerFactory {
     $loader = null;
     switch ($suffix) {
       case 'xml':
-//        $loader = new sfServiceContainerLoaderFileXml(self::$_container);
         $loader = new DependencyInjection\Loader\XmlFileLoader(self::$_container);
         break;
 
       case 'yml':
         $loader = new DependencyInjection\Loader\YamlFileLoader(self::$_container);
         break;
-
-//      case 'ini':
-//        $loader = new sfServiceContainerLoaderFileIni(self::$_container);
-//        break;
 
       default:
         throw new \Equ\Exception("Invalid configuration file provided; unknown config type '$suffix'");

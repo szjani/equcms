@@ -86,15 +86,3 @@ echo $this->dojo();
   </div>
 </body>
 </html>
-<?php
-$roles = $this->navigation()->getAcl()->getRoles();
-foreach ($roles as $role) {
-//  var_dump((string)$role);
-}
-$resources = $this->navigation()->getAcl()->getResources();
-foreach ($resources as $resource) {
-//  var_dump((string)$resource);
-}
-
-//var_dump($this->navigation()->getAcl()->isAllowed('szjani@gmail.com', 'mvc:admin.mvc.list'));
-?>

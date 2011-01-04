@@ -75,6 +75,18 @@ class entitiesUserGroupProxy extends \entities\UserGroup implements \Doctrine\OR
         return parent::getId();
     }
 
+    public function serialize()
+    {
+        $this->_load();
+        return parent::serialize();
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->_load();
+        return parent::unserialize($serialized);
+    }
+
     public function init()
     {
         $this->_load();

@@ -107,7 +107,7 @@ class Mvc extends Resource {
         ->setModule($this->module)
         ->setController($this->controller)
         ->setAction($this->action)
-        ->setResource($this)
+        ->setResource($this->getResourceId())
         ->setId($this->createPath('_'));
       if ($this->getResourceId() == 'mvc:') {
         $page
@@ -122,5 +122,22 @@ class Mvc extends Resource {
     }
     return $this->navigationPage;
   }
+
+  public function serialize() {
+    $res = \unserialize(parent::serialize());
+    $res['module'] = $this->module;
+    $res['controller'] = $this->controller;
+    $res['action'] = $this->action;
+    return \serialize($res);
+  }
+
+  public function unserialize($serialized) {
+    parent::unserialize($serialized);
+    $serialized = \unserialize($serialized);
+    $this->module = $serialized['module'];
+    $this->controller = $serialized['controller'];
+    $this->action = $serialized['action'];
+  }
+
 
 }

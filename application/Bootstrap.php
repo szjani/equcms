@@ -13,6 +13,15 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     return $autoloader;
   }
 
+  protected function _initLangPlugin() {
+    Zend_Registry::set(Zend_Application_Resource_Locale::DEFAULT_REGISTRY_KEY, new Zend_Locale('hu_HU'));
+    $this->bootstrap('frontController');
+    $frontController = $this->getResource('frontController');
+    /* @var $frontController \Zend_Controller_Front */
+    $frontController->registerPlugin(new \Equ\Controller\Plugin\Language());
+    return $this->getContainer()->get('registry');
+  }
+
 //  protected function _initServiceContainerHelper() {
 //    $this->bootstrap('frontController');
 //    $frontController = $this->getResource('frontController');
@@ -25,7 +34,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     libxml_use_internal_errors(true);
     /* @var $log Zend_Log */
     $log = $this->getContainer()->get('log');
-    new Factory_EventLogger($log);
+//    new Factory_EventLogger($log);
     $log->registerErrorHandler();
     return $log;
   }
@@ -44,39 +53,37 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $evm = $this->getContainer()->get('doctrine.eventmanager');
     $treeListener = new \Gedmo\Tree\TreeListener();
     $evm->addEventSubscriber($treeListener);
+  }
 
-    /* @var $em Doctrine\ORM\EntityManager */
-//    $em = $this->getContainer()->get('doctrine.entitymanager');
+  protected function _initAcl() {
+    /* @var $cache Zend_Cache_Core */
+    $cache = $this->getContainer()->get('cache.system');
+    $acl = null;
+    if ($acl = ($cache->load('acl'))) {
+      $this->getContainer()->set('acl', $acl);
+      $acl->setEntityManager($this->getContainer()->get('doctrine.entitymanager'));
+    } else {
+      $acl = $this->getContainer()->get('acl');
+      $cache->save($acl, 'acl');
+    }
+//    var_dump($acl->has('mvc:admin.user-group.create'));
+//    var_dump($acl->isAllowed('szjani@szjani.hu', 'mvc:admin.user-group.create'));
   }
 
   protected function _initNavigation() {
+    $this->bootstrap('frontController');
     $this->bootstrap('view');
-//    $container = new Zend_Navigation();
-    $container = $this->getContainer()->get('navigation');
-    /* @var $em \Doctrine\ORM\EntityManager */
-    $em = $this->getContainer()->get('doctrine.entitymanager');
-    $leaves = $em->getRepository('\entities\Mvc')->getLeafs();
-    /* @var $mvc \entities\Mvc */
-    foreach ($leaves as $mvc) {
-      $parent = $mvc->getParent();
-      while ($parent !== null) {
-//        var_dump((string)$mvc->getNavigationPage()->getResource());
-        if (false !== strpos((string)$mvc->getNavigationPage()->getResource(), 'update')) {
-          $mvc->getNavigationPage()->setVisible(false);
-        }
-        $parent->getNavigationPage()->addPage($mvc->getNavigationPage());
-        $mvc = $parent;
-        $parent = $mvc->getParent();
-      }
-      $container->addPage($mvc->getNavigationPage());
-    }
+
+    $frontController = $this->getResource('frontController');
+    /* @var $frontController \Zend_Controller_Front */
+    $frontController->registerPlugin(new \Equ\Controller\Plugin\Navigation());
 
     /* @var $view Zend_View */
     $view = $this->getResource('view');
     Zend_Dojo::enableView($view);
-    $view->getHelper('navigation')->setContainer($container);
-    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
-    $view->getHelper('navigation')->setRole('szjani@szjani.hu');
+//    $view->getHelper('navigation')->setContainer($this->getContainer()->get('navigation'));
+//    $view->getHelper('navigation')->setAcl($this->getContainer()->get('acl'));
+//    $view->getHelper('navigation')->setRole('szjani@szjani.hu');
 //    $view->getHelper('navigation')->setRole('szjani@gmail.com');
 //    $acl = new Zend_Acl();
 //    $acl
