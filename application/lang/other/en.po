@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: EquCMS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-03 23:26+0100\n"
-"PO-Revision-Date: 2011-01-04 21:15+0100\n"
+"PO-Revision-Date: 2011-01-06 20:25+0100\n"
 "Last-Translator: Szurovecz János <szjani@szjani.hu>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,83 +18,101 @@ msgstr ""
 
 #: library/Equ/Crud/views/scripts/list.phtml:8
 msgid "Crud/Methods"
-msgstr "Műveletek"
+msgstr "Methods"
 
 #: library/Equ/Crud/views/scripts/list.phtml:18
 msgid "Crud/True"
-msgstr "Igen"
+msgstr "Yes"
 
 #: library/Equ/Crud/views/scripts/list.phtml:18
 msgid "Crud/False"
-msgstr "Nem"
+msgstr "No"
 
 #: library/Equ/Crud/views/scripts/list.phtml:30
 msgid "Crud/Update/Label"
-msgstr "Szerkesztés"
+msgstr "Edit"
 
 #: library/Equ/Crud/views/scripts/list.phtml:31
 msgid "Crud/Delete/Confirm"
-msgstr "Biztos benne, hogy törölni akarja ezt az elemet?"
+msgstr "Are you sure you want to delete this item?"
 
 #: library/Equ/Crud/views/scripts/list.phtml:31
 msgid "Crud/Delete/Label"
-msgstr "Törlés"
+msgstr "Delete"
 
 #: library/Equ/Crud/views/scripts/pagination.phtml:10
 #: library/Equ/Crud/views/scripts/pagination.phtml:12
 msgid "Paginator/Previous"
-msgstr "Előző oldal"
+msgstr "Previous page"
 
 #: library/Equ/Crud/views/scripts/pagination.phtml:28
 #: library/Equ/Crud/views/scripts/pagination.phtml:31
 msgid "Paginator/Next"
-msgstr "Következő oldal"
+msgstr "Next page"
 
-msgid "Navigation/admin/label"
-msgstr "Admin mainpage"
+msgid "Navigation/mvc/label"
+msgstr "Menu items"
 
-msgid "Navigation/admin/title"
-msgstr "Admin mainpage"
+msgid "Navigation/mvc/title"
+msgstr "Menu items"
 
-msgid "Navigation/admin/user/list/label"
+msgid "Navigation/user/admin/list/label"
 msgstr "User list"
 
-msgid "Navigation/admin/user/list/title"
+msgid "Navigation/user/admin/list/title"
 msgstr "User list"
 
-msgid "Navigation/admin/user/label"
-msgstr "Felhasználók"
+msgid "Navigation/user/admin/label"
+msgstr "Users"
 
-msgid "Navigation/admin/user/title"
-msgstr "Felhasználók"
+msgid "Navigation/user/admin/title"
+msgstr "Users"
 
-msgid "Navigation/admin/user/create/label"
-msgstr "Felhasználó létrehozása"
+msgid "Navigation/user/admin/create/label"
+msgstr "Create new user"
 
-msgid "Navigation/admin/user/create/title"
-msgstr "Felhasználó létrehozása"
+msgid "Navigation/create/user/title"
+msgstr "Create new user"
 
-msgid "Navigation/admin/role-resource/label"
-msgstr "Jogosultságok"
+msgid "Navigation/role-resource/admin/label"
+msgstr "Permissions"
 
-msgid "Navigation/admin/role-resource/title"
-msgstr "Jogosultságok"
+msgid "Navigation/role-resource/admin/title"
+msgstr "Permissions"
 
-msgid "Navigation/admin/user-group/label"
-msgstr "Csoportok"
+msgid "Navigation/user-group/admin/label"
+msgstr "User groups"
 
-msgid "Navigation/admin/user-group/title"
-msgstr "Csoportok"
+msgid "Navigation/user-group/admin/title"
+msgstr "User groups"
 
-msgid "Navigation/admin/mvc/label"
-msgstr "Menüpontok"
+msgid "Navigation/mvc/admin/label"
+msgstr "Menu items"
 
-msgid "Navigation/admin/mvc/title"
-msgstr "Menüpontok"
+msgid "Navigation/mvc/admin/title"
+msgstr "Menu items"
 
 msgid "Navigation/main/label"
 msgstr "Main page"
 
 msgid "Navigation/main/title"
 msgstr "Main page"
+
+msgid "Navigation/mvc/admin/list/label"
+msgstr "Menu item list"
+
+msgid "Navigation/mvc/admin/list/title"
+msgstr "Menu item list"
+
+msgid "Navigation/mvc/admin/create/label"
+msgstr "Create new menu item"
+
+msgid "Navigation/mvc/admin/create/title"
+msgstr "Create new menu item"
+
+msgid "Navigation/index/admin/label"
+msgstr "Administration main page"
+
+msgid "Navigation/index/admin/title"
+msgstr "Administration main page"
 

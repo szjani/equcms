@@ -55,7 +55,7 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
     /* @var $node entities\Role */
     foreach ($nodes as $node) {
       $this->activeRole = (string)$node;
-      $this->add($node, $node->getParent());
+      $this->add($node->getRoleId(), $node->getParent()->getRoleId());
       $this->storePermissionsByDb($node);
     }
     return true;

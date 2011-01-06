@@ -15,7 +15,7 @@ namespace entities;
  */
 class User extends Role {
   
-  const PASSWORD_SALT = 'dfJko$~346958rg!DFT]AEtzserf9giq)3/TAeg;aDFa43';
+  const PASSWORD_SALT = '958rg!DdfJko$~tz)3/Tiq3rf9;a43gFT]A46DFaAeg;a43';
 
   /**
    * @Column(name="email", type="string", unique="true")

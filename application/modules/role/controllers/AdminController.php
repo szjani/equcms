@@ -1,6 +1,5 @@
 <?php
-
-class Admin_RoleController extends Factory_Controller {
+class Role_AdminController extends Factory_Controller {
 
   public function autocompleteAction() {
     $this->_helper->viewRenderer->setNoRender();

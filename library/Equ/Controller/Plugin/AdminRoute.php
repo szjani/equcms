@@ -11,10 +11,14 @@ class AdminRoute extends \Zend_Controller_Plugin_Abstract {
     $front  = \Zend_Controller_Front::getInstance();
     $router = $front->getRouter();
     $adminRoute = new \Zend_Controller_Router_Route(
-      'admin/:module/:action',
+      ':controller/:module/:action/*',
       array(
-        'controller' => 'admin',
+        'module' => 'index',
+        'controller' => 'index',
         'action' => 'index'
+      ),
+      array(
+        'controller' => 'admin'
       )
     );
     $router->addRoute('admin', $adminRoute);

@@ -1,5 +1,7 @@
 <?php
-class Admin_UserController extends Equ\Crud\Controller {
+use Equ\Crud\Controller;
+
+class User_AdminController extends Controller {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: EquCMS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-03 23:26+0100\n"
-"PO-Revision-Date: 2011-01-03 23:55+0100\n"
+"PO-Revision-Date: 2011-01-06 21:18+0100\n"
 "Last-Translator: Szurovecz János <szjani@szjani.hu>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,6 +39,12 @@ msgstr "Biztos benne, hogy törölni akarja ezt az elemet?"
 msgid "Crud/Delete/Label"
 msgstr "Törlés"
 
+msgid "Crud/Create/Success"
+msgstr "Sikeres létrehozás"
+
+msgid "Crud/Create/UnSuccess"
+msgstr "Sikertelen létrehozás"
+
 #: library/Equ/Crud/views/scripts/pagination.phtml:10
 #: library/Equ/Crud/views/scripts/pagination.phtml:12
 msgid "Paginator/Previous"
@@ -49,46 +55,91 @@ msgstr "Előző oldal"
 msgid "Paginator/Next"
 msgstr "Következő oldal"
 
-msgid "Navigation/admin/label"
-msgstr "Adminisztrációs főoldal"
-
-msgid "Navigation/admin/title"
-msgstr "Adminisztrációs főoldal"
-
-msgid "Navigation/admin/user/list/label"
-msgstr "Felhasználók listája"
-
-msgid "Navigation/admin/user/list/title"
-msgstr "Felhasználók listája"
-
-msgid "Navigation/admin/user/label"
-msgstr "Felhasználók"
-
-msgid "Navigation/admin/user/title"
-msgstr "Felhasználók"
-
-msgid "Navigation/admin/user/create/label"
-msgstr "Felhasználó létrehozása"
-
-msgid "Navigation/admin/user/create/title"
-msgstr "Felhasználó létrehozása"
-
-msgid "Navigation/admin/role-resource/label"
-msgstr "Jogosultságok"
-
-msgid "Navigation/admin/role-resource/title"
-msgstr "Jogosultságok"
-
-msgid "Navigation/admin/user-group/label"
-msgstr "Csoportok"
-
-msgid "Navigation/admin/user-group/title"
-msgstr "Csoportok"
-
-msgid "Navigation/admin/mvc/label"
+msgid "Navigation/mvc/label"
 msgstr "Menüpontok"
 
-msgid "Navigation/admin/mvc/title"
+msgid "Navigation/mvc/title"
+msgstr "Menüpontok"
+
+msgid "Navigation/user/admin/list/label"
+msgstr "Felhasználók listája"
+
+msgid "Navigation/user/admin/list/title"
+msgstr "Felhasználók listája"
+
+msgid "Navigation/user/admin/label"
+msgstr "Felhasználók"
+
+msgid "Navigation/user/admin/title"
+msgstr "Felhasználók"
+
+msgid "Navigation/user/admin/create/label"
+msgstr "Felhasználó létrehozása"
+
+msgid "Navigation/user/admin/create/title"
+msgstr "Felhasználó létrehozása"
+
+msgid "Navigation/user/admin/update/label"
+msgstr "Felhasználó módosítása"
+
+msgid "Navigation/user/admin/update/title"
+msgstr "Felhasználó módosítása"
+
+msgid "Navigation/create/user/title"
+msgstr "Felhasználó létrehozása"
+
+msgid "Navigation/role-resource/admin/label"
+msgstr "Jogosultságok"
+
+msgid "Navigation/role-resource/admin/title"
+msgstr "Jogosultságok"
+
+msgid "Navigation/role-resource/admin/list/label"
+msgstr "Jogosultságok listája"
+
+msgid "Navigation/role-resource/admin/list/title"
+msgstr "Jogosultságok listája"
+
+msgid "Navigation/role-resource/admin/create/label"
+msgstr "Jogosultság létrehozása"
+
+msgid "Navigation/role-resource/admin/create/title"
+msgstr "Jogosultság létrehozása"
+
+msgid "Navigation/role-resource/admin/update/label"
+msgstr "Jogosultság módosítása"
+
+msgid "Navigation/role-resource/admin/update/title"
+msgstr "Jogosultság módosítása"
+
+msgid "Navigation/user-group/admin/label"
+msgstr "Csoportok"
+
+msgid "Navigation/user-group/admin/title"
+msgstr "Csoportok"
+
+msgid "Navigation/user-group/admin/list/label"
+msgstr "Csoportok listája"
+
+msgid "Navigation/user-group/admin/list/title"
+msgstr "Csoportok listája"
+
+msgid "Navigation/user-group/admin/create/label"
+msgstr "Csoport létrehozása"
+
+msgid "Navigation/user-group/admin/create/title"
+msgstr "Csoport létrehozása"
+
+msgid "Navigation/user-group/admin/update/label"
+msgstr "Csoport módosítása"
+
+msgid "Navigation/user-group/admin/update/title"
+msgstr "Csoport módosítása"
+
+msgid "Navigation/mvc/admin/label"
+msgstr "Menüpontok"
+
+msgid "Navigation/mvc/admin/title"
 msgstr "Menüpontok"
 
 msgid "Navigation/main/label"
@@ -96,4 +147,64 @@ msgstr "Főoldal"
 
 msgid "Navigation/main/title"
 msgstr "Főoldal"
+
+msgid "Navigation/mvc/admin/list/label"
+msgstr "Menüpontok listája"
+
+msgid "Navigation/mvc/admin/list/title"
+msgstr "Menüpontok listája"
+
+msgid "Navigation/mvc/admin/create/label"
+msgstr "Menüpont létrehozása"
+
+msgid "Navigation/mvc/admin/create/title"
+msgstr "Menüpont létrehozása"
+
+msgid "Navigation/mvc/admin/update/label"
+msgstr "Menüpont módosítása"
+
+msgid "Navigation/mvc/admin/update/title"
+msgstr "Menüpont módosítása"
+
+msgid "Navigation/index/admin/label"
+msgstr "Adminisztrációs főoldal"
+
+msgid "Navigation/index/admin/title"
+msgstr "Adminisztrációs főoldal"
+
+msgid "entities/User/email"
+msgstr "E-mail"
+
+msgid "entities/User/password"
+msgstr "Jelszó"
+
+msgid "entities/User/parent"
+msgstr "Felhasználói csoport"
+
+msgid "entities/User/save"
+msgstr "Mentés"
+
+msgid "entities/UserGroup/name"
+msgstr "Név"
+
+msgid "entities/UserGroup/parent"
+msgstr "Szülő csoport"
+
+msgid "entities/UserGroup/save"
+msgstr "Mentés"
+
+msgid "entities/RoleResource/role"
+msgstr "Szereplő"
+
+msgid "entities/RoleResource/resource"
+msgstr "Erőforrás"
+
+msgid "entities/RoleResource/privilege"
+msgstr "Jogosultsági szint"
+
+msgid "entities/RoleResource/allowed"
+msgstr "Engedélyezve"
+
+msgid "entities/RoleResource/save"
+msgstr "Mentés"
 
