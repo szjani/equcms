@@ -102,13 +102,14 @@ class Mvc extends Resource {
    */
   public function getNavigationPage($refresh = false) {
     if ($this->navigationPage === null || $refresh) {
+      $id = $this->createPath('_');
       $page = new \Zend_Navigation_Page_Mvc();
       $page
         ->setModule($this->module)
         ->setController($this->controller)
         ->setAction($this->action)
         ->setResource($this->getResourceId())
-        ->setId($this->createPath('_'));
+        ->setId($id !== '' ? $id : 'main');
       if ($this->getResourceId() == 'mvc:') {
         $page
           ->setLabel('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'label')

@@ -1,4 +1,12 @@
 <?php echo $this->doctype() ?>
+<?php $this->headScript()->captureStart() ?>
+$(document).ready(function() {
+  $("#mainMenu ul.navigation > li > a").click(function() {
+    $(this).attr('href', '#');
+    $(this).parent().toggleClass('open');
+  });
+});
+<?php $this->headScript()->captureEnd() ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <!--
@@ -53,6 +61,8 @@ echo $this->dojo();
     $this->headLink() .
     $this->headStyle() .
     $this->headScript();
+
+  $mainMenuItem = $this->navigation()->findById('index_admin');
 ?>
 </head>
 <body class="claro">
@@ -66,14 +76,14 @@ echo $this->dojo();
       	</div>
       </div>
       <div class="grid_3" id="mainMenu">
-        <?php echo $this->navigation()->menu()->renderMenu(null, array('minDepth' => 2, 'maxDepth' => 2)) ?>
+        <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 0, 'maxDepth' => 1)) ?>
       </div>
       <div class="grid_9">
       	<div id="breadcrumbs">
-      	  <?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?>
+      	  <?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ')->render($mainMenuItem) ?>
       	</div>
       	<div id="submenu">
-      		<?php echo $this->navigation()->menu()->renderMenu(null, array('minDepth' => 3, 'maxDepth' => 3, 'onlyActiveBranch' => true)) ?>
+      		<?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 1, 'maxDepth' => 1, 'onlyActiveBranch' => true)) ?>
       	</div>
         <div class="clear"></div>
       	<?php echo $this->flashMessenger() ?>
