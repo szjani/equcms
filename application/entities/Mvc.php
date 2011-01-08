@@ -25,19 +25,19 @@ class Mvc extends Resource {
    * @Column(name="module", type="string", length=84, nullable=true)
    * @var string
    */
-  private $module;
+  protected $module;
 
   /**
    * @Column(name="controller", type="string", length=84, nullable=true)
    * @var string
    */
-  private $controller;
+  protected $controller;
 
   /**
    * @Column(name="action", type="string", length=84, nullable=true)
    * @var string
    */
-  private $action;
+  protected $action;
 
   /**
    * @var \Zend_Navigation_Page_Mvc

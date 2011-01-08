@@ -83,7 +83,7 @@ class User extends Role {
    * @param string $password
    * @return string
    */
-  public function generatePasswordHash($password) {
+  public static function generatePasswordHash($password) {
     return md5($password . self::PASSWORD_SALT);
   }
 
@@ -116,7 +116,7 @@ class User extends Role {
    * @return User
    */
   public function setPassword($password) {
-    $this->passwordHash = $this->generatePasswordHash(trim($password));
+    $this->passwordHash = self::generatePasswordHash(trim($password));
     return $this;
   }
 
@@ -142,7 +142,7 @@ class User extends Role {
     $res['email'] = $this->email;
     $res['passwordHash'] = $this->passwordHash;
     $res['activationCode'] = $this->activationCode;
-    return $res;
+    return \serialize($res);
   }
 
   public function unserialize($serialized) {

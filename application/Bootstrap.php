@@ -1,14 +1,14 @@
 <?php
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
-  protected function _initAutoload() {
-    $autoloader = new Zend_Application_Module_Autoloader(array(
-      'namespace' => 'Application',
-      'basePath'  => dirname(__FILE__),
-    ));
-    $autoloader->addResourceType('lib', 'library', 'Library');
-    return $autoloader;
-  }
+//  protected function _initAutoload() {
+//    $autoloader = new Zend_Application_Module_Autoloader(array(
+//      'namespace' => 'Application',
+//      'basePath'  => dirname(__FILE__),
+//    ));
+//    $autoloader->addResourceType('lib', 'library', 'Library');
+//    return $autoloader;
+//  }
 
   protected function _initAdminroute() {
     $this->bootstrap('frontController');
@@ -69,6 +69,8 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
 
   protected function _initNavigation() {
+    $user = $this->getContainer()->get('doctrine.entitymanager')->getRepository('entities\User')->findOneBy(array('email' => 'szjani@szjani.hu'));
+    Zend_Auth::getInstance()->getStorage()->write($user);
     $this->bootstrap('frontController');
     $this->bootstrap('view');
 

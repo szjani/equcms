@@ -1,5 +1,7 @@
 <?php
 namespace Equ\Crud;
+use Doctrine\ORM\EntityManager;
+use Equ\Entity\FormBuilder;
 
 /**
  * Controller of CRUD operations
@@ -12,10 +14,127 @@ namespace Equ\Crud;
  */
 abstract class Controller extends \Factory_Controller {
 
+  /**
+   * @var FormBuilder
+   */
+  private $mainFormBuilder = null;
+
+  private $filterFormBuilder = null;
+
   protected $ignoredFields = array();
+
+  /**
+   * @var array
+   */
+  protected $cuForms = array();
+
+  private $filterForm = null;
 
   public function getIgnoredFields() {
     return $this->ignoredFields;
+  }
+
+  /**
+   * @return EntityManager
+   */
+  protected final function getEntityManager() {
+    return $this->_helper->serviceContainer('doctrine.entitymanager');
+  }
+
+  /**
+   * @return FormBuilder
+   */
+  public final function getMainFormBuilder() {
+    if ($this->mainFormBuilder === null) {
+      $this->mainFormBuilder = new FormBuilder($this->getEntityManager());
+    }
+    return $this->mainFormBuilder;
+  }
+
+  /**
+   * @param FormBuilder $formBuilder
+   * @return Service
+   */
+  public final function setMainFormBuilder(FormBuilder $formBuilder) {
+    $this->mainFormBuilder = $formBuilder;
+    return $this;
+  }
+
+  /**
+   * @return FormBuilder
+   */
+  public final function getFilterFormBuilder() {
+    if ($this->filterFormBuilder === null) {
+      $this->filterFormBuilder = new FormBuilder($this->getEntityManager());
+    }
+    return $this->filterFormBuilder;
+  }
+
+  /**
+   * @param FormBuilder $formBuilder
+   * @return Service
+   */
+  public final function setFilterFormBuilder(FormBuilder $formBuilder) {
+    $this->filterFormBuilder = $formBuilder;
+    return $this;
+  }
+
+  /**
+   * Retrieves an empty (or preinitialized) \Zend_Form object
+   *
+   * @return \Equ\Form
+   */
+  public function createEmptyForm() {
+    return new \Equ\Form();
+  }
+
+  /**
+   *
+   * @param int $id
+   * @param boolean $refresh
+   * @return \Equ\Form
+   */
+  public function getCUForm($id = null, $refresh = false) {
+    if (!\array_key_exists($id, $this->cuForms) || $refresh) {
+      $entity      = $this->getService()->getEntity($id);
+      $formBuilder = $this->getMainFormBuilder();
+      $formBuilder->setForm($this->createEmptyForm());
+      if (!($entity instanceof \Equ\Entity\Visitable)) {
+        throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
+      }
+      $entity->accept($formBuilder);
+      $this->cuForms[$id] = $formBuilder->getForm();
+    }
+    return $this->cuForms[$id];
+  }
+
+    public function getFilterForm(array $values = array(), $refresh = false) {
+    if ($this->filterForm === null || $refresh) {
+//      $form = $this->getMainForm();
+//      $filterForm = clone $form;
+      $entity      = $this->getEntity();
+      $formBuilder = $this->getFilterFormBuilder();
+      $formBuilder
+        ->createDefaultValidators(false)
+        ->setForm($this->createEmptyForm());
+      if (!($entity instanceof \Equ\Entity\Visitable)) {
+        throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
+      }
+      $entity->accept($formBuilder);
+      $filterForm = $formBuilder->getForm();
+
+      /* @var $filterForm \Zend_Form */
+      $filterForm->setMethod(\Zend_Form::METHOD_GET);
+      $filterForm->getElement('save')->setLabel('Filter');
+      /* @var $element \Zend_Form_Element */
+//      foreach ($filterForm as $element) {
+//        $element->clearValidators();
+//        $element->setRequired(false);
+//      }
+      $filterForm->setDefaults($values);
+      $this->filterForm = $filterForm;
+    }
+    return $this->filterForm;
   }
 
   /**
@@ -29,6 +148,9 @@ abstract class Controller extends \Factory_Controller {
     $this->view->headTitle($this->view->translate($title));
   }
 
+  /**
+   * @param int $id
+   */
   protected function initHiddenNavigationItemWithId($id) {
     $navigation = $this->_helper->serviceContainer('navigation');
     $page = $navigation->findById(
@@ -71,17 +193,22 @@ abstract class Controller extends \Factory_Controller {
    * Calls create method of service with form values
    */
   public function createAction() {
-    $form = $this->getService()->getMainForm();
+    $form = $this->getCUForm();
     $form->setDefaults($this->_request->getPost());
     try {
       if ($this->_request->isPost()) {
-        $this->getService()->create($this->_request->getPost());
+        if (!$form->isValid($this->_request->getPost())) {
+          throw new \Exception('Invalid values in form');
+        }
+        $dtoBuilder = new \Equ\Form\DTOBuilder();
+        $form->accept($dtoBuilder);
+        $this->getService()->create($dtoBuilder->getDTO());
         $this->addMessage('Crud/Create/Success');
         $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
       }
       $this->view->createForm = $form;
     } catch (\Exception $e) {
-        $this->addMessage('Crud/Create/UnSuccess', 'default', $type = \Factory_Message::ERROR);
+        $this->addMessage('Crud/Create/UnSuccess', 'default', \Factory_Message::ERROR);
         $this->view->createForm = $form;
     }
     $this->renderScript('create.phtml');
@@ -95,9 +222,14 @@ abstract class Controller extends \Factory_Controller {
     $form = null;
     $this->initHiddenNavigationItemWithId($id);
     try {
-      $form = $this->getService()->getMainForm($id);
+      $form = $this->getCUForm($id);
       if ($this->_request->isPost()) {
-        $this->getService()->update($id, $this->_request->getPost());
+        if (!$form->isValid($this->_request->getPost())) {
+          throw new \Exception('Invalid values in form');
+        }
+        $dtoBuilder = new \Equ\Form\DTOBuilder();
+        $form->accept($dtoBuilder);
+        $this->getService()->update($id, $dtoBuilder->getDTO());
         $this->addMessage('Crud/Update/Success');
         $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
       }
@@ -132,7 +264,8 @@ abstract class Controller extends \Factory_Controller {
   public function listAction() {
 //    $this->addMessage('Crud/Create/Success');
 //    $this->addMessage('Crud/Create/UnSuccess', 'default', $type = \Factory_Message::ERROR);
-    $filterForm = $this->getService()->getFilterForm($this->_getAllParams());
+//    $filterForm = $this->getService()->getFilterForm($this->_getAllParams());
+    $filterForm = null;
     $this->view->paginator = $this->getService()->getPagePaginator(
       $this->_getParam('page', 1),
       $this->_getParam('items', 10),

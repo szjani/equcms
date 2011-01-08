@@ -1,10 +1,10 @@
 <?php
 namespace Equ\Crud;
 use Doctrine\ORM\EntityManager;
-use Equ\Entity\FormBuilder;
-use Equ\Form\EntityBuilder;
+use Equ\DTO\EntityBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use DTO;
 
 /**
  * Abstract service class to CRUD methods
@@ -18,30 +18,14 @@ use Doctrine\ORM\QueryBuilder;
 abstract class Service extends \Equ\AbstractService {
 
   /**
-   * @var EntityManager
-   */
-  private $entityManager = null;
-
-  /**
    * @var \Equ\Entity\Visitable
    */
   private $entity = null;
 
   /**
-   * @var FormBuilder
-   */
-  private $mainFormBuilder = null;
-
-  private $filterFormBuilder = null;
-
-  /**
    * @var EntityBuilder
    */
   private $entityBuilder = null;
-
-  private $mainForms = array();
-
-  private $filterForm = null;
 
   /**
    * Retrieves the type of the handled entity
@@ -77,78 +61,11 @@ abstract class Service extends \Equ\AbstractService {
   }
 
   /**
-   * @return FormBuilder
-   */
-  public final function getMainFormBuilder() {
-    if ($this->mainFormBuilder === null) {
-      $this->mainFormBuilder = new FormBuilder($this->getEntityManager());
-    }
-    return $this->mainFormBuilder;
-  }
-
-  /**
-   * @param FormBuilder $formBuilder
-   * @return Service
-   */
-  public final function setMainFormBuilder(FormBuilder $formBuilder) {
-    $this->mainFormBuilder = $formBuilder;
-    return $this;
-  }
-
-  /**
-   * @return FormBuilder
-   */
-  public final function getFilterFormBuilder() {
-    if ($this->filterFormBuilder === null) {
-      $this->filterFormBuilder = new FormBuilder($this->getEntityManager());
-    }
-    return $this->filterFormBuilder;
-  }
-
-  /**
-   * @param FormBuilder $formBuilder
-   * @return Service
-   */
-  public final function setFilterFormBuilder(FormBuilder $formBuilder) {
-    $this->filterFormBuilder = $formBuilder;
-    return $this;
-  }
-
-  /**
-   * @return EntityManager
-   */
-  public final function getEntityManager() {
-    if ($this->entityManager === null) {
-      $this->entityManager = \Zend_Controller_Front::getInstance()->getParam('bootstrap')
-        ->getContainer()->get('doctrine.entitymanager');
-    }
-    return $this->entityManager;
-  }
-
-  /**
-   * @param EntityManager $em
-   * @return Service
-   */
-  public final function setEntityManager(EntityManager $em) {
-    $this->entityManager = $em;
-    return $this;
-  }
-
-  /**
    * @return string
    */
   public final function getModuleName() {
     $arr = explode('_', get_class($this));
     return array_shift($arr);
-  }
-
-  /**
-   * Retrieves an empty (or preinitialized) \Zend_Form object
-   * 
-   * @return \Equ\Form
-   */
-  public function createEmptyForm() {
-    return new \Equ\Form();
   }
 
   /**
@@ -207,68 +124,16 @@ abstract class Service extends \Equ\AbstractService {
   }
 
   /**
-   * @param int $id
-   * @param boolean $refresh
-   * @return \Equ\Form
-   */
-  public function getMainForm($id = null, $refresh = false) {
-    if (!\array_key_exists($id, $this->mainForms) || $refresh) {
-      $entity      = $this->getEntity($id);
-      $formBuilder = $this->getMainFormBuilder();
-      $formBuilder->setForm($this->createEmptyForm());
-      if (!($entity instanceof \Equ\Entity\Visitable)) {
-        throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
-      }
-      $entity->accept($formBuilder);
-      $this->mainForms[$id] = $formBuilder->getForm();
-    }
-    return $this->mainForms[$id];
-  }
-
-  public function getFilterForm(array $values = array(), $refresh = false) {
-    if ($this->filterForm === null || $refresh) {
-//      $form = $this->getMainForm();
-//      $filterForm = clone $form;
-      $entity      = $this->getEntity();
-      $formBuilder = $this->getFilterFormBuilder();
-      $formBuilder
-        ->createDefaultValidators(false)
-        ->setForm($this->createEmptyForm());
-      if (!($entity instanceof \Equ\Entity\Visitable)) {
-        throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
-      }
-      $entity->accept($formBuilder);
-      $filterForm = $formBuilder->getForm();
-      
-      /* @var $filterForm \Zend_Form */
-      $filterForm->setMethod(\Zend_Form::METHOD_GET);
-      $filterForm->getElement('save')->setLabel('Filter');
-      /* @var $element \Zend_Form_Element */
-//      foreach ($filterForm as $element) {
-//        $element->clearValidators();
-//        $element->setRequired(false);
-//      }
-      $filterForm->setDefaults($values);
-      $this->filterForm = $filterForm;
-    }
-    return $this->filterForm;
-  }
-
-  /**
    * Create a record
    *
-   * @param array $values
+   * @param array $$dto
    * @return object
    */
-  public function create(array $values = array()) {
-    $this->preCreate($values);
-    $form = $this->getMainForm();
+  public function create(DTO $dto) {
+    $this->preCreate($dto);
     try {
-      if (!$form->isValid($values)) {
-        throw new Exception('Invalid values');
-      }
       $entityBuilder = $this->getEntityBuilder();
-      $form->accept($entityBuilder);
+      $dto->accept($entityBuilder);
       $entity = $entityBuilder->getEntity();
       $this->getEntityManager()->persist($entity);
       $this->getEntityManager()->flush();
@@ -284,23 +149,19 @@ abstract class Service extends \Equ\AbstractService {
    * Update a record
    *
    * @param int $id
-   * @param array $values
+   * @param DTO $dto
    * @return object
    */
-  public function update($id, array $values = array()) {
-    $this->preUpdate($id, $values);
+  public function update($id, DTO $dto) {
+    $this->preUpdate($id, $dto);
     try {
       if ($id === null) {
         throw new Exception("Invalid id '$id'");
       }
-      $form = $this->getMainForm($id);
-      if (!$form->isValid($values)) {
-        throw new Exception('Invalid values');
-      }
       $entity = $this->getEntity($id);
       $entityBuilder = $this->getEntityBuilder();
       $entityBuilder->setEntity($entity);
-      $form->accept($entityBuilder);
+      $dto->accept($entityBuilder);
       $this->getEntityManager()->persist($entity);
       $this->getEntityManager()->flush();
       $this->postUpdate($id);
@@ -382,35 +243,35 @@ abstract class Service extends \Equ\AbstractService {
         $queryBuilder->orderBy('m.' . $sort, $order == 'ASC' ? 'ASC' : 'DESC');
       }
 
-      if ($form = $this->getFilterForm()) {
-        if (!empty($filters) && $form->isValid($filters)) {
-          foreach ($form->getElements() as $element) {
-            if ($metadata->hasField($element->getName())) {
-              $columnDefinition = $metadata->getFieldMapping($element->getName());
-              $value = $element->getValue();
-              if ($value !== null && $value !== '') {
-                switch ($columnDefinition['type']) {
-                  case 'integer':
-                    $queryBuilder
-                      ->andWhere("m." . $element->getName() . " = :filter")
-                      ->setParameter('filter', (int)$value);
-                    break;
-                  case 'boolean':
-                    $queryBuilder
-                      ->andWhere("m." . $element->getName() . " = :filter")
-                      ->setParameter('filter', (boolean)$value);
-                    break;
-                  default:
-                    $queryBuilder
-                      ->andWhere("m." . $element->getName() . " LIKE :filter")
-                      ->setParameter('filter', '%'.$value.'%');
-                    break;
-                }
-              }
-            }
-          }
-        }
-      }
+//      if ($form = $this->getFilterForm()) {
+//        if (!empty($filters) && $form->isValid($filters)) {
+//          foreach ($form->getElements() as $element) {
+//            if ($metadata->hasField($element->getName())) {
+//              $columnDefinition = $metadata->getFieldMapping($element->getName());
+//              $value = $element->getValue();
+//              if ($value !== null && $value !== '') {
+//                switch ($columnDefinition['type']) {
+//                  case 'integer':
+//                    $queryBuilder
+//                      ->andWhere("m." . $element->getName() . " = :filter")
+//                      ->setParameter('filter', (int)$value);
+//                    break;
+//                  case 'boolean':
+//                    $queryBuilder
+//                      ->andWhere("m." . $element->getName() . " = :filter")
+//                      ->setParameter('filter', (boolean)$value);
+//                    break;
+//                  default:
+//                    $queryBuilder
+//                      ->andWhere("m." . $element->getName() . " LIKE :filter")
+//                      ->setParameter('filter', '%'.$value.'%');
+//                    break;
+//                }
+//              }
+//            }
+//          }
+//        }
+//      }
       return $queryBuilder->getQuery();
     } catch (\Exception $e) {
       $this->getLog()->err($e);

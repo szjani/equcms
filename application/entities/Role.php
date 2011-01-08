@@ -25,14 +25,14 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, \Se
    * @GeneratedValue
    * @var int
    */
-  private $id;
+  protected $id;
 
   /**
    * @gedmo:TreeParent
    * @ManyToOne(targetEntity="UserGroup", inversedBy="children")
    * @var UserGroup
    */
-  private $parent;
+  protected $parent;
 
   /**
    * @OneToMany(targetEntity="Role", mappedBy="parent")
@@ -44,31 +44,31 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, \Se
    * @gedmo:TreeLeft
    * @Column(name="lft", type="integer")
    */
-  private $lft;
+  protected $lft;
 
   /**
    * @gedmo:TreeRight
    * @Column(name="rgt", type="integer")
    */
-  private $rgt;
+  protected $rgt;
 
   /**
    * @OneToMany(targetEntity="RoleResource", mappedBy="role")
    * @var ArrayCollection
    */
-  private $roleResources;
+  protected $roleResources;
 
   /**
    * @gedmo:TreeLevel
    * @Column(name="lvl", type="integer")
    */
-  private $lvl;
+  protected $lvl;
 
   /**
    * @Column(name="role", type="string", length=255, nullable=false)
    * @var string
    */
-  private $role;
+  protected $role;
 
   public function __construct() {
     parent::__construct();

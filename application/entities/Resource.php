@@ -25,50 +25,50 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
    * @GeneratedValue
    * @var int
    */
-  private $id;
+  protected $id;
 
   /**
    * @gedmo:TreeParent
    * @ManyToOne(targetEntity="Resource", inversedBy="children")
    * @var Resource
    */
-  private $parent;
+  protected $parent;
 
   /**
    * @OneToMany(targetEntity="Resource", mappedBy="parent")
    * @var Doctrine\Common\Collections\ArrayCollection
    */
-  private $children;
+  protected $children;
 
   /**
    * @gedmo:TreeLeft
    * @Column(name="lft", type="integer")
    */
-  private $lft;
+  protected $lft;
 
   /**
    * @gedmo:TreeRight
    * @Column(name="rgt", type="integer")
    */
-  private $rgt;
+  protected $rgt;
 
   /**
    * @gedmo:TreeLevel
    * @Column(name="lvl", type="integer")
    */
-  private $lvl;
+  protected $lvl;
 
   /**
    * @Column(name="resource", type="string", length=255, nullable=false)
    * @var string
    */
-  private $resource;
+  protected $resource;
   
   /**
    * @OneToMany(targetEntity="RoleResource", mappedBy="resource")
    * @var ArrayCollection
    */
-  private $roleResources;
+  protected $roleResources;
 
   public function __construct() {
     $this->roleResources = new ArrayCollection();
