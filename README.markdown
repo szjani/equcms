@@ -2,7 +2,7 @@ EquCMS
 ======
 This is a Zend Framework and Doctrine 2 based MVC system, which supports CRUD operations.
 
-Screenshot: [http://img406.imageshack.us/img406/623/equcms.png](http://img406.imageshack.us/img406/623/equcms.png)
+Screenshot: [http://bit.ly/fEmkdQ](http://bit.ly/fEmkdQ)
 
 The folowing techniques are used:
 
