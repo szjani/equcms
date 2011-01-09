@@ -1,8 +1,6 @@
 <?php
 namespace Equ\DTO;
 use Equ\DTOVisitor;
-use Doctrine\ORM\EntityManager;
-use Equ\Entity;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -11,7 +9,7 @@ use Equ\Entity;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class EntityBuilder implements DTOVisitor {
+class EntityBuilder extends \Equ\EntityBuilder implements DTOVisitor {
 
   /**
    * @var DTO
@@ -19,50 +17,9 @@ class EntityBuilder implements DTOVisitor {
   protected $dto = null;
 
   /**
-   * @var Entity
+   * @param \Equ\DTO $dto
    */
-  private $entity;
-
-  /**
-   * @var EntityManager
-   */
-  private $entityManager;
-
-  /**
-   * @var string
-   */
-  private $entityClass;
-
-  /**
-   * @param EntityManager $em
-   * @param Entity $entity
-   */
-  public function __construct(EntityManager $em, $entityClass) {
-    $this->entityClass = $entityClass;
-    $this->entityManager = $em;
-  }
-
-  /**
-   * @return \Equ\Entity
-   */
-  public function getEntity() {
-    if ($this->entity === null) {
-      $entity = $this->entityManager->getClassMetadata($this->entityClass)->newInstance();
-      if ($entity instanceof \Equ\Entity\FormBase) {
-        $entity->init();
-      }
-      $this->entity = $entity;
-    }
-    return $this->entity;
-  }
-
-  protected function preVisit() {}
-  protected function postVisit() {}
-
-  /**
-   * @param DTO $dto
-   */
-  public function visitDTO(DTO $dto) {
+  public function visitDTO(\Equ\DTO $dto) {
     $this->dto = $dto;
     $this->preVisit();
     $metadata = $this->entityManager->getClassMetadata(\get_class($this->getEntity()));
@@ -72,9 +29,15 @@ class EntityBuilder implements DTOVisitor {
       if (\array_key_exists($name, $metadata->fieldMappings) && \method_exists($this->getEntity(), $setterMethod)) {
         $this->getEntity()->$setterMethod($value);
       } elseif (\array_key_exists($name, $metadata->associationMappings)) {
-        $targetEntity = $this->entityManager
-          ->getRepository($metadata->associationMappings[$name]['targetEntity'])->find($value);
-        if (isset($targetEntity) && \method_exists($this->getEntity(), $setterMethod)) {
+        if (\method_exists($this->getEntity(), $setterMethod)) {
+          $targetEntity = null;
+          if ('0' != $value) {
+            $relatedClass = $metadata->associationMappings[$name]['targetEntity'];
+            $targetEntity = $this->entityManager->getReference($relatedClass, $value);
+            if (!isset($targetEntity)) {
+              throw new \Equ\Exception("Invalid '$relatedClass' id: $value");
+            }
+          }
           $this->getEntity()->$setterMethod($targetEntity);
         }
       }

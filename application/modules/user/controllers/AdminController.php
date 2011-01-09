@@ -1,6 +1,8 @@
 <?php
 use Equ\Crud\Controller;
-use plugins\UserFormBuilder;
+use modules\user\plugins\UserFormBuilder;
+use modules\user\plugins\UserFilterFormBuilder;
+use Equ\Entity\ElementCreator\Dojo\Factory;
 
 class User_AdminController extends Controller {
 
@@ -9,8 +11,12 @@ class User_AdminController extends Controller {
   public function init() {
     parent::init();
     $formBuilder = new UserFormBuilder($this->getEntityManager());
-    $formBuilder->setElementCreatorFactory(new \Equ\Entity\ElementCreator\Dojo\Factory());
-    $this->setMainFormBuilder($formBuilder);
+    $formBuilder->setElementCreatorFactory(new Factory());
+    $filterFormBuilder = new UserFilterFormBuilder($this->getEntityManager());
+    $filterFormBuilder->setElementCreatorFactory(new Factory());
+    $this
+      ->setMainFormBuilder($formBuilder)
+      ->setFilterFormBuilder($filterFormBuilder);
   }
 
   protected function getService() {
@@ -28,22 +34,6 @@ class User_AdminController extends Controller {
       $form->removeElement('password');
     }
     return $form;
-  }
-
-  public function loginAction() {
-    $form = $this->getService()->getLoginForm();
-    if ( $this->_request->isPost()) {
-      try {
-        $this->getService()->login($this->_request->getPost());
-        $this->addMessage('Login success');
-        $this->redirector->gotoRouteAndExit(array('module' => 'admin', 'controller' => 'blog-entry'), null, true);
-      } catch (Factory_Service_Exception $e) {
-        $this->addMessage($e);
-      } catch (Factory_LoginException $e) {
-        $this->addMessage($e);
-      }
-    }
-    $this->view->loginForm = $form;
   }
 
 }

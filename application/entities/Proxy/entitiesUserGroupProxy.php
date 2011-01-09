@@ -45,13 +45,25 @@ class entitiesUserGroupProxy extends \entities\UserGroup implements \Doctrine\OR
         return parent::setName($name);
     }
 
+    public function serialize()
+    {
+        $this->_load();
+        return parent::serialize();
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->_load();
+        return parent::unserialize($serialized);
+    }
+
     public function getParent()
     {
         $this->_load();
         return parent::getParent();
     }
 
-    public function setParent(\entities\UserGroup $parent)
+    public function setParent(\entities\UserGroup $parent = NULL)
     {
         $this->_load();
         return parent::setParent($parent);
@@ -73,18 +85,6 @@ class entitiesUserGroupProxy extends \entities\UserGroup implements \Doctrine\OR
     {
         $this->_load();
         return parent::getId();
-    }
-
-    public function serialize()
-    {
-        $this->_load();
-        return parent::serialize();
-    }
-
-    public function unserialize($serialized)
-    {
-        $this->_load();
-        return parent::unserialize($serialized);
     }
 
     public function init()

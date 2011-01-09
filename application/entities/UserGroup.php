@@ -19,7 +19,7 @@ class UserGroup extends Role {
    * @Column(name="name", type="string", length=255)
    * @var string
    */
-  private $name;
+  protected $name;
 
   public function __construct($name) {
     parent::__construct();
@@ -41,6 +41,18 @@ class UserGroup extends Role {
     $this->name = $name;
     $this->setRoleId($name);
     return $this;
+  }
+
+  public function serialize() {
+    $res = \unserialize(parent::serialize());
+    $res['name']    = $this->getName();
+    return \serialize($res);
+  }
+
+  public function unserialize($serialized) {
+    parent::unserialize($serialized);
+    $serialized = \unserialize($serialized);
+    $this->name = $serialized['name'];
   }
 
 }

@@ -1,6 +1,5 @@
 <?php
 namespace Equ;
-use DTO;
 
 interface DTOVisitor {
 

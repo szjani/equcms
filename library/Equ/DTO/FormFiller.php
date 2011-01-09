@@ -24,9 +24,9 @@ class FormFiller implements DTOVisitor {
   }
 
   /**
-   * @param DTO $dto
+   * @param \Equ\DTO $dto
    */
-  public function visitDTO(DTO $dto) {
+  public function visitDTO(\Equ\DTO $dto) {
     foreach ($dto->getIterator() as $key => $value) {
       $this->form->setDefault($key, $value);
     }

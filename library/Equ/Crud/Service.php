@@ -4,7 +4,7 @@ use Doctrine\ORM\EntityManager;
 use Equ\DTO\EntityBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use DTO;
+use Equ\DTO;
 
 /**
  * Abstract service class to CRUD methods
@@ -34,9 +34,9 @@ abstract class Service extends \Equ\AbstractService {
    */
   public abstract function getEntityClass();
 
-  public function preCreate(array $values) {}
+  public function preCreate(DTO $values) {}
   public function postCreate() {}
-  public function preUpdate($id, array $values) {}
+  public function preUpdate($id, DTO $values) {}
   public function postUpdate($id) {}
   public function preDelete($id) {}
   public function postDelete($id) {}
@@ -58,14 +58,6 @@ abstract class Service extends \Equ\AbstractService {
       $this->entityBuilder = new EntityBuilder($this->getEntityManager(), $this->getEntityClass());
     }
     return $this->entityBuilder;
-  }
-
-  /**
-   * @return string
-   */
-  public final function getModuleName() {
-    $arr = explode('_', get_class($this));
-    return array_shift($arr);
   }
 
   /**
@@ -130,16 +122,21 @@ abstract class Service extends \Equ\AbstractService {
    * @return object
    */
   public function create(DTO $dto) {
-    $this->preCreate($dto);
+    $em = $this->getEntityManager();
+    $em->beginTransaction();
     try {
+      $this->preCreate($dto);
       $entityBuilder = $this->getEntityBuilder();
       $dto->accept($entityBuilder);
       $entity = $entityBuilder->getEntity();
-      $this->getEntityManager()->persist($entity);
-      $this->getEntityManager()->flush();
+      $em->persist($entity);
       $this->postCreate();
+      $em->flush();
+      $em->commit();
       return $entity;
     } catch (\Exception $e) {
+      $em->rollback();
+      $em->close();
       $this->getLog()->err($e);
       throw $e;
     }
@@ -149,24 +146,29 @@ abstract class Service extends \Equ\AbstractService {
    * Update a record
    *
    * @param int $id
-   * @param DTO $dto
+   * @param DTO $values
    * @return object
    */
-  public function update($id, DTO $dto) {
-    $this->preUpdate($id, $dto);
+  public function update($id, DTO $values) {
+    $em = $this->getEntityManager();
+    $em->beginTransaction();
     try {
+      $this->preUpdate($id, $values);
       if ($id === null) {
         throw new Exception("Invalid id '$id'");
       }
       $entity = $this->getEntity($id);
       $entityBuilder = $this->getEntityBuilder();
       $entityBuilder->setEntity($entity);
-      $dto->accept($entityBuilder);
-      $this->getEntityManager()->persist($entity);
-      $this->getEntityManager()->flush();
+      $values->accept($entityBuilder);
+      $em->persist($entity);
       $this->postUpdate($id);
+      $em->flush();
+      $em->commit();
       return $entity;
     } catch (\Exception $e) {
+      $em->rollback();
+      $em->close();
       $this->getLog()->err($e);
       throw $e;
     }
@@ -178,16 +180,21 @@ abstract class Service extends \Equ\AbstractService {
    * @param int $id
    */
   public function delete($id) {
-    $this->preDelete($id);
+    $em = $this->getEntityManager();
+    $em->beginTransaction();
     try {
+      $this->preDelete($id);
       if ($id === null) {
         throw new Exception("Invalid id '$id'");
       }
       $entity = $this->getEntity($id);
-      $this->getEntityManager()->remove($entity);
-      $this->getEntityManager()->flush();
+      $em->remove($entity);
       $this->postDelete($id);
+      $em->flush();
+      $em->commit();
     } catch (\Exception $e) {
+      $em->rollback();
+      $em->close();
       $this->getLog()->err($e);
       throw $e;
     }
@@ -199,16 +206,17 @@ abstract class Service extends \Equ\AbstractService {
    * @param string $sort database field name
    * @param string $order order direction (ASC/DESC)
    * @param boolean $showDeleted
-   * @param array $filters
-   * @param Query|null $query
+   * @param DTO $filters
+   * @param Query $query
+   * @return \Zend_Paginator
    */
-  public function getPagePaginator($page = 1, $itemPerPage = 10, $sort = null, $order = 'ASC', array $filters = array(), $query = null) {
+  public function getPagePaginator($page = 1, $itemPerPage = 10, $sort = null, $order = 'ASC', DTO $filters = null, $query = null) {
     try {
       if ($query === null) {
         $query = $this->getListQuery($filters, $sort, $order);
       }
 //      $query->setHydrationMode(Query::HYDRATE_ARRAY);
-      $adapter = new \Equ\Paginator\Adapter\Doctrine($query);
+      $adapter   = new \Equ\Paginator\Adapter\Doctrine($query);
       $paginator = new \Zend_Paginator($adapter);
       $paginator
         ->setCurrentPageNumber($page)
@@ -221,11 +229,13 @@ abstract class Service extends \Equ\AbstractService {
   }
 
   /**
-   * @param int $page
-   * @param int $itemPerPage
+   *
+   * @param DTO $filters
+   * @param string $sort
+   * @param string $order
    * @return Query
    */
-  public function getListQuery(array $filters = array(), $sort = null, $order = 'ASC') {
+  public function getListQuery(DTO $filters = null, $sort = null, $order = 'ASC') {
     try {
       $metadata = $this->getEntityManager()->getClassMetadata($this->getEntityClass());
 
@@ -243,35 +253,30 @@ abstract class Service extends \Equ\AbstractService {
         $queryBuilder->orderBy('m.' . $sort, $order == 'ASC' ? 'ASC' : 'DESC');
       }
 
-//      if ($form = $this->getFilterForm()) {
-//        if (!empty($filters) && $form->isValid($filters)) {
-//          foreach ($form->getElements() as $element) {
-//            if ($metadata->hasField($element->getName())) {
-//              $columnDefinition = $metadata->getFieldMapping($element->getName());
-//              $value = $element->getValue();
-//              if ($value !== null && $value !== '') {
-//                switch ($columnDefinition['type']) {
-//                  case 'integer':
-//                    $queryBuilder
-//                      ->andWhere("m." . $element->getName() . " = :filter")
-//                      ->setParameter('filter', (int)$value);
-//                    break;
-//                  case 'boolean':
-//                    $queryBuilder
-//                      ->andWhere("m." . $element->getName() . " = :filter")
-//                      ->setParameter('filter', (boolean)$value);
-//                    break;
-//                  default:
-//                    $queryBuilder
-//                      ->andWhere("m." . $element->getName() . " LIKE :filter")
-//                      ->setParameter('filter', '%'.$value.'%');
-//                    break;
-//                }
-//              }
-//            }
-//          }
-//        }
-//      }
+      if ($filters !== null) {
+        foreach ($filters as $name => $value) {
+          if ($metadata->hasField($name) && $value !== null && $value !== '') {
+            $columnDefinition = $metadata->getFieldMapping($name);
+            switch ($columnDefinition['type']) {
+              case 'integer':
+                $queryBuilder
+                  ->andWhere("m." . $name . " = :filter")
+                  ->setParameter('filter', (int)$value);
+                break;
+              case 'boolean':
+                $queryBuilder
+                  ->andWhere("m." . $name . " = :filter")
+                  ->setParameter('filter', (boolean)$value);
+                break;
+              default:
+                $queryBuilder
+                  ->andWhere("m." . $name . " LIKE :filter")
+                  ->setParameter('filter', '%'.$value.'%');
+                break;
+            }
+          }
+        }
+      }
       return $queryBuilder->getQuery();
     } catch (\Exception $e) {
       $this->getLog()->err($e);

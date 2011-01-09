@@ -1,6 +1,5 @@
 <?php
 namespace Equ\Form;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Create entity from form
@@ -11,62 +10,12 @@ use Doctrine\ORM\EntityManager;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class EntityBuilder implements \Equ\FormVisitor {
+class EntityBuilder extends \Equ\EntityBuilder implements \Equ\FormVisitor {
 
-  /**
-   * @var \Equ\Entity
-   */
-  protected $entity;
-
-  /**
-   * @var EntityManager
-   */
-  protected $entityManager;
-
-  /**
-   * @var string
-   */
-  protected $entityClass;
-  
   /**
    * @var \Zend_Form
    */
   protected $form;
-
-  /**
-   * @param EntityManager $em
-   * @param string $entityClass
-   */
-  public function __construct(EntityManager $em, $entityClass) {
-    $this->entityManager = $em;
-    $this->entityClass = $entityClass;
-  }
-  
-  public function preVisit() {}
-  public function postVisit() {}
-
-  /**
-   * @return \Equ\Entity
-   */
-  public function getEntity() {
-    if ($this->entity === null) {
-      $entity = $this->entityManager->getClassMetadata($this->entityClass)->newInstance();
-      if ($entity instanceof \Equ\Entity\FormBase) {
-        $entity->init();
-      }
-      $this->entity = $entity;
-    }
-    return $this->entity;
-  }
-
-  /**
-   * @param \Equ\Entity $entity
-   * @return EntityBuilder
-   */
-  public function setEntity(\Equ\Entity $entity) {
-    $this->entity = $entity;
-    return $this;
-  }
 
   /**
    * @param \Zend_Form $form
@@ -82,9 +31,15 @@ class EntityBuilder implements \Equ\FormVisitor {
       if (\array_key_exists($name, $metadata->fieldMappings) && \method_exists($this->getEntity(), $setterMethod)) {
         $this->getEntity()->$setterMethod($value);
       } elseif (\array_key_exists($name, $metadata->associationMappings)) {
-        $targetEntity = $this->entityManager
-          ->getRepository($metadata->associationMappings[$name]['targetEntity'])->find($value);
-        if (isset($targetEntity) && \method_exists($this->getEntity(), $setterMethod)) {
+        if (\method_exists($this->getEntity(), $setterMethod)) {
+          $targetEntity = null;
+          if ('0' != $value) {
+            $relatedClass = $metadata->associationMappings[$name]['targetEntity'];
+            $targetEntity = $this->entityManager->getReference($relatedClass, $value);
+            if (!isset($targetEntity)) {
+              throw new \Equ\Exception("Invalid '$relatedClass' id: $value");
+            }
+          }
           $this->getEntity()->$setterMethod($targetEntity);
         }
       }

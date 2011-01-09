@@ -2,7 +2,6 @@
 namespace services;
 use Equ\Crud\Service;
 use plugins\UserEntityBuilder;
-use modules\user\forms\Login;
 
 /**
  * User service class
@@ -35,16 +34,13 @@ class User extends Service {
    */
   public function login($email, $password) {
     try {
-      $form = new Login();
-      if ($form->isValid(array('email' => $email, 'password' => $password))) {
-        $authAdapter = new \Equ\Auth\DoctrineAdapter(
-          $this->getEntityManager()->getRepository('entities\User'),
-          $email,
-          $password
-        );
-        if (!Zend_Auth::getInstance()->authenticate($authAdapter)->isValid()) {
-          throw new Exception("Unsuccess authentication. E-mail: '$email'");
-        }
+      $authAdapter = new \Equ\Auth\DoctrineAdapter(
+        $this->getEntityManager()->getRepository('entities\User'),
+        $email,
+        $password
+      );
+      if (!Zend_Auth::getInstance()->authenticate($authAdapter)->isValid()) {
+        throw new Exception("Unsuccess authentication. E-mail: '$email'");
       }
     } catch (Exception $e) {
       $this->getLog()->err($e);

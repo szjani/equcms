@@ -50,18 +50,21 @@ class LazyAcl extends \Zend_Acl implements \Serializable {
    * @return boolean
    */
   public function isAllowed($role = null, $resource = null, $privilege = null) {
-    if (!($resource instanceof Mvc)) {
-      return parent::isAllowed($role, $resource, $privilege);
-    }
+//    if (!($resource instanceof Mvc)) {
+//      return parent::isAllowed($role, $resource, $privilege);
+//    }
     while ($resource !== null) {
       try {
 //        var_dump((string)$resource);
         return parent::isAllowed($role, $resource, $privilege);
       } catch (\Zend_Acl_Exception $e) {
-        $resource = $resource->getParent();
-//        $parts = \explode(Mvc::SEPARATOR, $resource);
-//        array_pop($parts);
-//        $resource = empty($parts) ? null : \implode(Mvc::SEPARATOR, $parts);
+        if (\substr($resource, 0, 4) !== 'mvc:') {
+          throw $e;
+        } else {
+          $parts = \explode('.', \substr($resource, 4));
+          array_pop($parts);
+          $resource = 'mvc:' . (empty($parts) ? '' : \implode('.', $parts));
+        }
       }
     }
   }

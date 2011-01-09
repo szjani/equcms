@@ -18,6 +18,28 @@ class DTO implements \IteratorAggregate, \ArrayAccess, \Countable {
   public $data = array();
 
   /**
+   * @param array $data
+   * @return DTO
+   */
+  public function fromArray(array $data) {
+    foreach ($data as $key => $value) {
+      $this->setData($value, $key);
+    }
+    return $this;
+  }
+
+  /**
+   * @param \Traversable $object
+   * @return DTO
+   */
+  public function fromTraversable(\Traversable $object) {
+    foreach ($object as $key => $value) {
+      $this->setData($value, $key);
+    }
+    return $this;
+  }
+
+  /**
    * @return \ArrayIterator
    */
   public function getIterator() {

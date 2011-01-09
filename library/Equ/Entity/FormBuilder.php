@@ -14,6 +14,8 @@ use Doctrine\ORM\EntityManager;
  */
 class FormBuilder implements \Equ\EntityVisitor {
 
+  const ELEMENT_PREFIX = 'f_';
+
   /**
    * @var \Zend_Form
    */
@@ -38,6 +40,8 @@ class FormBuilder implements \Equ\EntityVisitor {
 
   protected $createDefaultValidators = true;
 
+  protected $disabledForeignElements = false;
+
   protected $ignoredFields = array();
 
   protected $fieldLabels = array();
@@ -48,6 +52,15 @@ class FormBuilder implements \Equ\EntityVisitor {
 
   public function createDefaultValidators($bool = true) {
     $this->createDefaultValidators = $bool;
+    return $this;
+  }
+
+  public function createElementName($fieldName) {
+    return self::ELEMENT_PREFIX . $fieldName;
+  }
+
+  public function disableForeignElements($disable = true) {
+    $this->disabledForeignElements = (boolean)$disable;
     return $this;
   }
 
@@ -99,7 +112,6 @@ class FormBuilder implements \Equ\EntityVisitor {
     if ($this->elementCreatorFactory === null) {
       $this->elementCreatorFactory = new ElementCreator\Builtin\Factory();
     }
-    $this->elementCreatorFactory->setNamespace(str_replace(array('\\', '_'), '/', get_class($this->entity)) . '/');
     return $this->elementCreatorFactory;
   }
 
@@ -142,49 +154,56 @@ class FormBuilder implements \Equ\EntityVisitor {
     return \in_array($field, $this->getIgnoredFields());
   }
 
-  protected function getMetadata() {
+  protected function getEntityClassMetadata() {
     return $this->entityManager->getClassMetadata(\get_class($this->entity));
   }
 
   public function visitEntity(\Equ\Entity\FormBase $entity) {
     $this->entity = $entity;
+    $this->getElementCreatorFactory()->setNamespace(
+      str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name) . '/'
+    );
     $this->preVisit();
     $this->createElements();
     $this->postVisit();
   }
 
   protected function createNormalElements() {
-    $metadata = $this->getMetadata();
+    $metadata = $this->getEntityClassMetadata();
     foreach ($metadata->fieldMappings as $fieldName => $def) {
+      $elementName = $this->createElementName($fieldName);
       if ($this->isIgnoredField($fieldName)) {
         continue;
       }
       if (\array_key_exists('id', $def) && $def['id']) {
         continue;
       }
-      $element = $this->getElementCreator($def)->createElement(
-        $fieldName,
-        $def,
-        $this->entity->getFieldValidators($fieldName),
-        $this->isCreateDefaultValidators()
-      );
+      $elementCreator = $this->getElementCreator($def)
+        ->useDefaultValidators($this->isCreateDefaultValidators())
+        ->setValidators($this->entity->getFieldValidators($fieldName));
       $labels  = $this->getFieldLabels();
       if (\array_key_exists($fieldName, $labels)) {
-        $element->setLabel($labels[$fieldName]);
+        $elementCreator->setLabel($labels[$fieldName]);
+        $elementCreator->setPlaceHolder($labels[$fieldName]);
       }
+      $element = $elementCreator->createElement($elementName, $def);
       $this->form->addElement($element);
-      $this->form->setDefault($fieldName, $metadata->getFieldValue($this->entity, $fieldName));
+      $this->form->setDefault($elementName, $metadata->getFieldValue($this->entity, $fieldName));
     }
   }
 
+  /**
+   * 
+   */
   protected function createForeignElements() {
-    $metadata = $this->getMetadata();
+    $metadata = $this->getEntityClassMetadata();
     foreach ($metadata->associationMappings as $fieldName => $def) {
+      $elementName = $this->createElementName($fieldName);
       if ($this->isIgnoredField($fieldName) || !$def['isOwningSide']) {
         continue;
       }
-      $select = $this->getElementCreatorFactory()->createArrayCreator()->createElement($fieldName);
-      $select->addMultiOption('0', '---');
+      $select = $this->getElementCreatorFactory()->createArrayCreator()->createElement($elementName);
+      $select->addMultiOption('0', '');
       $targetMetaData = $this->entityManager->getClassMetadata($def['targetEntity']);
       foreach ($this->entityManager->getRepository($def['targetEntity'])->findAll() as $entity) {
         $select->addMultiOption(
@@ -199,16 +218,22 @@ class FormBuilder implements \Equ\EntityVisitor {
       $value = $metadata->getFieldValue($this->entity, $fieldName);
       if ($value instanceof $def['targetEntity']) {
         $targetMetaData = $this->entityManager->getClassMetadata(\get_class($value));
-        $this->form->setDefault($fieldName, $targetMetaData->getFieldValue($value, $targetMetaData->getSingleIdentifierFieldName()));
+        $this->form->setDefault($elementName, $targetMetaData->getFieldValue($value, $targetMetaData->getSingleIdentifierFieldName()));
       }
     }
   }
 
+  /**
+   * 
+   */
   protected function createElements() {
     $this->createNormalElements();
-    $this->createForeignElements();
+    if (!$this->disabledForeignElements) {
+      $this->createForeignElements();
+    }
     if (!($this->form instanceof \Zend_Form_SubForm)) {
       $save = $this->getElementCreatorFactory()->createSubmitCreator()->createElement('save');
+      $save->setOrder(100);
       $this->form->addElement($save);
     }
   }

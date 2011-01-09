@@ -1,5 +1,5 @@
 <?php
-namespace plugins;
+namespace modules\user\plugins;
 use Equ\Entity\FormBuilder;
 
 class UserFormBuilder extends FormBuilder {

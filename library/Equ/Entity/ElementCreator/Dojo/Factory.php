@@ -15,7 +15,11 @@ class Factory extends \Equ\Entity\ElementCreator\AbstractFactory {
    * @return \Zend_Form_Element
    */
   public function createStringCreator() {
-    return new StringCreator($this->getNamespace());
+    $stringCreator = new StringCreator($this->getNamespace());
+//    var_dump($this->isUsedPlaceHolders());
+//    exit;
+    $stringCreator->usePlaceHolders($this->isUsedPlaceHolders());
+    return $stringCreator;
   }
 
   /**

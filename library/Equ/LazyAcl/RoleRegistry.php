@@ -42,8 +42,8 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
   }
 
   protected function storeRoleByDb($role) {
+    $repo = $this->getEntityManager()->getRepository('entities\Role');
     if (\is_string($role)) {
-      $repo = $this->getEntityManager()->getRepository('entities\Role');
       $role = $repo->findOneBy(array('role' => (string)$role));
     }
     if (!($role instanceof Role)) {
@@ -55,7 +55,8 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
     /* @var $node entities\Role */
     foreach ($nodes as $node) {
       $this->activeRole = (string)$node;
-      $this->add($node->getRoleId(), $node->getParent()->getRoleId());
+      $parent = $node->getParent();
+      $this->add($node, ($parent === null) ? null : $parent);
       $this->storePermissionsByDb($node);
     }
     return true;

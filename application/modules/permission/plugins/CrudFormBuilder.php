@@ -1,21 +1,22 @@
 <?php
-namespace plugins;
+namespace modules\permission\plugins;
+
 use Equ\Entity\FormBuilder;
 
-class RoleResourceFormBuilder extends FormBuilder {
+class CrudFormBuilder extends FormBuilder {
 
   protected $ignoredFields = array('role');
 
   public function postVisit() {
-    $this->getForm()->getElement('resource')->setOrder(1);
-    $this->getForm()->getElement('privilege')->setOrder(2);
-    $this->getForm()->getElement('allowed')->setOrder(3);
+    $this->getForm()->getElement('f_resource')->setOrder(1);
+    $this->getForm()->getElement('f_privilege')->setOrder(2);
+    $this->getForm()->getElement('f_allowed')->setOrder(3);
     $this->getForm()->getElement('save')->setOrder(10);
 
-    $role = new \Zend_Dojo_Form_Element_FilteringSelect('role');
+    $role = new \Zend_Dojo_Form_Element_FilteringSelect('f_role');
     $role
       ->setOrder(0)
-      ->setLabel('entities/RoleResource/role');
+      ->setLabel('entities/RoleResource/f_role');
     $this->getForm()->addElement($role);
 
     /* @var $role \Zend_Dojo_Form_Element_FilteringSelect */

@@ -10,6 +10,12 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 //    return $autoloader;
 //  }
 
+  protected function _initCleanQuery() {
+    $this->bootstrap('frontController');
+    $frontController = $this->getResource('frontController');
+    $frontController->registerPlugin(new \Equ\Controller\Plugin\CleanQuery());
+  }
+
   protected function _initAdminroute() {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
@@ -59,6 +65,12 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     }
 //    var_dump($acl->has('mvc:admin.user-group.create'));
 //    var_dump($acl->isAllowed('szjani@szjani.hu', 'mvc:admin.user-group.create'));
+  }
+
+  protected function _initMvcPermission() {
+    $this->bootstrap('frontController');
+    $frontController = $this->getResource('frontController');
+    $frontController->registerPlugin(new \Equ\Controller\Plugin\MvcPermission());
   }
 
   protected function _initDojo() {

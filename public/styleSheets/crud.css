@@ -20,6 +20,7 @@ td {
 	border: 1px solid #ccc;
 	padding: 5px;
   font-size: 12px;
+  vertical-align: middle;
 }
 tr:hover {
   background-color: #eee;
@@ -70,33 +71,10 @@ a {
   float: left;
   padding: 10px;
 }
-#filter-form {
-  border-bottom: 2px solid #E6E6E6;
-  font-size: 12px;
-}
-#filter-form-content {
-  padding: 0px;
-  overflow: hidden;
-}
-#filter-form-content dd {
-  border-right: 1px solid #F0F0F0;
-}
-#filter-form-content dt, #filter-form-content dd{
-  display: block;
-  height: 20px;
-  padding: 10px 5px;
-  float: left;
-}
-#filter-form-content dt {
-  padding: 14px 5px 0px 10px;
+#filter-form dl dt {
   width: auto;
-}
-#filter-form #filter_text, #filter-form  #items, .form #key-element input, .form #value-element textarea{
-  background: #F0F0F0;
-  border: 1px solid #CDCDCD;
-  font-family: Arial, Helvetica, sans;
-  font-size: 12px;
-  padding: 2px;
+  clear: none;
+  display: none;
 }
 .logo {
   float: left;

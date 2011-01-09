@@ -32,8 +32,8 @@ class Navigation extends \Zend_Controller_Plugin_Abstract {
 
     $view = \Zend_Layout::getMvcInstance()->getView();
     $view->getHelper('navigation')->setContainer($container->get('navigation'));
-//    $view->getHelper('navigation')->setAcl($container->get('acl'));
-//    $view->getHelper('navigation')->setRole(\Zend_Auth::getInstance()->getIdentity());
+    $view->getHelper('navigation')->setAcl($container->get('acl'));
+    $view->getHelper('navigation')->setRole(\Zend_Auth::getInstance()->getIdentity());
   }
 
 }

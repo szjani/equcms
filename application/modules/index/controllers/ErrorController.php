@@ -2,8 +2,8 @@
 class ErrorController extends Zend_Controller_Action {
 
   public function errorAction() {
+    $this->_helper->layout->disableLayout();
     if ($this->getInvokeArg('errorview') && $this->getInvokeArg('errorview') != 'error') {
-      $this->_helper->layout->disableLayout();
       $this->_helper->viewRenderer($this->getInvokeArg('errorview'));
     }
     
@@ -22,10 +22,6 @@ class ErrorController extends Zend_Controller_Action {
         $this->view->message = 'Application error';
         break;
     }
-    // Log exception, if logger available
-    if ($log = $this->getLog()) {
-      $log->crit($errors->exception->getMessage());
-    }
     // conditionally display exceptions
     if ($this->getInvokeArg('displayExceptions') == true) {
       $this->view->exception = $errors->exception;
@@ -33,13 +29,5 @@ class ErrorController extends Zend_Controller_Action {
     $this->view->request = $errors->request;
   }
 
-  public function getLog() {
-    $bootstrap = $this->getInvokeArg('bootstrap');
-    if (!$bootstrap->hasPluginResource('Log')) {
-      return false;
-    }
-    $log = $bootstrap->getResource('Log');
-    return $log;
-  }
 }
 

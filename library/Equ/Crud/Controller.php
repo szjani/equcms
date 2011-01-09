@@ -2,6 +2,7 @@
 namespace Equ\Crud;
 use Doctrine\ORM\EntityManager;
 use Equ\Entity\FormBuilder;
+use Equ\Controller\Request\FilterDTOBuilder;
 
 /**
  * Controller of CRUD operations
@@ -12,24 +13,59 @@ use Equ\Entity\FormBuilder;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-abstract class Controller extends \Factory_Controller {
+abstract class Controller extends \Equ\Controller {
 
   /**
    * @var FormBuilder
    */
   private $mainFormBuilder = null;
 
+  /**
+   * @var FormBuilder
+   */
   private $filterFormBuilder = null;
 
+  /**
+   * @var array
+   */
   protected $ignoredFields = array();
+
+  /**
+   * @var boolean
+   */
+  protected $useFilterForm = true;
 
   /**
    * @var array
    */
   protected $cuForms = array();
 
+  /**
+   * @var \Zend_Form
+   */
   private $filterForm = null;
 
+  /**
+   * Adds general CRUD script path
+   */
+  public function init() {
+    parent::init();
+    $this->view->addScriptPath(dirname(__FILE__) . '/views/scripts');
+    $title = $this->view->pageTitle =
+    	"Navigation/{$this->_getParam('module')}/{$this->_getParam('controller')}/{$this->_getParam('action')}/label";
+    $this->view->headTitle($this->view->translate($title));
+  }
+
+  /**
+   * You should use $this->_helper->serviceContainer($serviceName) to retrieve service object
+   *
+   * @return \Equ\Crud\Service
+   */
+  protected abstract function getService();
+
+  /**
+   * @return array
+   */
   public function getIgnoredFields() {
     return $this->ignoredFields;
   }
@@ -89,6 +125,7 @@ abstract class Controller extends \Factory_Controller {
   }
 
   /**
+   * Creates a form to create or update entity
    *
    * @param int $id
    * @param boolean $refresh
@@ -108,47 +145,38 @@ abstract class Controller extends \Factory_Controller {
     return $this->cuForms[$id];
   }
 
-    public function getFilterForm(array $values = array(), $refresh = false) {
+  /**
+   * Creates a form to filterable lists
+   *
+   * @param boolean $refresh
+   * @return \Zend_Form
+   */
+  public function getFilterForm($refresh = false) {
     if ($this->filterForm === null || $refresh) {
-//      $form = $this->getMainForm();
-//      $filterForm = clone $form;
-      $entity      = $this->getEntity();
-      $formBuilder = $this->getFilterFormBuilder();
-      $formBuilder
-        ->createDefaultValidators(false)
-        ->setForm($this->createEmptyForm());
+      $entity      = $this->getService()->getEntity();
       if (!($entity instanceof \Equ\Entity\Visitable)) {
         throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
       }
+      $formBuilder = $this->getFilterFormBuilder();
+      $formBuilder
+        ->disableForeignElements()
+        ->createDefaultValidators(false)
+        ->setForm($this->createEmptyForm())
+        ->getElementCreatorFactory()->usePlaceHolders();
       $entity->accept($formBuilder);
-      $filterForm = $formBuilder->getForm();
-
-      /* @var $filterForm \Zend_Form */
-      $filterForm->setMethod(\Zend_Form::METHOD_GET);
-      $filterForm->getElement('save')->setLabel('Filter');
-      /* @var $element \Zend_Form_Element */
-//      foreach ($filterForm as $element) {
-//        $element->clearValidators();
-//        $element->setRequired(false);
-//      }
-      $filterForm->setDefaults($values);
-      $this->filterForm = $filterForm;
+      $this->filterForm = $formBuilder->getForm();
+      $this->filterForm->setMethod(\Zend_Form::METHOD_GET);
+      $this->filterForm->getElement('save')->setLabel('Crud/Filter');
+      $router = $this->getFrontController()->getRouter();
+      $this->filterForm->setAction($router->assemble($this->filterForm->getValues()));
     }
     return $this->filterForm;
   }
 
   /**
-   * Adds general CRUD script path
-   */
-  public function init() {
-    parent::init();
-    $this->view->addScriptPath(dirname(__FILE__) . '/views/scripts');
-    $title = $this->view->pageTitle =
-    	"Navigation/{$this->_getParam('module')}/{$this->_getParam('controller')}/{$this->_getParam('action')}/label";
-    $this->view->headTitle($this->view->translate($title));
-  }
-
-  /**
+   * Enables visibility of hidden navigation items and set id parameter.
+   * Useful for update action to show update nav. item.
+   *
    * @param int $id
    */
   protected function initHiddenNavigationItemWithId($id) {
@@ -179,12 +207,8 @@ abstract class Controller extends \Factory_Controller {
   }
 
   /**
-   * Use Factory_Service_Container to instantiate service class!
-   *
-   * @return \Equ\Crud\Service
+   * Redirects to listAction
    */
-  protected abstract function getService();
-
   public function indexAction() {
     $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
   }
@@ -235,7 +259,7 @@ abstract class Controller extends \Factory_Controller {
       }
       $this->view->updateForm = $form;
     } catch (\Exception $e) {
-      $this->addMessage('Crud/Update/UnSuccess', 'default', $type = \Factory_Message::ERROR);
+      $this->addMessage('Crud/Update/UnSuccess', 'default', \Factory_Message::ERROR);
       $this->view->updateForm = $form;
     }
     $this->renderScript('update.phtml');
@@ -246,13 +270,12 @@ abstract class Controller extends \Factory_Controller {
    */
   public function deleteAction() {
     $id = $this->_getParam('id');
-    $this->initHiddenNavigationItemWithId($id);
     try {
       $this->getService()->delete($id);
       $this->addMessage('Crud/Delete/Success');
       $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
     } catch (Exception $e) {
-      $this->addMessage('Crud/Delete/UnSuccess', 'default', $type = \Factory_Message::ERROR);
+      $this->addMessage('Crud/Delete/UnSuccess', 'default', \Factory_Message::ERROR);
     }
     $this->renderScript('delete.phtml');
   }
@@ -262,21 +285,24 @@ abstract class Controller extends \Factory_Controller {
    * lists items with Zend_Paginator
    */
   public function listAction() {
-//    $this->addMessage('Crud/Create/Success');
-//    $this->addMessage('Crud/Create/UnSuccess', 'default', $type = \Factory_Message::ERROR);
-//    $filterForm = $this->getService()->getFilterForm($this->_getAllParams());
-    $filterForm = null;
+    $filterBuilder = new FilterDTOBuilder();
+    $filterBuilder->visitRequest($this->_request);
+
     $this->view->paginator = $this->getService()->getPagePaginator(
       $this->_getParam('page', 1),
       $this->_getParam('items', 10),
       $this->_getParam('sort'),
-      $this->_getParam('order', 'ASC')
-//      $this->_getAllParams()
+      $this->_getParam('order', 'ASC'),
+      $filterBuilder->getDTO()
     );
     $this->view->keys        = \array_diff($this->getService()->getTableFieldNames(), $this->getIgnoredFields());
     $this->view->currentSort = $this->_getParam('sort');
     $this->view->nextOrder   = $this->_getParam('order', 'ASC') == 'ASC' ? 'DESC' : 'ASC';
-    $this->view->filterForm  = $filterForm;
+    if ($this->useFilterForm) {
+      $filterForm = $this->getFilterForm();
+      $filterForm->setDefaults($this->_getAllParams());
+      $this->view->filterForm  = $filterForm;
+    }
     $this->renderScript('list.phtml');
   }
 

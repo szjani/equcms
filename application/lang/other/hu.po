@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: EquCMS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-03 23:26+0100\n"
-"PO-Revision-Date: 2011-01-06 21:18+0100\n"
+"PO-Revision-Date: 2011-01-09 00:34+0100\n"
 "Last-Translator: Szurovecz János <szjani@szjani.hu>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,6 +27,9 @@ msgstr "Igen"
 msgid "Crud/False"
 msgstr "Nem"
 
+msgid "Crud/Filter"
+msgstr "Szűrés"
+
 #: library/Equ/Crud/views/scripts/list.phtml:30
 msgid "Crud/Update/Label"
 msgstr "Szerkesztés"
@@ -44,6 +47,18 @@ msgstr "Sikeres létrehozás"
 
 msgid "Crud/Create/UnSuccess"
 msgstr "Sikertelen létrehozás"
+
+msgid "Crud/Update/Success"
+msgstr "Sikeres módosítás"
+
+msgid "Crud/Update/UnSuccess"
+msgstr "Sikertelen módosítás"
+
+msgid "Crud/Delete/Success"
+msgstr "Sikeres törlés"
+
+msgid "Crud/Delete/UnSuccess"
+msgstr "Sikertelen törlés"
 
 #: library/Equ/Crud/views/scripts/pagination.phtml:10
 #: library/Equ/Crud/views/scripts/pagination.phtml:12
@@ -88,52 +103,52 @@ msgstr "Felhasználó módosítása"
 msgid "Navigation/create/user/title"
 msgstr "Felhasználó létrehozása"
 
-msgid "Navigation/role-resource/admin/label"
+msgid "Navigation/permission/admin/label"
 msgstr "Jogosultságok"
 
-msgid "Navigation/role-resource/admin/title"
+msgid "Navigation/permission/admin/title"
 msgstr "Jogosultságok"
 
-msgid "Navigation/role-resource/admin/list/label"
+msgid "Navigation/permission/admin/list/label"
 msgstr "Jogosultságok listája"
 
-msgid "Navigation/role-resource/admin/list/title"
+msgid "Navigation/permission/admin/list/title"
 msgstr "Jogosultságok listája"
 
-msgid "Navigation/role-resource/admin/create/label"
+msgid "Navigation/permission/admin/create/label"
 msgstr "Jogosultság létrehozása"
 
-msgid "Navigation/role-resource/admin/create/title"
+msgid "Navigation/permission/admin/create/title"
 msgstr "Jogosultság létrehozása"
 
-msgid "Navigation/role-resource/admin/update/label"
+msgid "Navigation/permission/admin/update/label"
 msgstr "Jogosultság módosítása"
 
-msgid "Navigation/role-resource/admin/update/title"
+msgid "Navigation/permission/admin/update/title"
 msgstr "Jogosultság módosítása"
 
-msgid "Navigation/user-group/admin/label"
+msgid "Navigation/group/admin/label"
 msgstr "Csoportok"
 
-msgid "Navigation/user-group/admin/title"
+msgid "Navigation/group/admin/title"
 msgstr "Csoportok"
 
-msgid "Navigation/user-group/admin/list/label"
+msgid "Navigation/group/admin/list/label"
 msgstr "Csoportok listája"
 
-msgid "Navigation/user-group/admin/list/title"
+msgid "Navigation/group/admin/list/title"
 msgstr "Csoportok listája"
 
-msgid "Navigation/user-group/admin/create/label"
+msgid "Navigation/group/admin/create/label"
 msgstr "Csoport létrehozása"
 
-msgid "Navigation/user-group/admin/create/title"
+msgid "Navigation/group/admin/create/title"
 msgstr "Csoport létrehozása"
 
-msgid "Navigation/user-group/admin/update/label"
+msgid "Navigation/group/admin/update/label"
 msgstr "Csoport módosítása"
 
-msgid "Navigation/user-group/admin/update/title"
+msgid "Navigation/group/admin/update/title"
 msgstr "Csoport módosítása"
 
 msgid "Navigation/mvc/admin/label"
@@ -172,39 +187,57 @@ msgstr "Adminisztrációs főoldal"
 msgid "Navigation/index/admin/title"
 msgstr "Adminisztrációs főoldal"
 
-msgid "entities/User/email"
+msgid "entities/User/f_email"
 msgstr "E-mail"
 
 msgid "entities/User/password"
 msgstr "Jelszó"
 
-msgid "entities/User/parent"
+msgid "entities/User/f_parent"
 msgstr "Felhasználói csoport"
+
+msgid "entities/User/f_activationCode"
+msgstr "Aktivációs kód"
 
 msgid "entities/User/save"
 msgstr "Mentés"
 
-msgid "entities/UserGroup/name"
+msgid "entities/UserGroup/f_name"
 msgstr "Név"
 
-msgid "entities/UserGroup/parent"
+msgid "entities/UserGroup/f_parent"
 msgstr "Szülő csoport"
 
 msgid "entities/UserGroup/save"
 msgstr "Mentés"
 
-msgid "entities/RoleResource/role"
+msgid "entities/RoleResource/f_role"
 msgstr "Szereplő"
 
-msgid "entities/RoleResource/resource"
+msgid "entities/RoleResource/f_resource"
 msgstr "Erőforrás"
 
-msgid "entities/RoleResource/privilege"
+msgid "entities/RoleResource/f_privilege"
 msgstr "Jogosultsági szint"
 
-msgid "entities/RoleResource/allowed"
+msgid "entities/RoleResource/f_allowed"
 msgstr "Engedélyezve"
 
 msgid "entities/RoleResource/save"
+msgstr "Mentés"
+
+msgid "entities/Mvc/f_module"
+msgstr "Module"
+
+msgid "entities/Mvc/f_controller"
+msgstr "Controller"
+
+msgid "entities/Mvc/f_action"
+msgstr "Action"
+
+msgid "entities/Mvc/f_parent"
+msgstr "Szülő"
+
+msgid "entities/Mvc/save"
 msgstr "Mentés"
 

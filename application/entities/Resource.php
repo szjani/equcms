@@ -86,7 +86,7 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
    * @param Resource $parent
    * @return Resource
    */
-  public function setParent(Resource $parent) {
+  public function setParent(Resource $parent = null) {
     $this->parent = $parent;
     return $this;
   }

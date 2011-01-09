@@ -1,8 +1,8 @@
 <?php
-namespace plugins;
+namespace modules\group\plugins;
 use Equ\Entity\FormBuilder;
 
-class UserGroupFormBuilder extends FormBuilder {
+class CrudFormBuilder extends FormBuilder {
 
   public function getIgnoredFields() {
     return array('lft', 'rgt', 'lvl', 'role');

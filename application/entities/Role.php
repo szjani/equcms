@@ -87,7 +87,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, \Se
    * @param UserGroup $parent
    * @return Role
    */
-  public function setParent(UserGroup $parent) {
+  public function setParent(UserGroup $parent = null) {
     $this->parent = $parent;
     return $this;
   }

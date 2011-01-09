@@ -1,13 +1,34 @@
 <?php
 namespace Equ\Entity\ElementCreator;
 
+/**
+ * FormBuilder objects use an implementation
+ * of this interface to create form elements.
+ *
+ * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * @link        $Link$
+ * @since       0.1
+ * @version     $Revision$
+ * @author      Szurovecz János <szjani@szjani.hu>
+ */
 interface Factory {
 
   /**
    * @param string $ns
-   * @return Factory $this
+   * @return Factory
    */
   public function setNamespace($ns);
+
+  /**
+   * @param boolean $use
+   * @return Factory
+   */
+  public function usePlaceHolders($use = true);
+
+  /**
+   * @return boolean
+   */
+  public function isUsedPlaceHolders();
   
   /**
    * @return AbstractCreator

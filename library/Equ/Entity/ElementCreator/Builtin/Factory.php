@@ -19,7 +19,7 @@ class Factory extends \Equ\Entity\ElementCreator\AbstractFactory {
   }
   
   public function createBooleanCreator() {
-    return new StringCreator($this->getNamespace());
+    return new CheckboxCreator($this->getNamespace());
   }
   
   public function createDecimalCreator() {

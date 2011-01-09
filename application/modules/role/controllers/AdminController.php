@@ -20,7 +20,7 @@ class Role_AdminController extends Factory_Controller {
 //    $results = array_push($results, array('id' => 0, 'role' => '---'));
 //    $results[] = array('id' => 0, 'role' => '---');
     if ($role == null) {
-      array_unshift($results, array('id' => 0, 'role' => '---'));
+      array_unshift($results, array('id' => 0, 'role' => ''));
     }
 //    var_dump($results);
 //    exit;

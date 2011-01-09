@@ -1,8 +1,6 @@
 <?php
 namespace services;
 use Equ\Crud\Service;
-use Equ\Entity\ElementCreator\Dojo;
-use plugins\RoleResourceFormBuilder;
 
 class RoleResource extends Service {
 	/**
@@ -14,19 +12,17 @@ class RoleResource extends Service {
 
   public function __construct() {
     $this->setEntityBuilder(new RoleResourceEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
-    $this->setMainFormBuilder(new RoleResourceFormBuilder($this->getEntityManager()));
-    $this->getMainFormBuilder()->setElementCreatorFactory(new Dojo\Factory());
   }
 }
 
-class RoleResourceEntityBuilder extends \Equ\Form\EntityBuilder {
+class RoleResourceEntityBuilder extends \Equ\DTO\EntityBuilder {
 
   public function preVisit() {
-    $form = $this->form;
-    if (\array_key_exists('allowed', $form->getValues())) {
+    $dto = $this->dto;
+    if ($dto->hasData('allowed')) {
       $entity = $this->getEntity();
       /* @var $entity \entities\RoleResource */
-      $entity->setAllow($form->getValue('allowed'));
+      $entity->setAllow($dto->getData('allowed'));
     }
   }
 

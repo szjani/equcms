@@ -1,5 +1,7 @@
 <h2><?php echo $this->translate($this->pageTitle) ?></h2>
-<?php //echo $this->filterForm ?>
+<div id="filter-form">
+  <?php echo $this->filterForm ?>
+</div>
 <table>
   <tr>
     <?php foreach ($this->keys as $key): ?>
