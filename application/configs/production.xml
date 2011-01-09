@@ -19,11 +19,11 @@
      <parameter key="messages.translate.content"><const name="APPLICATION_PATH" />/lang/messages</parameter>
      <parameter key="messages.translate.scan">filename</parameter>
      <parameter key="locale.default">hu_HU</parameter>
-     <parameter key="mailer.class">Factory_Mail</parameter>
-     <parameter key="mailer.defaultFrom.email">info@factory.hu</parameter>
-     <parameter key="mailer.defaultFrom.name">Factory Creative Studio</parameter>
-     <parameter key="mail.transport.username">develop@factory-dev.hu</parameter>
-     <parameter key="mail.transport.password">develoop</parameter>
+     <parameter key="mailer.class">Zend_Mail</parameter>
+     <parameter key="mailer.defaultFrom.email">info@test.com</parameter>
+     <parameter key="mailer.defaultFrom.name">Email from name</parameter>
+     <parameter key="mail.transport.username">info@test.com</parameter>
+     <parameter key="mail.transport.password">testpass</parameter>
      <parameter key="log.writer">Stream</parameter>
      <parameter key="log.writer.file"><const name="APPLICATION_PATH" />/../data/logs/<const name="CURRENT_DATE" /></parameter>
      <parameter key="translatelog.writer">Stream</parameter>
@@ -175,7 +175,7 @@
        </argument>
      </service>
      <service id="mail.transport" class="Zend_Mail_Transport_Smtp">
-       <argument>s1.netfactory.hu</argument>
+       <argument>smtp.test.com</argument>
        <argument type="collection">
          <argument key="auth">login</argument>
          <argument key="username">%mail.transport.username%</argument>

@@ -1,7 +1,7 @@
 <?php
 use modules\user\forms\Login;
 
-class User_IndexController extends Factory_Controller {
+class User_IndexController extends \Equ\Controller {
 
   public function loginAction() {
     throw new \Exception('teswt');

@@ -1,5 +1,5 @@
 <?php
-class AdminController extends Factory_Controller {
+class AdminController extends \Equ\Controller {
 
   public function indexAction() {
 //    $route = $this->getFrontController()->getRouter()->getCurrentRouteName();

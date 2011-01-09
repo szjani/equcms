@@ -3,6 +3,7 @@ namespace Equ\Crud;
 use Doctrine\ORM\EntityManager;
 use Equ\Entity\FormBuilder;
 use Equ\Controller\Request\FilterDTOBuilder;
+use Equ\Message;
 
 /**
  * Controller of CRUD operations
@@ -232,7 +233,7 @@ abstract class Controller extends \Equ\Controller {
       }
       $this->view->createForm = $form;
     } catch (\Exception $e) {
-        $this->addMessage('Crud/Create/UnSuccess', 'default', \Factory_Message::ERROR);
+        $this->addMessage('Crud/Create/UnSuccess', 'default', Message::ERROR);
         $this->view->createForm = $form;
     }
     $this->renderScript('create.phtml');
@@ -259,7 +260,7 @@ abstract class Controller extends \Equ\Controller {
       }
       $this->view->updateForm = $form;
     } catch (\Exception $e) {
-      $this->addMessage('Crud/Update/UnSuccess', 'default', \Factory_Message::ERROR);
+      $this->addMessage('Crud/Update/UnSuccess', 'default', Message::ERROR);
       $this->view->updateForm = $form;
     }
     $this->renderScript('update.phtml');
@@ -275,7 +276,7 @@ abstract class Controller extends \Equ\Controller {
       $this->addMessage('Crud/Delete/Success');
       $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
     } catch (Exception $e) {
-      $this->addMessage('Crud/Delete/UnSuccess', 'default', \Factory_Message::ERROR);
+      $this->addMessage('Crud/Delete/UnSuccess', 'default', Message::ERROR);
     }
     $this->renderScript('delete.phtml');
   }

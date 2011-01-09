@@ -1,5 +1,5 @@
 <?php
-class Role_AdminController extends Factory_Controller {
+class Role_AdminController extends \Equ\Controller {
 
   public function autocompleteAction() {
     $this->_helper->viewRenderer->setNoRender();

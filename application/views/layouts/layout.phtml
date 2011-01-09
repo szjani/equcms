@@ -1,61 +1,42 @@
 <?php echo $this->doctype() ?>
-<?php $this->headScript()->captureStart() ?>
-$(document).ready(function() {
-  $("#mainMenu ul.navigation > li > a").click(function() {
-    $(this).attr('href', '#');
-    $(this).parent().toggleClass('open');
-  });
-});
-<?php $this->headScript()->captureEnd() ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<!--
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111
-11000000001111000011111110000001111000000000011110000001111100000001111100111100111
-11000111111111000011111100011100111111100111111100111100111100111000111110011000111
-11000111111110000001111100111111111111100111111100111100111100111100111110000001111
-11000000011110011001111000111111111111100111111000111100011100010001111111000011111
-11000111111100011000111000111111111111100111111000111100011100000011111111100111111
-11000111111100000000111100111111111111100111111100111100111100110001111111100111111
-11000111111000111100011100011100111111100111111100011000111100111000111111100111111
-11000111111001111110011110000001111111100111111110000001111100111100011111100111111
-11111111111111111111111111111111111111111111111111111111111111111111111111111111111
-Powered by FACTORY CREATIVE STUDIO Ltd || Please visit our website at netfactory.hu
-Thank You for visiting this Source Code!-->
-<meta name="description" content="$$projectname$$" />
-<meta name="keywords" content="$$projectname$$" />
+<meta name="description" content="EquCMS" />
+<meta name="keywords" content="equcms" />
 <meta name="revisit-after" content="3 days" />
 <meta name="robots" content="all" />
-<meta name="copyright" content="FACTORY CREATIVE STUDIO" />
-<meta name="publisher" content="FACTORY CREATIVE STUDIO" />
-<meta name="author" content="FACTORY CREATIVE STUDIO" />
+<meta name="author" content="Szurovecz János" />
 <meta name="distribution" content="Global" />
 <meta name="rating" content="General" />
 <meta name="doc-type" content="Web Page" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<?php $this->headScript()->captureStart() ?>
+  $(document).ready(function() {
+    $("#mainMenu ul.navigation > li > a").click(function() {
+      $(this).attr('href', '#');
+      $(this).parent().toggleClass('open');
+    });
+  });
+<?php $this->headScript()->captureEnd() ?>
 <?php
-$this->dojo()
-        ->setDjConfigOption('usePlainJson',true)
-        ->setDjConfigOption('locale', Zend_Controller_Front::getInstance()->getRequest()->getParam('lang'))
-        ->addStylesheetModule('dijit.themes.claro')
-        ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
-        ->setCdnVersion('1.5')
-        ->requireModule('dojo.i18n');
-echo $this->dojo();
+  $this->dojo()
+    ->setDjConfigOption('usePlainJson',true)
+    ->setDjConfigOption('locale', Zend_Controller_Front::getInstance()->getRequest()->getParam('lang'))
+    ->addStylesheetModule('dijit.themes.claro')
+    ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+    ->setCdnVersion('1.5')
+    ->requireModule('dojo.i18n');
+  echo $this->dojo();
 ?>
 <?php
   $this->headScript()
-    ->prependFile($this->baseUrl('/scripts/jquery-1.4.2.min.js'), 'text/javascript');
+    ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'text/javascript');
   $this->headLink()
-//    ->prependStylesheet($this->baseUrl('/styleSheets/reset-fonts-grids.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/reset.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/960.css'))
-//    ->appendStylesheet($this->baseUrl('/styleSheets/base.css'))
-//    ->appendStylesheet($this->baseUrl('/styleSheets/RMSforms-v0.5.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/crud.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/style.css'));
-  
   echo 
     $this->headTitle('EquCMS')->setSeparator(' - ') .
     $this->headLink() .
