@@ -26,3 +26,5 @@ The folowing techniques are used:
     form will also contains these validators. In element creators you also can create javascript validators from these objects.
     (For example Dojo creators use required flag, and e-mail validation with regexp).
         * etc.
+* After made your clone of the project, you should modify include path in defines.php and see /hu/admin or /en/admin URL-s.
+You'll need [beberlei's paginator adapter](https://github.com/beberlei/DoctrineExtensions) and [Gedmo's nested set implementation](https://github.com/l3pp4rd/DoctrineExtensions).
