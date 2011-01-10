@@ -13,14 +13,12 @@ The folowing techniques are used:
 * ``Zend_Navigation`` object also build from the the previous database.
 * You can use the builtin CRUD solution with your own entities:
     * A simple example:
-        * Your controller has to extend ``Equ\Crud\Controller`` and implement ``getService()`` method. Usually it retrieves
-    a service object from dependency container: ``return $this->_helper->serviceContainer('user');``
-        * Service class has to extend ``Equ\Crud\Service`` and implement ``getEntityClass()`` method. It retrieves the class
-     name of your entitie, like: ``return 'entities\User';``
+        * Your controller has to extend ``Equ\Crud\Controller`` and implement ``getEntityClass()`` method. It retrieves the class
+     name of your entity, like: ``return 'entities\User';``
         * That's all.
     * Of course you have many possibilities to modify and extend basic CRUD process:
         * It is possible to inject form builder objects to your controller class to modify form building process (remove, add, modify elements etc.).
-        * It is possible to inject an entity builder object to your service class to modify entity building process (basically system try to call setter method on entities).
+        * It is possible to inject an entity builder object to your service class (which extends ``Equ\Crud\Service`` or implements ``Equ\Crud\IService``) to modify entity building process (basically system try to call setter method on entities).
         * Now there are 2 form element creator solutions in the system: Builtin and Dojo factory. You can inject any of these
     (or your own factory instance) into form builder object.
         * You can copy CRUD .phtml files into the right directory and it will be used for output rendering.
