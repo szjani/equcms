@@ -13,11 +13,11 @@ class Permission_AdminController extends Controller {
     $mainFormBuilder->setElementCreatorFactory(new Dojo\Factory());
     $this
       ->setMainFormBuilder($mainFormBuilder);
-//      ->setFilterFormBuilder($mainFormBuilder);
+    $this->setCrudService(new \services\RoleResource($this->getEntityClass()));
   }
 
-  protected function getService() {
-    return $this->_helper->serviceContainer('roleresource');
+  protected function getEntityClass() {
+    return 'entities\RoleResource';
   }
 
 }

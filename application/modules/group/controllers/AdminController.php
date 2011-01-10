@@ -16,8 +16,8 @@ class Group_AdminController extends Controller {
       ->setFilterFormBuilder($mainFormBuilder);
   }
 
-  protected function getService() {
-    return $this->_helper->serviceContainer('usergroup');
+  protected function getEntityClass() {
+    return 'entities\UserGroup';
   }
 
 }

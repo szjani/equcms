@@ -17,10 +17,12 @@ class User_AdminController extends Controller {
     $this
       ->setMainFormBuilder($formBuilder)
       ->setFilterFormBuilder($filterFormBuilder);
+
+    $this->setCrudService(new \services\User($this->getEntityClass()));
   }
 
-  protected function getService() {
-    return $this->_helper->serviceContainer('user');
+  protected function getEntityClass() {
+    return 'entities\User';
   }
 
   /**

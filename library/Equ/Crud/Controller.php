@@ -47,6 +47,11 @@ abstract class Controller extends \Equ\Controller {
   private $filterForm = null;
 
   /**
+   * @var \Equ\Crud\Service
+   */
+  private $crudService = null;
+
+  /**
    * Adds general CRUD script path
    */
   public function init() {
@@ -57,12 +62,26 @@ abstract class Controller extends \Equ\Controller {
     $this->view->headTitle($this->view->translate($title));
   }
 
+  protected abstract function getEntityClass();
+
   /**
-   * You should use $this->_helper->serviceContainer($serviceName) to retrieve service object
-   *
-   * @return \Equ\Crud\Service
+   * @return \Equ\Crud\IService
    */
-  protected abstract function getService();
+  protected function getCrudService() {
+    if ($this->crudService === null) {
+      $this->crudService = new Service($this->getEntityClass());
+    }
+    return $this->crudService;
+  }
+
+  /**
+   * @param IService $service
+   * @return Controller
+   */
+  protected function setCrudService(IService $service) {
+    $this->crudService = $service;
+    return $this;
+  }
 
   /**
    * @return array
@@ -134,7 +153,7 @@ abstract class Controller extends \Equ\Controller {
    */
   public function getCUForm($id = null, $refresh = false) {
     if (!\array_key_exists($id, $this->cuForms) || $refresh) {
-      $entity      = $this->getService()->getEntity($id);
+      $entity      = $this->getCrudService()->getEntity($id);
       $formBuilder = $this->getMainFormBuilder();
       $formBuilder->setForm($this->createEmptyForm());
       if (!($entity instanceof \Equ\Entity\Visitable)) {
@@ -154,7 +173,7 @@ abstract class Controller extends \Equ\Controller {
    */
   public function getFilterForm($refresh = false) {
     if ($this->filterForm === null || $refresh) {
-      $entity      = $this->getService()->getEntity();
+      $entity      = $this->getCrudService()->getEntity();
       if (!($entity instanceof \Equ\Entity\Visitable)) {
         throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
       }
@@ -227,7 +246,7 @@ abstract class Controller extends \Equ\Controller {
         }
         $dtoBuilder = new \Equ\Form\DTOBuilder();
         $form->accept($dtoBuilder);
-        $this->getService()->create($dtoBuilder->getDTO());
+        $this->getCrudService()->create($dtoBuilder->getDTO());
         $this->addMessage('Crud/Create/Success');
         $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
       }
@@ -254,7 +273,7 @@ abstract class Controller extends \Equ\Controller {
         }
         $dtoBuilder = new \Equ\Form\DTOBuilder();
         $form->accept($dtoBuilder);
-        $this->getService()->update($id, $dtoBuilder->getDTO());
+        $this->getCrudService()->update($id, $dtoBuilder->getDTO());
         $this->addMessage('Crud/Update/Success');
         $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
       }
@@ -272,7 +291,7 @@ abstract class Controller extends \Equ\Controller {
   public function deleteAction() {
     $id = $this->_getParam('id');
     try {
-      $this->getService()->delete($id);
+      $this->getCrudService()->delete($id);
       $this->addMessage('Crud/Delete/Success');
       $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
     } catch (Exception $e) {
@@ -289,14 +308,14 @@ abstract class Controller extends \Equ\Controller {
     $filterBuilder = new FilterDTOBuilder();
     $filterBuilder->visitRequest($this->_request);
 
-    $this->view->paginator = $this->getService()->getPagePaginator(
+    $this->view->paginator = $this->getCrudService()->getPagePaginator(
       $this->_getParam('page', 1),
       $this->_getParam('items', 10),
       $this->_getParam('sort'),
       $this->_getParam('order', 'ASC'),
       $filterBuilder->getDTO()
     );
-    $this->view->keys        = \array_diff($this->getService()->getTableFieldNames(), $this->getIgnoredFields());
+    $this->view->keys        = \array_diff($this->getCrudService()->getTableFieldNames(), $this->getIgnoredFields());
     $this->view->currentSort = $this->_getParam('sort');
     $this->view->nextOrder   = $this->_getParam('order', 'ASC') == 'ASC' ? 'DESC' : 'ASC';
     if ($this->useFilterForm) {

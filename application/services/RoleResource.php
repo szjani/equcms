@@ -3,15 +3,10 @@ namespace services;
 use Equ\Crud\Service;
 
 class RoleResource extends Service {
-	/**
-   * @see Equ\Crud.Service::getEntityClass()
-   */
-  public function getEntityClass() {
-    return 'entities\RoleResource';
-  }
 
-  public function __construct() {
-    $this->setEntityBuilder(new RoleResourceEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
+  public function __construct($entityClass) {
+    parent::__construct($entityClass);
+    $this->setEntityBuilder(new RoleResourceEntityBuilder($this->getEntityManager(), $entityClass));
   }
 }
 

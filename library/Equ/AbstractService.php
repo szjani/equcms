@@ -8,7 +8,7 @@ namespace Equ;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class AbstractService {
+abstract class AbstractService {
 
   /**
    *

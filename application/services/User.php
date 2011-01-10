@@ -17,15 +17,9 @@ class User extends Service {
   /**
    * Initialize builders and element creator factory
    */
-  public function __construct() {
-    $this->setEntityBuilder(new UserEntityBuilder($this->getEntityManager(), $this->getEntityClass()));
-  }
-
-  /**
-   * @return string
-   */
-  public function getEntityClass() {
-    return 'entities\User';
+  public function __construct($entityClass) {
+    parent::__construct($entityClass);
+    $this->setEntityBuilder(new UserEntityBuilder($this->getEntityManager(), $entityClass));
   }
 
   /**
@@ -35,7 +29,7 @@ class User extends Service {
   public function login($email, $password) {
     try {
       $authAdapter = new \Equ\Auth\DoctrineAdapter(
-        $this->getEntityManager()->getRepository('entities\User'),
+        $this->getEntityManager()->getRepository($this->getEntityClass()),
         $email,
         $password
       );

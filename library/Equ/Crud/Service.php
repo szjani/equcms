@@ -7,7 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Equ\DTO;
 
 /**
- * Abstract service class to CRUD methods
+ * Service class to CRUD methods
  *
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        $Link$
@@ -15,7 +15,7 @@ use Equ\DTO;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-abstract class Service extends \Equ\AbstractService {
+class Service extends \Equ\AbstractService implements IService {
 
   /**
    * @var \Equ\Entity\Visitable
@@ -27,12 +27,32 @@ abstract class Service extends \Equ\AbstractService {
    */
   private $entityBuilder = null;
 
+  private $entityClass = null;
+
   /**
    * Retrieves the type of the handled entity
    *
    * @return string
    */
-  public abstract function getEntityClass();
+  public function getEntityClass() {
+    return $this->entityClass;
+  }
+
+  /**
+   * @param string $entityClass
+   * @return Service
+   */
+  public function setEntityClass($entityClass) {
+    $this->entityClass = (string)$entityClass;
+    return $this;
+  }
+
+  /**
+   * @param string $entityClass
+   */
+  public function __construct($entityClass) {
+    $this->setEntityClass($entityClass);
+  }
 
   public function preCreate(DTO $values) {}
   public function postCreate() {}
@@ -118,7 +138,7 @@ abstract class Service extends \Equ\AbstractService {
   /**
    * Create a record
    *
-   * @param array $$dto
+   * @param DTO $dto
    * @return object
    */
   public function create(DTO $dto) {
@@ -146,21 +166,21 @@ abstract class Service extends \Equ\AbstractService {
    * Update a record
    *
    * @param int $id
-   * @param DTO $values
+   * @param DTO $dto
    * @return object
    */
-  public function update($id, DTO $values) {
+  public function update($id, DTO $dto) {
     $em = $this->getEntityManager();
     $em->beginTransaction();
     try {
-      $this->preUpdate($id, $values);
+      $this->preUpdate($id, $dto);
       if ($id === null) {
         throw new Exception("Invalid id '$id'");
       }
       $entity = $this->getEntity($id);
       $entityBuilder = $this->getEntityBuilder();
       $entityBuilder->setEntity($entity);
-      $values->accept($entityBuilder);
+      $dto->accept($entityBuilder);
       $em->persist($entity);
       $this->postUpdate($id);
       $em->flush();
