@@ -18,7 +18,6 @@ class StringCreator extends \Equ\Entity\ElementCreator\AbstractCreator {
   public function addValidator(\Zend_Form_Element $element, \Zend_Validate_Abstract $validator) {
     parent::addValidator($element, $validator);
     if ($this->isUsedDefaultValidators()) {
-      die('itt');
       if ($validator instanceof \Zend_Validate_EmailAddress) {
         $element->setRegExp('^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+');
       }
