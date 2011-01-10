@@ -43,10 +43,6 @@
        <argument type="service" id="doctrine.entitymanager" />
      </service>
      <service id="navigation" class="Zend_Navigation" />
-<!--     <service id="user" class="services\User" />
-     <service id="usergroup" class="services\UserGroup" />
-     <service id="mvc" class="services\Mvc" />
-     <service id="roleresource" class="services\RoleResource" />-->
      <service id="doctrine.entitymanager" class="Doctrine\ORM\EntityManager" factory-method="create">
        <argument type="collection">
          <argument key="driver">%doctrine.driver%</argument>
