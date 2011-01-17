@@ -12,6 +12,13 @@ namespace Equ\Entity\ElementCreator;
  */
 abstract class AbstractCreator {
 
+  const PLACEHOLDER          = 0x1;
+  const LABEL                = 0x2;
+  const IMPLICIT_VALIDATORS  = 0x4;
+  const EXPLICIT_VALIDATORS  = 0x8;
+
+  private $flags = 0;
+
   /**
    * @var array
    */
@@ -20,7 +27,7 @@ abstract class AbstractCreator {
   /**
    * @var string
    */
-  protected $namespace = '';
+  private $namespace = '';
 
   /**
    *
@@ -34,39 +41,58 @@ abstract class AbstractCreator {
   private $placeholder = null;
 
   /**
-   * @var string
-   */
-  private $usePlaceHolder = false;
-
-  /**
-   * @var boolean
-   */
-  private $useDefaultValidators = true;
-
-  /**
    * @var array
    */
   private $validators = array();
 
   /**
-   * @var \Zend_Form_Element
-   */
-  protected $element;
-
-  /**
+   * @param int $flags
    * @param string $namespace
    */
-  public function __construct($namespace) {
-    $this->namespace = $namespace;
+  public function __construct($namespace = '', $flags = 14) {
+    $this
+      ->setNamespace($namespace)
+      ->setFlags($flags);
+  }
+
+  public function addFlag($const) {
+    $this->flags = $this->flags | (int)$const;
+    return $this;
+  }
+
+  public function removeFlag($const) {
+    $this->flags = $this->flags & ~$const;
+    return $this;
+  }
+
+  public function hasFlag($const) {
+    return 0 < ($this->flags & $const);
+  }
+
+  public function setFlag($const, $boolean) {
+    return $boolean ? $this->addFlag($const) : $this->removeFlag($const);
+  }
+
+  public function setFlags($flags) {
+    $this->flags = $flags;
+    return $this;
+  }
+
+  public function setNamespace($namespace) {
+    $this->namespace = \rtrim($namespace, '/');
+    return $this;
+  }
+
+  public function getNamespace() {
+    return $this->namespace;
   }
 
   /**
-   * @param \Zend_Form_Element $element
    * @param \Zend_Validate_Abstract $validator
    * @return AbstractCreator
    */
-  public function addValidator(\Zend_Form_Element $element, \Zend_Validate_Abstract $validator) {
-    $element->addValidator($validator);
+  public function addValidator(\Zend_Validate_Abstract $validator) {
+    $this->validators[] = $validator;
     return $this;
   }
 
@@ -103,22 +129,6 @@ abstract class AbstractCreator {
   }
 
   /**
-   * @param boolean $use
-   * @return AbstractCreator
-   */
-  public function usePlaceHolders($use = true) {
-    $this->usePlaceHolder = (boolean)$use;
-    return $this;
-  }
-
-  /**
-   * @return boolean
-   */
-  public function isUsedPlaceHolders() {
-    return $this->usePlaceHolder;
-  }
-
-  /**
    * @param array $validators
    * @return AbstractCreator
    */
@@ -135,37 +145,6 @@ abstract class AbstractCreator {
   }
   
   /**
-   * @param boolean $use
-   * @return AbstractCreator
-   */
-  public function useDefaultValidators($use = true) {
-    $this->useDefaultValidators = (boolean)$use;
-    return $this;
-  }
-
-  /**
-   * @return boolean
-   */
-  public function isUsedDefaultValidators() {
-    return $this->useDefaultValidators;
-  }
-  
-  /**
-   * @param \Zend_Form_Element $element
-   */
-  protected function addDefaultValidators(\Zend_Form_Element $element) {
-    if (array_key_exists('nullable', $this->values) && !$this->values['nullable']) {
-      $element->setRequired();
-      $this->addValidator($element, new \Zend_Validate_NotEmpty());
-    }
-    if (array_key_exists('length', $this->values) && \is_numeric($this->values['length'])) {
-      $validator = new \Zend_Validate_StringLength();
-      $validator->setMax($this->values['length']);
-      $this->addValidator($element, $validator);
-    }
-  }
-
-  /**
    * You should pass $values from
    * $em->getClassMetadata($className)->fieldMappings
    *
@@ -175,25 +154,80 @@ abstract class AbstractCreator {
    */
   public function createElement($fieldName, array $values = array()) {
     $this->values = $values;
-    $this->element = $this->buildElement($fieldName);
-    if ($this->isUsedDefaultValidators()) {
-      $this->addDefaultValidators($this->element);
+    $element = $this->buildElement($fieldName);
+    if ($this->hasFlag(self::IMPLICIT_VALIDATORS)) {
+      $this->createImplicitValidators($element);
     }
+    if ($this->hasFlag(self::EXPLICIT_VALIDATORS)) {
+      $this->createExplicitValidators($element);
+    }
+    if ($this->hasFlag(self::LABEL)) {
+      $this->createLabel($element);
+    }
+    if ($this->hasFlag(self::PLACEHOLDER)) {
+      $this->createPlaceholder($element);
+    }
+    return $element;
+  }
+
+  /**
+   * @param \Zend_Form_Element $element
+   * @return AbstractCreator
+   */
+  protected function createImplicitValidators(\Zend_Form_Element $element) {
     foreach ($this->getValidators() as $validator) {
       if (!($validator instanceof \Zend_Validate_Abstract)) {
         throw new Exception("Validator object must extends \Zend_Validate_Abstract");
       }
-      $this->addValidator($this->element, $validator);
+      $element->addValidator($validator);
+      $this->validatorAdded($element, $validator);
     }
-    if ($this->getLabel() === null) {
-      $this->setLabel($this->namespace . $fieldName);
-    }
-    if ($this->getPlaceHolder() === null) {
-      $this->setPlaceHolder($this->namespace . $fieldName);
-    }
-    $this->element->setLabel($this->getLabel());
-    return $this->element;
+    return $this;
   }
+
+  /**
+   * @param \Zend_Form_Element $element
+   * @return AbstractCreator
+   */
+  protected function createExplicitValidators(\Zend_Form_Element $element) {
+    if (array_key_exists('nullable', $this->values) && !$this->values['nullable']) {
+      $element->setRequired();
+      $validator = new \Zend_Validate_NotEmpty();
+      $element->addValidator($validator);
+      $this->validatorAdded($element, $validator);
+    }
+    if (array_key_exists('length', $this->values) && \is_numeric($this->values['length'])) {
+      $validator = new \Zend_Validate_StringLength();
+      $validator->setMax($this->values['length']);
+      $element->addValidator($validator);
+      $this->validatorAdded($element, $validator);
+    }
+    return $this;
+  }
+
+  /**
+   * @param \Zend_Form_Element $element
+   * @return AbstractCreator
+   */
+  protected function createLabel(\Zend_Form_Element $element) {
+    if ($this->getLabel() === null) {
+      $this->setLabel($this->getNamespace() . '/' . $element->getName());
+    }
+    $element->setLabel($this->getLabel());
+    return $this;
+  }
+
+  /**
+   * @param \Zend_Form_Element $element
+   * @return AbstractCreator
+   */
+  protected function createPlaceholder(\Zend_Form_Element $element) {
+    if ($this->getPlaceHolder() === null) {
+      $this->setPlaceHolder($this->getNamespace() . '/' . $element->getName());
+    }
+  }
+
+  protected function validatorAdded(\Zend_Form_Element $element, \Zend_Validate_Abstract $validator) {}
 
   /**
    * @return \Zend_Form_Element

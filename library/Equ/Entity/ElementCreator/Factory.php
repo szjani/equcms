@@ -24,12 +24,12 @@ interface Factory {
    * @return Factory
    */
   public function usePlaceHolders($use = true);
-
+  
   /**
    * @return boolean
    */
   public function isUsedPlaceHolders();
-  
+
   /**
    * @return AbstractCreator
    */

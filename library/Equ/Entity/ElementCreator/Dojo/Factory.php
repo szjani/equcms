@@ -16,9 +16,7 @@ class Factory extends \Equ\Entity\ElementCreator\AbstractFactory {
    */
   public function createStringCreator() {
     $stringCreator = new StringCreator($this->getNamespace());
-//    var_dump($this->isUsedPlaceHolders());
-//    exit;
-    $stringCreator->usePlaceHolders($this->isUsedPlaceHolders());
+    $stringCreator->setFlag(StringCreator::PLACEHOLDER, $this->isUsedPlaceHolders());
     return $stringCreator;
   }
 

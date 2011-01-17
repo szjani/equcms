@@ -47,7 +47,7 @@ abstract class Controller extends \Equ\Controller {
   private $filterForm = null;
 
   /**
-   * @var \Equ\Crud\Service
+   * @var \Equ\Crud\IService
    */
   private $crudService = null;
 
@@ -153,12 +153,12 @@ abstract class Controller extends \Equ\Controller {
    */
   public function getCUForm($id = null, $refresh = false) {
     if (!\array_key_exists($id, $this->cuForms) || $refresh) {
-      $entity      = $this->getCrudService()->getEntity($id);
-      $formBuilder = $this->getMainFormBuilder();
-      $formBuilder->setForm($this->createEmptyForm());
+      $entity = $this->getCrudService()->getEntity($id);
       if (!($entity instanceof \Equ\Entity\Visitable)) {
         throw new Exception("Entity must implements '\Equ\Entity\Visitable' interface");
       }
+      $formBuilder = $this->getMainFormBuilder();
+      $formBuilder->setForm($this->createEmptyForm());
       $entity->accept($formBuilder);
       $this->cuForms[$id] = $formBuilder->getForm();
     }

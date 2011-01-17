@@ -179,7 +179,8 @@ class FormBuilder implements \Equ\EntityVisitor {
         continue;
       }
       $elementCreator = $this->getElementCreator($def)
-        ->useDefaultValidators($this->isCreateDefaultValidators())
+        ->setFlag(ElementCreator\AbstractCreator::EXPLICIT_VALIDATORS, $this->isCreateDefaultValidators())
+//        ->useDefaultValidators($this->isCreateDefaultValidators())
         ->setValidators($this->entity->getFieldValidators($fieldName));
       $labels  = $this->getFieldLabels();
       if (\array_key_exists($fieldName, $labels)) {

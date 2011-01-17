@@ -111,7 +111,7 @@ class Service extends \Equ\AbstractService implements IService {
    *
    * @throws Exception
    * @param int $id
-   * @return object
+   * @return \Equ\Entity\Visitable
    */
   public function getEntity($id = null) {
     if ($this->entity === null || $id != $this->getFieldValue($this->entity, $this->getIdentifierFieldName())) {

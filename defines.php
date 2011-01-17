@@ -19,9 +19,13 @@ defined('APPLICATION_ENV')
 set_include_path(implode(PATH_SEPARATOR, array(
   realpath(APPLICATION_PATH),
   realpath(APPLICATION_PATH . '/../library'),
-  '/development/Frameworks/ZF_1.11_svn/library',
-  '/development/Frameworks/Doctrine-2.0',
-  '/development/Frameworks/beberlei/DoctrineExtensions/lib',
-  '/development/Frameworks/doctrine2-extensions/lib',
+  '/home/szjani/development/php/libs/ZF/1.11/library',
+  '/home/szjani/development/php/libs/Doctrine-2.0',
+  '/home/szjani/development/php/libs/beberlei/DoctrineExtensions/lib',
+  '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions/lib',
+//  '/development/Frameworks/ZF_1.11_svn/library',
+//  '/development/Frameworks/Doctrine-2.0',
+//  '/development/Frameworks/beberlei/DoctrineExtensions/lib',
+//  '/development/Frameworks/doctrine2-extensions/lib',
   get_include_path()
 )));
