@@ -3,7 +3,10 @@ namespace Equ\Controller\Plugin;
 
 class Navigation extends \Zend_Controller_Plugin_Abstract {
 
-  public function routeStartup(\Zend_Controller_Request_Abstract $request) {
+  public function routeShutdown(\Zend_Controller_Request_Abstract $request) {
+    if ($request->getParam('format') == 'ajax') {
+      return;
+    }
     $container = \Zend_Controller_Front::getInstance()->getParam('bootstrap')->getContainer();
     $cache = $container->get('cache.system');
     if ($navContainerArray = ($cache->load('navigation'))) {

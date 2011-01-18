@@ -24,7 +24,7 @@ class CrudFormBuilder extends FormBuilder {
       ->setAutocomplete(true)
       ->setStoreId('roleResourceStore')
       ->setStoreType('dojox.data.QueryReadStore')
-      ->setStoreParams(array('url' => '/admin/role/autocomplete'))
+      ->setStoreParams(array('url' => '/admin/role/autocomplete/format/ajax'))
       ->setAttrib("searchAttr", "role");
     
     if ($this->entity->getRole() instanceof \entities\Role) {

@@ -2,6 +2,7 @@
 namespace Equ\Entity;
 use Equ\Entity\ElementCreator;
 use Doctrine\ORM\EntityManager;
+use Equ\Entity\FormBuilder\NormalElementIterator;
 
 /**
  * Create form from entity
@@ -30,6 +31,8 @@ class FormBuilder implements \Equ\EntityVisitor {
    * @var \Equ\Entity\FormBase
    */
   protected $entity;
+
+  protected $metaData = null;
 
   /**
    * @var ElementCreator\Factory
@@ -75,6 +78,10 @@ class FormBuilder implements \Equ\EntityVisitor {
   }
 
   /**
+   * It try to retrieve the correct element creator
+   * depending on the field type.
+   * If not success, stringCreator will be used.
+   * You can set implicit creators to fields.
    *
    * @return ElementCreator\AbstractCreator
    */
@@ -145,6 +152,10 @@ class FormBuilder implements \Equ\EntityVisitor {
     return $this->form;
   }
 
+  /**
+   * @param \Zend_Form $form
+   * @return FormBuilder
+   */
   public function setForm(\Zend_Form $form) {
     $this->form = $form;
     return $this;
@@ -155,34 +166,61 @@ class FormBuilder implements \Equ\EntityVisitor {
   }
 
   protected function getEntityClassMetadata() {
-    return $this->entityManager->getClassMetadata(\get_class($this->entity));
+    if ($this->metaData === null) {
+      $this->metaData = $this->entityManager->getClassMetadata(\get_class($this->entity));
+    }
+    return $this->metaData;
   }
 
+  /**
+   * You can build form from entity by this method
+   * 
+   * @param \Equ\Entity\FormBase $entity
+   */
   public function visitEntity(\Equ\Entity\FormBase $entity) {
     $this->entity = $entity;
     $this->getElementCreatorFactory()->setNamespace(
-      str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name) . '/'
+      str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name)
     );
     $this->preVisit();
     $this->createElements();
     $this->postVisit();
   }
 
+  /**
+   * FilterIterator that retrieves fields to generate form elements
+   *
+   * @return NormalElementIterator
+   */
+  public function getNormalElementIterator() {
+    $fieldMapping = new \ArrayObject($this->getEntityClassMetadata()->fieldMappings);
+    return new NormalElementIterator($fieldMapping->getIterator(), $this->getIgnoredFields());
+  }
+
+  /**
+   * FilterIterator that retrieves fields to generate form elements
+   * to foreign fields
+   *
+   * @return NormalElementIterator
+   */
+  public function getForeignElementIterator() {
+    $associationMapping = new \ArrayObject($this->getEntityClassMetadata()->associationMappings);
+    return new NormalElementIterator($associationMapping->getIterator(), $this->getIgnoredFields());
+  }
+
+  /**
+   * Create form element with iterator
+   *
+   * @return FormBuilder
+   */
   protected function createNormalElements() {
     $metadata = $this->getEntityClassMetadata();
-    foreach ($metadata->fieldMappings as $fieldName => $def) {
+    foreach ($this->getNormalElementIterator() as $fieldName => $def) {
       $elementName = $this->createElementName($fieldName);
-      if ($this->isIgnoredField($fieldName)) {
-        continue;
-      }
-      if (\array_key_exists('id', $def) && $def['id']) {
-        continue;
-      }
       $elementCreator = $this->getElementCreator($def)
         ->setFlag(ElementCreator\AbstractCreator::EXPLICIT_VALIDATORS, $this->isCreateDefaultValidators())
-//        ->useDefaultValidators($this->isCreateDefaultValidators())
         ->setValidators($this->entity->getFieldValidators($fieldName));
-      $labels  = $this->getFieldLabels();
+      $labels = $this->getFieldLabels();
       if (\array_key_exists($fieldName, $labels)) {
         $elementCreator->setLabel($labels[$fieldName]);
         $elementCreator->setPlaceHolder($labels[$fieldName]);
@@ -191,18 +229,19 @@ class FormBuilder implements \Equ\EntityVisitor {
       $this->form->addElement($element);
       $this->form->setDefault($elementName, $metadata->getFieldValue($this->entity, $fieldName));
     }
+    return $this;
   }
 
   /**
-   * 
+   * Create elements to foreign fields.
+   * Default it try to cast related objects to string,
+   * so you should override __toString method in entities.
+   *
+   * @return FormBuilder
    */
   protected function createForeignElements() {
-    $metadata = $this->getEntityClassMetadata();
-    foreach ($metadata->associationMappings as $fieldName => $def) {
+    foreach ($this->getForeignElementIterator() as $fieldName => $def) {
       $elementName = $this->createElementName($fieldName);
-      if ($this->isIgnoredField($fieldName) || !$def['isOwningSide']) {
-        continue;
-      }
       $select = $this->getElementCreatorFactory()->createArrayCreator()->createElement($elementName);
       $select->addMultiOption('0', '');
       $targetMetaData = $this->entityManager->getClassMetadata($def['targetEntity']);
@@ -216,16 +255,20 @@ class FormBuilder implements \Equ\EntityVisitor {
       }
       $this->form->addElement($select);
       
-      $value = $metadata->getFieldValue($this->entity, $fieldName);
+      $value = $this->getEntityClassMetadata()->getFieldValue($this->entity, $fieldName);
       if ($value instanceof $def['targetEntity']) {
-        $targetMetaData = $this->entityManager->getClassMetadata(\get_class($value));
-        $this->form->setDefault($elementName, $targetMetaData->getFieldValue($value, $targetMetaData->getSingleIdentifierFieldName()));
+        $this->form->setDefault(
+          $elementName,
+          $targetMetaData->getFieldValue($value, $targetMetaData->getSingleIdentifierFieldName())
+        );
       }
     }
+    return $this;
   }
 
   /**
-   * 
+   * Create every elements and a submit button
+   * if form object is not a subform.
    */
   protected function createElements() {
     $this->createNormalElements();

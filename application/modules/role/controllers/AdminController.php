@@ -2,8 +2,6 @@
 class Role_AdminController extends \Equ\Controller {
 
   public function autocompleteAction() {
-    $this->_helper->viewRenderer->setNoRender();
-    $this->_helper->layout->disableLayout();
     $role = $this->_getParam("role", null);
     $role = substr($role, 0, -1); //fix : remove * at the end of the ID.
 
@@ -17,14 +15,9 @@ class Role_AdminController extends \Equ\Controller {
       ->setMaxResults(3)
       ->getQuery()
       ->getArrayResult();
-//    $results = array_push($results, array('id' => 0, 'role' => '---'));
-//    $results[] = array('id' => 0, 'role' => '---');
     if ($role == null) {
       array_unshift($results, array('id' => 0, 'role' => ''));
     }
-//    var_dump($results);
-//    exit;
-//    var_dump($results);
     $data = new Zend_Dojo_Data('id', $results);
 
     // Send our output
