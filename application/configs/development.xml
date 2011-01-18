@@ -9,7 +9,7 @@
   <parameters>
     <parameter key="cache.data.lifetime">10</parameter>
     <parameter key="cache.system.lifetime">10</parameter>
-    <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ArrayCache</parameter>
+<!--    <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ArrayCache</parameter>-->
     <parameter key="translate.logUntranslated">true</parameter>
   </parameters>
 </container>

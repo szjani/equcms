@@ -64,7 +64,7 @@
       	  <?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ')->render($mainMenuItem) ?>
       	</div>
       	<div id="submenu">
-      		<?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 1, 'maxDepth' => 1, 'onlyActiveBranch' => true)) ?>
+      		<?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('onlyActiveBranch' => true, 'renderParents' => false)) ?>
       	</div>
         <div class="clear"></div>
       	<?php echo $this->flashMessenger() ?>

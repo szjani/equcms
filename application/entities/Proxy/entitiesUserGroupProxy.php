@@ -150,6 +150,6 @@ class entitiesUserGroupProxy extends \entities\UserGroup implements \Doctrine\OR
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'parent', 'children', 'lft', 'rgt', 'roleResources', 'lvl', 'role', 'name');
+        return array('__isInitialized__', 'id', 'lft', 'rgt', 'lvl', 'role', 'name', 'parent', 'children', 'roleResources');
     }
 }

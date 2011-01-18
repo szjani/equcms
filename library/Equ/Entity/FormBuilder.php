@@ -3,6 +3,7 @@ namespace Equ\Entity;
 use Equ\Entity\ElementCreator;
 use Doctrine\ORM\EntityManager;
 use Equ\Entity\FormBuilder\NormalElementIterator;
+use Equ\Entity\FormBuilder\ForeignElementIterator;
 
 /**
  * Create form from entity
@@ -205,7 +206,7 @@ class FormBuilder implements \Equ\EntityVisitor {
    */
   public function getForeignElementIterator() {
     $associationMapping = new \ArrayObject($this->getEntityClassMetadata()->associationMappings);
-    return new NormalElementIterator($associationMapping->getIterator(), $this->getIgnoredFields());
+    return new ForeignElementIterator($associationMapping->getIterator(), $this->getIgnoredFields());
   }
 
   /**

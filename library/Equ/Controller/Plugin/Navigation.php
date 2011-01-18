@@ -9,8 +9,7 @@ class Navigation extends \Zend_Controller_Plugin_Abstract {
     }
     $container = \Zend_Controller_Front::getInstance()->getParam('bootstrap')->getContainer();
     $cache = $container->get('cache.system');
-    if ($navContainerArray = ($cache->load('navigation'))) {
-      $navContainer = new \Zend_Navigation($navContainerArray);
+    if ($navContainer = ($cache->load('navigation'))) {
       $container->set('navigation', $navContainer);
     } else {
       $navContainer = $container->get('navigation');
@@ -30,7 +29,7 @@ class Navigation extends \Zend_Controller_Plugin_Abstract {
         }
         $navContainer->addPage($mvc->getNavigationPage());
       }
-      $cache->save($navContainer->toArray(), 'navigation');
+      $cache->save($navContainer, 'navigation');
     }
 
     $view = \Zend_Layout::getMvcInstance()->getView();
