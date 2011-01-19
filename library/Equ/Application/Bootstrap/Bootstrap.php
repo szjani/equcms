@@ -18,8 +18,10 @@ class Bootstrap extends \Zend_Application_Bootstrap_Bootstrap {
         $container = new $name();
       } else {
         $container = ServiceContainerFactory::getContainer($options['container']);
-        $dumper = new DependencyInjection\Dumper\PhpDumper($container);
-        file_put_contents($file, $dumper->dump(array('class' => $name)));
+        if ($this->getEnvironment() !== 'development') {
+          $dumper = new DependencyInjection\Dumper\PhpDumper($container);
+          file_put_contents($file, $dumper->dump(array('class' => $name)));
+        }
       }
       $this->_container = $container;
       \Zend_Controller_Action_HelperBroker::addHelper(new ServiceContainer());
