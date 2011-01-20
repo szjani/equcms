@@ -39,7 +39,7 @@
    </parameters>
    
    <services>
-     <service id="acl" class="Equ\LazyAcl">
+     <service id="acl" class="library\LazyAcl">
        <argument type="service" id="doctrine.entitymanager" />
      </service>
      <service id="navigation" class="Zend_Navigation" />
