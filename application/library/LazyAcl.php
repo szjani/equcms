@@ -1,7 +1,7 @@
 <?php
-namespace Equ;
+namespace library;
 use Doctrine\ORM\EntityManager;
-use Equ\LazyAcl\RoleRegistry;
+use library\LazyAcl\RoleRegistry;
 use entities\Role;
 use entities\UserGroup;
 use entities\Resource;
@@ -50,12 +50,8 @@ class LazyAcl extends \Zend_Acl implements \Serializable {
    * @return boolean
    */
   public function isAllowed($role = null, $resource = null, $privilege = null) {
-//    if (!($resource instanceof Mvc)) {
-//      return parent::isAllowed($role, $resource, $privilege);
-//    }
     while ($resource !== null) {
       try {
-//        var_dump((string)$resource);
         return parent::isAllowed($role, $resource, $privilege);
       } catch (\Zend_Acl_Exception $e) {
         if (\substr($resource, 0, 4) !== 'mvc:') {
