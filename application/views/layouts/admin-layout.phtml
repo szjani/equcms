@@ -11,6 +11,24 @@
 <meta name="doc-type" content="Web Page" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<?php $this->headScript()->captureStart() ?>
+  $(document).ready(function() {
+    $("#mainMenu ul.navigation > li > a").click(function() {
+      $(this).attr('href', '#');
+      $(this).parent().toggleClass('open');
+    });
+  });
+<?php $this->headScript()->captureEnd() ?>
+<?php
+  $this->dojo()
+    ->setDjConfigOption('usePlainJson',true)
+    ->setDjConfigOption('locale', Zend_Controller_Front::getInstance()->getRequest()->getParam('lang'))
+    ->addStylesheetModule('dijit.themes.claro')
+    ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+    ->setCdnVersion('1.5')
+    ->requireModule('dojo.i18n');
+  echo $this->dojo();
+?>
 <?php
   $this->headScript()
     ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'text/javascript');
@@ -25,7 +43,7 @@
     $this->headStyle() .
     $this->headScript();
 
-  $mainMenuItem = $this->navigation()->findById('index_index');
+  $mainMenuItem = $this->navigation()->findById('index_admin');
 ?>
 </head>
 <body class="claro">

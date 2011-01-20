@@ -22,6 +22,12 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $frontController->registerPlugin(new \Equ\Controller\Plugin\AdminRoute(), 30);
   }
 
+  protected function _initAdminLayout() {
+    $this->bootstrap('frontController');
+    $frontController = $this->getResource('frontController');
+    $frontController->registerPlugin(new library\Controller\Plugin\AdminLayout());
+  }
+
   protected function _initLangPlugin() {
     Zend_Registry::set(Zend_Application_Resource_Locale::DEFAULT_REGISTRY_KEY, new Zend_Locale('hu_HU'));
     $this->bootstrap('frontController');
