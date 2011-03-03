@@ -99,5 +99,11 @@ abstract class Entity implements Entity\FormBase, \ArrayAccess {
     throw new Exception("ArrayAccess readonly!");
   }
 
+  /**
+   * @param ClassMetadata $metadata
+   */
+  public static function loadValidatorMetadata(ClassMetadata $metadata) {
+//    $metadata->addPropertyValidator('name', new \Zend_Validate_NotEmpty());
+  }
 
 }

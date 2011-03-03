@@ -1,5 +1,6 @@
 <?php
 namespace Equ\Entity;
+use Equ\Validatable;
 
 /**
  * To use CRUD you have to implement this interface in your entity class
@@ -10,7 +11,7 @@ namespace Equ\Entity;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-interface FormBase extends Visitable {
+interface FormBase extends Visitable, Validatable {
 
   /**
    * @paramt string $fieldName
