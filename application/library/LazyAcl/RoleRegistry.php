@@ -48,7 +48,7 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
       $role = $repo->findOneBy(array('role' => (string)$role));
     }
     if (!($role instanceof Role)) {
-      throw new Exception("Invalid role '{(string)$role}'");
+      return;
     }
     /* @var $role entities\Role */
     $nodes = $repo->getPath($role);
@@ -56,22 +56,22 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
     /* @var $node entities\Role */
     foreach ($nodes as $node) {
       $this->activeRole = (string)$node;
-      $parent = $node->getParent();
-      $this->add($node, ($parent === null) ? null : $parent);
-      $this->storePermissionsByDb($node);
+      if (!$this->has($node)) {
+        $parent = $node->getParent();
+        $this->add($node, $parent ?: null);
+        $this->storePermissionsByDb($node);
+      }
     }
-    return true;
   }
 
   public function has($role) {
-    $exists = parent::has($role);
-    if ($exists) {
-      return true;
+    if (!parent::has($role)) {
+      if ($this->activeRole === (string)$role) {
+        return false;
+      }
+      $this->storeRoleByDb($role);
     }
-    if ($this->activeRole === (string)$role) {
-      return false;
-    }
-    return $this->storeRoleByDb($role);
+    return parent::has($role);
   }
 
 }

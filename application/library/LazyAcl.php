@@ -54,7 +54,10 @@ class LazyAcl extends \Zend_Acl implements \Serializable {
       try {
         return parent::isAllowed($role, $resource, $privilege);
       } catch (\Zend_Acl_Exception $e) {
-        if (\substr($resource, 0, 4) !== 'mvc:') {
+        if ($resource instanceof \Zend_Acl_Resource_Interface) {
+          $resource = $resource->getResourceId();
+        }
+        if (\substr($resource, 0, 4) !== 'mvc:' || $resource == 'mvc:') {
           throw $e;
         } else {
           $parts = \explode('.', \substr($resource, 4));
