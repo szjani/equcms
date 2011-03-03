@@ -35,6 +35,11 @@
         <div class="grid_12" id="head">
         	<div id="logo" class="grid_3">
             <h1>EquCMS</h1>
+            <fb:login-button autologoutlink="true" perms="email"></fb:login-button>
+            <fb:like></fb:like>
+            <?php if (Zend_Auth::getInstance()->hasIdentity() && !(Zend_Auth::getInstance()->getIdentity() instanceof \modules\user\models\Anonymous)): ?>
+              <a href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout')) ?>">Logout</a>
+            <?php endif ?>
           </div>
       	</div>
       </div>
@@ -57,5 +62,25 @@
     <div class="container_12" id="poweredby">
     </div>
   </div>
+  <div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({appId: '129406290458108', status: true, cookie: true,
+             xfbml: true});
+  };
+  (function() {
+    var e = document.createElement('script');
+    e.type = 'text/javascript';
+    e.src = document.location.protocol +
+      '//connect.facebook.net/hu_HU/all.js';
+    e.async = true;
+    document.getElementById('fb-root').appendChild(e);
+  }());
+
+  // whenever the user logs in, we refresh the page
+//  FB.Event.subscribe('auth.login', function() {
+//  window.location.reload();
+//  });
+</script>
 </body>
 </html>
