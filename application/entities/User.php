@@ -1,5 +1,6 @@
 <?php
 namespace entities;
+use Equ\ClassMetadata;
 
 /**
  * User entity
@@ -10,7 +11,8 @@ namespace entities;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @Entity(repositoryClass="Gedmo\Tree\Repository\TreeNodeRepository")
+ * @gedmo:Tree(type="nested")
+ * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`user`")
  */
 class User extends Role {
@@ -57,7 +59,7 @@ class User extends Role {
       ->addFieldValidator('email', $emailValidator);
   }
 
-    /**
+  /**
    * Generates a random password
    *
    * @param int $length

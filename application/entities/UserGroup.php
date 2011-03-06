@@ -10,7 +10,8 @@ namespace entities;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @Entity(repositoryClass="Gedmo\Tree\Repository\TreeNodeRepository")
+ * @gedmo:Tree(type="nested")
+ * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`user_group`")
  */
 class UserGroup extends Role {

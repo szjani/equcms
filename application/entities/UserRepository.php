@@ -1,6 +1,6 @@
 <?php
 namespace entities;
-use Gedmo\Tree\Repository\TreeNodeRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Equ\Auth;
 
 /**
@@ -10,7 +10,7 @@ use Equ\Auth;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class UserRepository extends TreeNodeRepository implements RepositoryInterface {
+class UserRepository extends NestedTreeRepository implements RepositoryInterface {
 
   /**
    * @param string $credential
