@@ -11,7 +11,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @Entity(repositoryClass="Gedmo\Tree\Repository\TreeNodeRepository")
+ * @gedmo:Tree(type="nested")
+ * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`role`")
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
