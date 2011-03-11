@@ -211,7 +211,7 @@ abstract class AbstractCreator {
    */
   protected function createLabel(\Zend_Form_Element $element) {
     if ($this->getLabel() === null) {
-      $this->setLabel($this->getNamespace() . '/' . $element->getName());
+      $this->setLabel(ltrim($this->getNamespace() . '/' . $element->getName(), '/'));
     }
     $element->setLabel($this->getLabel());
     return $this;
