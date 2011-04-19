@@ -1,0 +1,35 @@
+<?php
+  $containerClass = array(
+    strtolower(substr($this->element->helper, 4)),
+    $this->element->isRequired() ? 'required' : 'optional'
+  );
+  if ($this->element->isRequired()) {
+    $containerClass[] = 'required';
+  }
+  if ($this->element->hasErrors()) {
+    $containerClass[] = 'error';
+  }
+  if ($this->element->getAttrib('disabled')) {
+    $containerClass[] = "disabled";
+  }
+  $this->element->getDecorator('Label')->setTag(null);
+  $this->element->getDecorator('Description')->setTag('div');
+?>
+<div class="<?php echo implode(' ', $containerClass) ?>" id="<?php echo $this->element->getName() ?>-element-wrapper">
+  <?php echo $this->element->renderLabel() ?>
+  <div class="element" id="<?php echo $this->element->getName() ?>-wrapper">
+    <?php echo $this->element->renderFile() ?>
+  </div>
+<?php echo $this->element->renderDescription() ?>
+<?php if ($this->element->hasErrors()): ?>
+  <div class="error-message">
+  <?php
+    echo $this->getHelper('formErrors')
+      ->setElementStart('<span>')
+      ->setElementEnd('</span>')
+      ->setElementSeparator('</span><span>')
+      ->formErrors($this->element->getMessages())
+  ?>
+  </div>
+<?php endif ?>
+</div>
