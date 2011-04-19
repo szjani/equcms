@@ -31,13 +31,17 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
     return $this->acl->getEntityManager();
   }
 
-  protected function storePermissionsByDb($role) {
+  protected function storePermissionsByDb(Role $role) {
+    $roleResources = $this->getEntityManager()
+      ->createQuery("SELECT rr, re FROM entities\RoleResource rr JOIN rr.resource re WHERE rr.role = :roleId")
+      ->setParameter('roleId', $role->getId())
+      ->getResult();
     /* @var $roleResource \entities\RoleResource */
-    foreach ($role->getRoleResources() as $roleResource) {
+    foreach ($roleResources as $roleResource) {
       if ($roleResource->isAllowed()) {
-        $this->acl->allow($roleResource->getRole(), $roleResource->getResource(), $roleResource->getPrivilege());
+        $this->acl->allow($role, $roleResource->getResource(), $roleResource->getPrivilege());
       } else {
-        $this->acl->deny($roleResource->getRole(), $roleResource->getResource(), $roleResource->getPrivilege());
+        $this->acl->deny($role, $roleResource->getResource(), $roleResource->getPrivilege());
       }
     }
   }
