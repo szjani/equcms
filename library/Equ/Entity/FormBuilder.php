@@ -182,7 +182,6 @@ class FormBuilder implements IEntityVisitor {
    */
   public function visitEntity(IFormBase $entity) {
     $this->entity = $entity;
-    $this->entity->init();
     $this->getElementCreatorFactory()->setNamespace(
       str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name)
     );

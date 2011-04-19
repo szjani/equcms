@@ -1,5 +1,7 @@
 <?php
 namespace Equ;
+use
+  Equ\DTO\IDTOVisitor;
 
 /**
  * DTO class

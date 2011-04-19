@@ -1,5 +1,8 @@
 <?php
 namespace Equ;
+use
+  Equ\Form\IFormVisitor,
+  Equ\Form\IVisitable;
 
 /**
  * Base form class
@@ -8,7 +11,7 @@ namespace Equ;
  * @category    Equ
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Form extends \Zend_Form implements Form\IVisitable {
+class Form extends \Zend_Form implements IVisitable {
 
   /**
    * @var mixed

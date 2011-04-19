@@ -120,7 +120,7 @@ class Service extends AbstractService implements ICrudService {
     if ($this->entity === null || $id != $this->getFieldValue($this->entity, $this->getIdentifierFieldName())) {
       if ($id === null) {
         $entity = $this->getEntityManager()->getClassMetadata($this->getEntityClass())->newInstance();
-        if ($entity instanceof \Equ\Entity\FormBase) {
+        if ($entity instanceof \Equ\Entity\IFormBase) {
           $entity->init();
         }
         $this->entity = $entity;
@@ -129,7 +129,7 @@ class Service extends AbstractService implements ICrudService {
         if (!$entity) {
           throw new Exception("Invalid id '$id'");
         }
-        if ($entity instanceof \Equ\Entity\FormBase) {
+        if ($entity instanceof \Equ\Entity\IFormBase) {
           $entity->init();
         }
         $this->entity = $entity;

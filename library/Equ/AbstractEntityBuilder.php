@@ -37,7 +37,7 @@ abstract class AbstractEntityBuilder {
   public function getEntity() {
     if ($this->entity === null) {
       $entity = $this->entityManager->getClassMetadata($this->entityClass)->newInstance();
-      if ($entity instanceof \Equ\Entity\FormBase) {
+      if ($entity instanceof \Equ\Entity\IFormBase) {
         $entity->init();
       }
       $this->entity = $entity;

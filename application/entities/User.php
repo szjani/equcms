@@ -51,7 +51,7 @@ class User extends Role {
   public function init() {
     $emailValidator = new \Zend_Validate_EmailAddress();
     try {
-      $emailValidator->setValidateMx(true);
+//      $emailValidator->setValidateMx(true);
     } catch (\Zend_Validate_Exception $e) {}
     
     $this
