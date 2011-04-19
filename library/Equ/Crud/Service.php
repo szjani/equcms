@@ -1,10 +1,13 @@
 <?php
 namespace Equ\Crud;
-use Doctrine\ORM\EntityManager;
-use Equ\DTO\EntityBuilder;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-use Equ\DTO;
+use
+  Doctrine\ORM\EntityManager,
+  Equ\DTO\EntityBuilder,
+  Doctrine\ORM\Query,
+  Doctrine\ORM\QueryBuilder,
+  Equ\DTO,
+  Equ\AbstractService,
+  Equ\Crud\IService as ICrudService;
 
 /**
  * Service class to CRUD methods
@@ -15,7 +18,7 @@ use Equ\DTO;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Service extends \Equ\AbstractService implements IService {
+class Service extends AbstractService implements ICrudService {
 
   /**
    * @var \Equ\Entity\Visitable

@@ -1,7 +1,8 @@
 <?php
-use Equ\Crud\Controller;
-use modules\mvc\plugins\MvcFormBuilder;
-use Equ\Entity\ElementCreator\Dojo;
+use
+  Equ\Crud\AbstractController,
+  modules\mvc\plugins\MvcFormBuilder,
+  Equ\Form\ElementCreator\Dojo;
 
 /**
  * Mvc controller. You can manage module/controller/action records.
@@ -12,7 +13,7 @@ use Equ\Entity\ElementCreator\Dojo;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Mvc_AdminController extends Controller {
+class Mvc_AdminController extends AbstractController {
 
   /**
    * @var array

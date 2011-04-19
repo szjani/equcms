@@ -1,5 +1,5 @@
 <?php
-class IndexController extends \Equ\Controller {
+class IndexController extends \Equ\AbstractController {
   public function indexAction() {
   }
 }

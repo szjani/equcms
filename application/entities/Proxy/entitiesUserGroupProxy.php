@@ -93,7 +93,7 @@ class entitiesUserGroupProxy extends \entities\UserGroup implements \Doctrine\OR
         return parent::init();
     }
 
-    public function accept(\Equ\EntityVisitor $visitor)
+    public function accept(\Equ\Entity\IEntityVisitor $visitor)
     {
         $this->_load();
         return parent::accept($visitor);

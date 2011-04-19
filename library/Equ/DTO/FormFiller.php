@@ -1,6 +1,5 @@
 <?php
 namespace Equ\DTO;
-use Equ\DTOVisitor;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -9,7 +8,7 @@ use Equ\DTOVisitor;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class FormFiller implements DTOVisitor {
+class FormFiller implements IDTOVisitor {
 
   /**
    * @var \Zend_Form

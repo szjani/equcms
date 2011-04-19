@@ -2,14 +2,13 @@
 namespace services;
 use Equ\Crud\Service;
 use plugins\UserEntityBuilder;
+use Equ\Auth\DoctrineAdapter;
 
 /**
  * User service class
  *
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @link        $Link$
- * @since       0.1
- * @version     $Revision$
+ * @category    services
  * @author      Szurovecz János <szjani@szjani.hu>
  */
 class User extends Service {
@@ -23,12 +22,14 @@ class User extends Service {
   }
 
   /**
+   * Login user
+   *
    * @param string $email
    * @param string $password
    */
   public function login($email, $password) {
     try {
-      $authAdapter = new \Equ\Auth\DoctrineAdapter(
+      $authAdapter = new DoctrineAdapter(
         $this->getEntityManager()->getRepository($this->getEntityClass()),
         $email,
         $password
@@ -36,6 +37,18 @@ class User extends Service {
       if (!Zend_Auth::getInstance()->authenticate($authAdapter)->isValid()) {
         throw new Exception("Unsuccess authentication. E-mail: '$email'");
       }
+    } catch (Exception $e) {
+      $this->getLog()->err($e);
+      throw $e;
+    }
+  }
+
+  /**
+   * Logout authenticated user
+   */
+  public function logout() {
+    try {
+      Zend_Auth::getInstance()->clearIdentity();
     } catch (Exception $e) {
       $this->getLog()->err($e);
       throw $e;

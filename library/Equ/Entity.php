@@ -1,5 +1,8 @@
 <?php
 namespace Equ;
+use
+  Equ\Entity\IFormBase,
+  Equ\Entity\IEntityVisitor;
 
 /**
  * Abstract entity class
@@ -12,7 +15,7 @@ namespace Equ;
  * @MappedSuperclass
  * @HasLifecycleCallbacks
  */
-abstract class Entity implements Entity\FormBase, \ArrayAccess {
+abstract class Entity implements IFormBase, \ArrayAccess {
 
   private $fieldValidators = array();
   
@@ -23,9 +26,9 @@ abstract class Entity implements Entity\FormBase, \ArrayAccess {
   public function init() {}
   
   /**
-   * @see Equ\Entity.Visitable::accept()
+   * @see Equ\Entity.IVisitable::accept()
    */
-  public function accept(EntityVisitor $visitor) {
+  public function accept(IEntityVisitor $visitor) {
     $visitor->visitEntity($this);
   }
   

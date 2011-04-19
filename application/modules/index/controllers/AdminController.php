@@ -1,5 +1,5 @@
 <?php
-class AdminController extends \Equ\Controller {
+class AdminController extends \Equ\AbstractController {
 
   public function indexAction() {
 //    $route = $this->getFrontController()->getRouter()->getCurrentRouteName();

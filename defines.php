@@ -20,7 +20,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
   realpath(APPLICATION_PATH),
   realpath(APPLICATION_PATH . '/../library'),
   '/home/szjani/development/php/libs/ZF/1.11/library',
-  '/home/szjani/development/php/libs/Doctrine-2.0',
+  '/home/szjani/development/php/libs/doctrine2-orm/lib',
   '/home/szjani/development/php/libs/beberlei/DoctrineExtensions/lib',
   '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions/lib',
 //  '/development/Frameworks/ZF_1.11_svn/library',

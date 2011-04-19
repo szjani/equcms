@@ -1,5 +1,6 @@
 <?php
 namespace Equ\Form;
+use Equ\AbstractEntityBuilder;
 
 /**
  * Create entity from form
@@ -10,7 +11,7 @@ namespace Equ\Form;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class EntityBuilder extends \Equ\EntityBuilder implements \Equ\FormVisitor {
+class EntityBuilder extends AbstractEntityBuilder implements IFormVisitor {
 
   /**
    * @var \Zend_Form

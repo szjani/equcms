@@ -1,7 +1,8 @@
 <?php
 namespace Equ\Crud;
-use Equ\DTO;
-use Doctrine\ORM\Query;
+use
+  Equ\DTO,
+  Doctrine\ORM\Query;
 
 /**
  * Interface for CRUD service.

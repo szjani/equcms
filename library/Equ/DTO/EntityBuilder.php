@@ -1,6 +1,6 @@
 <?php
 namespace Equ\DTO;
-use Equ\DTOVisitor;
+use Equ\AbstractEntityBuilder;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -9,7 +9,7 @@ use Equ\DTOVisitor;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class EntityBuilder extends \Equ\EntityBuilder implements DTOVisitor {
+class EntityBuilder extends AbstractEntityBuilder implements IDTOVisitor {
 
   /**
    * @var DTO

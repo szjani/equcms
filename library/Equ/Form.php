@@ -8,7 +8,7 @@ namespace Equ;
  * @category    Equ
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Form extends \Zend_Form implements Form\Visitable {
+class Form extends \Zend_Form implements Form\IVisitable {
 
   /**
    * @var mixed
@@ -18,7 +18,7 @@ class Form extends \Zend_Form implements Form\Visitable {
   /**
    * @param FormVisitor $visitor
    */
-  public function accept(FormVisitor $visitor) {
+  public function accept(IFormVisitor $visitor) {
     $visitor->visitForm($this);
   }
 

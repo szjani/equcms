@@ -1,6 +1,15 @@
 <?php
 namespace modules\user\forms;
 
+/**
+ * Login form
+ *
+ * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * @category    modules
+ * @package     user
+ * @subpackage  forms
+ * @author      Szurovecz János <szjani@szjani.hu>
+ */
 class Login extends \Zend_Form {
 
   public function init() {

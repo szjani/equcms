@@ -1,9 +1,10 @@
 <?php
-use Equ\Crud\Controller;
-use modules\permission\plugins\CrudFormBuilder;
-use Equ\Entity\ElementCreator\Dojo;
+use
+  Equ\Crud\AbstractController,
+  modules\permission\plugins\CrudFormBuilder,
+  Equ\Form\ElementCreator\Dojo;
 
-class Permission_AdminController extends Controller {
+class Permission_AdminController extends AbstractController {
 
   protected $useFilterForm = false;
 

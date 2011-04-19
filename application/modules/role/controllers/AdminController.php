@@ -1,5 +1,5 @@
 <?php
-class Role_AdminController extends \Equ\Controller {
+class Role_AdminController extends \Equ\AbstractController {
 
   public function autocompleteAction() {
     $role = $this->_getParam("role", null);

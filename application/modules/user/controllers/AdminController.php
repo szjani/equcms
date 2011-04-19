@@ -1,10 +1,11 @@
 <?php
-use Equ\Crud\Controller;
-use modules\user\plugins\UserFormBuilder;
-use modules\user\plugins\UserFilterFormBuilder;
-use Equ\Entity\ElementCreator\Dojo\Factory;
+use
+  Equ\Crud\AbstractController,
+  modules\user\plugins\UserFormBuilder,
+  modules\user\plugins\UserFilterFormBuilder,
+  Equ\Form\ElementCreator\Dojo\Factory;
 
-class User_AdminController extends Controller {
+class User_AdminController extends AbstractController {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
 

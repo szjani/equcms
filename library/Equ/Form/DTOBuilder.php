@@ -1,7 +1,8 @@
 <?php
 namespace Equ\Form;
-use Equ\DTO;
-use Equ\Entity\FormBuilder;
+use
+  Equ\DTO,
+  Equ\Entity\FormBuilder;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -10,7 +11,7 @@ use Equ\Entity\FormBuilder;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class DTOBuilder implements \Equ\FormVisitor {
+class DTOBuilder implements IFormVisitor {
 
   /**
    * @var DTO

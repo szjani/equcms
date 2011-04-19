@@ -1,9 +1,10 @@
 <?php
-use Equ\Crud\Controller;
-use modules\group\plugins\CrudFormBuilder;
-use Equ\Entity\ElementCreator\Dojo;
+use
+  Equ\Crud\AbstractController,
+  modules\group\plugins\CrudFormBuilder,
+  Equ\Form\ElementCreator\Dojo;
 
-class Group_AdminController extends Controller {
+class Group_AdminController extends AbstractController {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
 

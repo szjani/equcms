@@ -1,9 +1,11 @@
 <?php
 namespace Equ\Entity;
-use Equ\Entity\ElementCreator;
-use Doctrine\ORM\EntityManager;
-use Equ\Entity\FormBuilder\NormalElementIterator;
-use Equ\Entity\FormBuilder\ForeignElementIterator;
+use
+  Equ\Form\ElementCreator,
+  Doctrine\ORM\EntityManager,
+  Equ\Entity\FormBuilder\NormalElementIterator,
+  Equ\Entity\FormBuilder\ForeignElementIterator,
+  Equ\Entity\IFormBase;
 
 /**
  * Create form from entity
@@ -14,7 +16,7 @@ use Equ\Entity\FormBuilder\ForeignElementIterator;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class FormBuilder implements \Equ\EntityVisitor {
+class FormBuilder implements IEntityVisitor {
 
   const ELEMENT_PREFIX = 'f_';
 
@@ -29,14 +31,14 @@ class FormBuilder implements \Equ\EntityVisitor {
   protected $entityManager;
 
   /**
-   * @var \Equ\Entity\FormBase
+   * @var \Equ\Entity\IFormBase
    */
   protected $entity;
 
   protected $metaData = null;
 
   /**
-   * @var ElementCreator\Factory
+   * @var ElementCreator\IFactory
    */
   protected $elementCreatorFactory = null;
 
@@ -105,16 +107,16 @@ class FormBuilder implements \Equ\EntityVisitor {
   }
 
   /**
-   * @param ElementCreator\Factory $factory
+   * @param ElementCreator\IFactory $factory
    * @return FormBuilder
    */
-  public function setElementCreatorFactory(ElementCreator\Factory $factory) {
+  public function setElementCreatorFactory(ElementCreator\IFactory $factory) {
     $this->elementCreatorFactory = $factory;
     return $this;
   }
 
   /**
-   * @return ElementCreator\Factory
+   * @return ElementCreator\IFactory
    */
   public function getElementCreatorFactory() {
     if ($this->elementCreatorFactory === null) {
@@ -176,10 +178,11 @@ class FormBuilder implements \Equ\EntityVisitor {
   /**
    * You can build form from entity by this method
    * 
-   * @param \Equ\Entity\FormBase $entity
+   * @param IFormBase $entity
    */
-  public function visitEntity(\Equ\Entity\FormBase $entity) {
+  public function visitEntity(IFormBase $entity) {
     $this->entity = $entity;
+    $this->entity->init();
     $this->getElementCreatorFactory()->setNamespace(
       str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name)
     );

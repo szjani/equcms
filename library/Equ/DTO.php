@@ -123,9 +123,9 @@ class DTO implements \IteratorAggregate, \ArrayAccess, \Countable {
   }
 
   /**
-   * @param DTOVisitor $visitor
+   * @param IDTOVisitor $visitor
    */
-  public function accept(DTOVisitor $visitor) {
+  public function accept(IDTOVisitor $visitor) {
     $visitor->visitDTO($this);
   }
   

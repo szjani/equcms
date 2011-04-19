@@ -1,7 +1,8 @@
 <?php
 namespace Equ\Controller\Request;
-use Equ\DTO;
-use Equ\Entity\FormBuilder;
+use
+  Equ\DTO,
+  Equ\Entity\FormBuilder;
 
 class FilterDTOBuilder implements IDTOVisitor {
 

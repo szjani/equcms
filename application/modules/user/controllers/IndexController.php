@@ -4,7 +4,6 @@ use modules\user\forms\Login;
 class User_IndexController extends \Equ\Controller {
 
   public function loginAction() {
-    throw new \Exception('teswt');
     $form = new Login();
     try {
       if ( $this->_request->isPost()) {

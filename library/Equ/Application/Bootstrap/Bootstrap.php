@@ -1,8 +1,9 @@
 <?php
 namespace Equ\Application\Bootstrap;
-use Symfony\Component\DependencyInjection;
-use Equ\Symfony\Component\ServiceContainerFactory;
-use Equ\Controller\Action\Helper\ServiceContainer;
+use
+  Symfony\Component\DependencyInjection,
+  Equ\Symfony\Component\ServiceContainerFactory,
+  Equ\Controller\Action\Helper\ServiceContainer;
 
 class Bootstrap extends \Zend_Application_Bootstrap_Bootstrap {
 
