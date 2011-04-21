@@ -7,7 +7,9 @@ use
   Doctrine\ORM\QueryBuilder,
   Equ\DTO,
   Equ\AbstractService,
-  Equ\Crud\IService as ICrudService;
+  Equ\Crud\IService as ICrudService,
+  Equ\Crud\Exception\InvalidArgumentException,
+  Equ\Crud\Exception\UnexpectedValueException;
 
 /**
  * Service class to CRUD methods
@@ -110,9 +112,9 @@ class Service extends AbstractService implements ICrudService {
 
   /**
    * Retrieves the entity identified by $id, or a new one.
-   * If $id is incorrect, throws an exception.
+   * If $id is incorrect, throws an UnexpectedValueException.
    *
-   * @throws Exception
+   * @throws UnexpectedValueException
    * @param int $id
    * @return \Equ\Entity\Visitable
    */
@@ -127,7 +129,7 @@ class Service extends AbstractService implements ICrudService {
       } else {
         $entity = $this->getEntityManager()->getRepository($this->getEntityClass())->find($id);
         if (!$entity) {
-          throw new Exception("Invalid id '$id'");
+          throw new UnexpectedValueException("Invalid id '$id'");
         }
         if ($entity instanceof \Equ\Entity\IFormBase) {
           $entity->init();
@@ -178,7 +180,7 @@ class Service extends AbstractService implements ICrudService {
     try {
       $this->preUpdate($id, $dto);
       if ($id === null) {
-        throw new Exception("Invalid id '$id'");
+        throw new UnexpectedValueException("Invalid id '$id'");
       }
       $entity = $this->getEntity($id);
       $entityBuilder = $this->getEntityBuilder();
@@ -208,7 +210,7 @@ class Service extends AbstractService implements ICrudService {
     try {
       $this->preDelete($id);
       if ($id === null) {
-        throw new Exception("Invalid id '$id'");
+        throw new UnexpectedValueException("Invalid id '$id'");
       }
       $entity = $this->getEntity($id);
       $em->remove($entity);

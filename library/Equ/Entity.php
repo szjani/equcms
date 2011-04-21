@@ -2,7 +2,9 @@
 namespace Equ;
 use
   Equ\Entity\IFormBase,
-  Equ\Entity\IEntityVisitor;
+  Equ\Entity\IEntityVisitor,
+  Equ\Exception\RuntimeException,
+  Equ\Exception\BadMethodCallException;
 
 /**
  * Abstract entity class
@@ -76,7 +78,7 @@ abstract class Entity implements IFormBase, \ArrayAccess {
       /* @var $validator \Zend_Validate_Abstract */
       foreach ($this->getFieldValidators($field) as $validator) {
         if (!$validator->isValid($this->$field)) {
-          throw new Exception(implode(PHP_EOL, $validator->getMessages()));
+          throw new RuntimeException(implode(PHP_EOL, $validator->getMessages()));
         }
       }
     }
@@ -95,11 +97,11 @@ abstract class Entity implements IFormBase, \ArrayAccess {
   }
 
   public function offsetSet($offset, $value) {
-    throw new Exception("ArrayAccess readonly!");
+    throw new BadMethodCallException("ArrayAccess readonly!");
   }
 
   public function offsetUnset($offset) {
-    throw new Exception("ArrayAccess readonly!");
+    throw new BadMethodCallException("ArrayAccess readonly!");
   }
 
   /**

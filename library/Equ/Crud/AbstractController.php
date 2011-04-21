@@ -4,7 +4,10 @@ use
   Doctrine\ORM\EntityManager,
   Equ\Entity\FormBuilder,
   Equ\Controller\Request\FilterDTOBuilder,
-  Equ\Message;
+  Equ\Message,
+  Equ\Crud\Exception\InvalidArgumentException,
+  Equ\Crud\Exception\UnexpectedValueException,
+  Equ\Crud\Exception\RuntimeException;
 
 /**
  * Controller of CRUD operations
@@ -156,7 +159,7 @@ abstract class AbstractController extends \Equ\AbstractController {
     if (!\array_key_exists($id, $this->cuForms) || $refresh) {
       $entity = $this->getCrudService()->getEntity($id);
       if (!($entity instanceof \Equ\Entity\IVisitable)) {
-        throw new Exception("Entity must implements '\Equ\Entity\IVisitable' interface");
+        throw new InvalidArgumentException("Entity must implements '\Equ\Entity\IVisitable' interface");
       }
       $formBuilder = $this->getMainFormBuilder();
       $formBuilder->setForm($this->createEmptyForm());
@@ -176,12 +179,12 @@ abstract class AbstractController extends \Equ\AbstractController {
     if ($this->filterForm === null || $refresh) {
       $entity      = $this->getCrudService()->getEntity();
       if (!($entity instanceof \Equ\Entity\IVisitable)) {
-        throw new Exception("Entity must implements '\Equ\Entity\IVisitable' interface");
+        throw new InvalidArgumentException("Entity must implements '\Equ\Entity\IVisitable' interface");
       }
       $formBuilder = $this->getFilterFormBuilder();
       $formBuilder
         ->disableForeignElements()
-        ->createDefaultValidators(false)
+        ->disableExplicitValidators(true)
         ->setForm($this->createEmptyForm())
         ->getElementCreatorFactory()->usePlaceHolders();
       $entity->accept($formBuilder);
@@ -243,7 +246,7 @@ abstract class AbstractController extends \Equ\AbstractController {
     try {
       if ($this->_request->isPost()) {
         if (!$form->isValid($this->_request->getPost())) {
-          throw new \Exception('Invalid values in form');
+          throw new RuntimeException('Invalid values in form');
         }
         $dtoBuilder = new \Equ\Form\DTOBuilder();
         $form->accept($dtoBuilder);
@@ -270,7 +273,7 @@ abstract class AbstractController extends \Equ\AbstractController {
       $form = $this->getCUForm($id);
       if ($this->_request->isPost()) {
         if (!$form->isValid($this->_request->getPost())) {
-          throw new \Exception('Invalid values in form');
+          throw new RuntimeException('Invalid values in form');
         }
         $dtoBuilder = new \Equ\Form\DTOBuilder();
         $form->accept($dtoBuilder);

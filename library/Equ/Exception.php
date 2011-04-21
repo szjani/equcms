@@ -1,4 +1,4 @@
 <?php
 namespace Equ;
 
-class Exception extends \Exception {}
+interface Exception {}

@@ -18,9 +18,9 @@ interface IService {
 
   /**
    * Retrieves the entity identified by $id, or a new one.
-   * If $id is incorrect, throws an exception.
+   * If $id is incorrect, throws an UnexpectedValueException.
    *
-   * @throws Exception
+   * @throws UnexpectedValueException
    * @param int $id
    * @return object
    */

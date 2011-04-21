@@ -3,11 +3,12 @@
 namespace Equ\Doctrine\FileStore;
 
 use
-Doctrine\ORM\Events,
- Doctrine\Common\EventArgs,
- Doctrine\ORM\Event\PreUpdateEventArgs,
- Doctrine\Common\Persistence\ObjectManager,
- Gedmo\Mapping\MappedEventSubscriber;
+  Doctrine\ORM\Events,
+  Doctrine\Common\EventArgs,
+  Doctrine\ORM\Event\PreUpdateEventArgs,
+  Doctrine\Common\Persistence\ObjectManager,
+  Gedmo\Mapping\MappedEventSubscriber,
+  Equ\Exception\InvalidArgumentException;
 
 class FileStoreListener extends MappedEventSubscriber {
 
@@ -128,7 +129,7 @@ class FileStoreListener extends MappedEventSubscriber {
       $meta->getReflectionProperty($config['originalFilename'])->setValue($entity, basename($filename));
     }
     if (!file_exists($filename)) {
-      throw new \InvalidArgumentException("'$filename' have to be an existing file");
+      throw new InvalidArgumentException("'$filename' have to be an existing file");
     }
     $extension = pathinfo($filename, \PATHINFO_EXTENSION);
     $newFilename = md5($filename . time() . mt_rand()) . '.' . $extension;

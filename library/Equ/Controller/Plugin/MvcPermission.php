@@ -1,5 +1,6 @@
 <?php
 namespace Equ\Controller\Plugin;
+use Equ\Controller\Exception\RuntimeException;
 
 /**
  * Check that user have or don't have permission to view current page
@@ -22,9 +23,9 @@ class MvcPermission extends \Zend_Controller_Plugin_Abstract {
       $container = \Zend_Controller_Front::getInstance()->getParam('bootstrap')->getContainer();
       $resource = 'mvc:'.$request->getModuleName().'.'.$request->getControllerName().'.'.$request->getActionName();
       if (!$container->get('acl')->isAllowed($user, $resource)) {
-        throw new \Exception("You don't have permission to view this page!");
+        throw new RuntimeException("You don't have permission to view this page!");
       }
-    } catch (\Exception $e) {
+    } catch (RuntimeException $e) {
       $request
         ->setModuleName('index')
         ->setControllerName('error')

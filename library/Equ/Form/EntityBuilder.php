@@ -1,6 +1,8 @@
 <?php
 namespace Equ\Form;
-use Equ\AbstractEntityBuilder;
+use
+  Equ\AbstractEntityBuilder,
+  Equ\Form\Exception\RuntimeException;
 
 /**
  * Create entity from form
@@ -38,7 +40,7 @@ class EntityBuilder extends AbstractEntityBuilder implements IFormVisitor {
             $relatedClass = $metadata->associationMappings[$name]['targetEntity'];
             $targetEntity = $this->entityManager->getReference($relatedClass, $value);
             if (!isset($targetEntity)) {
-              throw new \Equ\Exception("Invalid '$relatedClass' id: $value");
+              throw new RuntimeException("Invalid '$relatedClass' id: $value");
             }
           }
           $this->getEntity()->$setterMethod($targetEntity);

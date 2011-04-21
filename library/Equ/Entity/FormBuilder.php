@@ -25,6 +25,23 @@ class FormBuilder implements IEntityVisitor {
    */
   private $form;
 
+  private $metaData = null;
+
+  /**
+   * @var ElementCreator\IFactory
+   */
+  private $elementCreatorFactory = null;
+
+  private $fieldElementCreators = array();
+
+  private $disableDefaultValidators = false;
+
+  private $disabledForeignElements = false;
+
+  protected $ignoredFields = array();
+
+  protected $fieldLabels = array();
+  
   /**
    * @var EntityManager
    */
@@ -34,43 +51,65 @@ class FormBuilder implements IEntityVisitor {
    * @var \Equ\Entity\IFormBase
    */
   protected $entity;
-
-  protected $metaData = null;
-
+  
   /**
-   * @var ElementCreator\IFactory
+   * @param EntityManager $em
+   * @param \Zend_Form $form
    */
-  protected $elementCreatorFactory = null;
-
-  protected $fieldElementCreators = array();
-
-  protected $createDefaultValidators = true;
-
-  protected $disabledForeignElements = false;
-
-  protected $ignoredFields = array();
-
-  protected $fieldLabels = array();
-
-  public function isCreateDefaultValidators() {
-    return $this->createDefaultValidators;
+  public function __construct(EntityManager $em, $disableDefaultValidators = false) {
+    $this->entityManager = $em;
+    $this->disableDefaultValidators = $disableDefaultValidators;
   }
 
-  public function createDefaultValidators($bool = true) {
-    $this->createDefaultValidators = $bool;
+  /**
+   * @see disableExplicitValidators()
+   * @return boolean
+   */
+  public function isDisabledDefaultValidators() {
+    return $this->disableDefaultValidators;
+  }
+
+  /**
+   * Entity's fields can impact some explicit validators like
+   *  - StringLenght
+   *  - Nullable
+   * 
+   * You can disable it.
+   *
+   * @param boolean $bool
+   * @return FormBuilder 
+   */
+  public function disableExplicitValidators($bool = true) {
+    $this->disableDefaultValidators = $bool;
     return $this;
   }
 
+  /**
+   * Retrieves the prefixed name of field for form element's name attribute.
+   * It is usefull to use fields like 'module', 'controller', 'action'
+   * because without the prefix the URL parameters will be overwritten.
+   * 
+   * @param string $fieldName
+   * @return string
+   */
   public function createElementName($fieldName) {
     return self::ELEMENT_PREFIX . $fieldName;
   }
 
+  /**
+   * You can disable foreign element generation
+   * 
+   * @param boolean $disable
+   * @return FormBuilder 
+   */
   public function disableForeignElements($disable = true) {
     $this->disabledForeignElements = (boolean)$disable;
     return $this;
   }
 
   /**
+   * You can specify which element creator you want to use for the given field
+   * 
    * @param string $fieldName
    * @param ElementCreator\AbstractCreator $creator
    * @return FormBuilder
@@ -133,19 +172,12 @@ class FormBuilder implements IEntityVisitor {
     return $this->fieldLabels;
   }
 
-  protected function preVisit() {}
-  protected function postVisit() {}
-
   /**
-   * @param EntityManager $em
-   * @param \Zend_Form $form
-   */
-  public function __construct(EntityManager $em, $createDefaultValidators = true) {
-    $this->entityManager = $em;
-    $this->createDefaultValidators = $createDefaultValidators;
-  }
-
-  /**
+   * Retrieves the output form. If you call it before visit()
+   * the form will empty.
+   * Basically the form object will be an \Equ\Form instance
+   * but you can overwrite this functionality in the extended class.
+   * 
    * @return \Equ\Form
    */
   public function getForm() {
@@ -164,6 +196,12 @@ class FormBuilder implements IEntityVisitor {
     return $this;
   }
 
+  /**
+   * Checks that a field is ignored or not
+   * 
+   * @param string $field
+   * @return boolean
+   */
   public function isIgnoredField($field) {
     return \in_array($field, $this->getIgnoredFields());
   }
@@ -174,24 +212,10 @@ class FormBuilder implements IEntityVisitor {
     }
     return $this->metaData;
   }
-
-  /**
-   * You can build form from entity by this method
-   * 
-   * @param IFormBase $entity
-   */
-  public function visitEntity(IFormBase $entity) {
-    $this->entity = $entity;
-    $this->getElementCreatorFactory()->setNamespace(
-      str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name)
-    );
-    $this->preVisit();
-    $this->createElements();
-    $this->postVisit();
-  }
-
+  
   /**
    * FilterIterator that retrieves fields to generate form elements
+   * to field in the entity
    *
    * @return NormalElementIterator
    */
@@ -210,10 +234,53 @@ class FormBuilder implements IEntityVisitor {
     $associationMapping = new \ArrayObject($this->getEntityClassMetadata()->associationMappings);
     return new ForeignElementIterator($associationMapping->getIterator(), $this->getIgnoredFields());
   }
+  
+  /**
+   * Hook method, it will be called before visit() method.
+   * You can modify this object before form creation.
+   */
+  protected function preVisit() {}
+  
+  /**
+   * Hook method, it will be called after visit() method.
+   * You can modify this object after form creation.
+   */
+  protected function postVisit() {}
 
   /**
-   * Create form element with iterator
-   *
+   * You can build form from entity by this method
+   * 
+   * @param IFormBase $entity
+   */
+  public function visitEntity(IFormBase $entity) {
+    $this->entity = $entity;
+    $this->getElementCreatorFactory()->setNamespace(
+      str_replace(array('\\', '_'), '/', $this->getEntityClassMetadata()->name)
+    );
+    $this->preVisit();
+    $this->createElements();
+    $this->postVisit();
+  }
+  
+  /**
+   * Create every elements and a submit button
+   * if form object is not a subform.
+   */
+  protected function createElements() {
+    $this->createNormalElements();
+    if (!$this->disabledForeignElements) {
+      $this->createForeignElements();
+    }
+    if (!($this->form instanceof \Zend_Form_SubForm)) {
+      $save = $this->getElementCreatorFactory()->createSubmitCreator()->createElement('save');
+      $save->setOrder(100);
+      $this->form->addElement($save);
+    }
+  }
+
+  /**
+   * Create form elements with iterator
+   * 
    * @return FormBuilder
    */
   protected function createNormalElements() {
@@ -221,7 +288,7 @@ class FormBuilder implements IEntityVisitor {
     foreach ($this->getNormalElementIterator() as $fieldName => $def) {
       $elementName = $this->createElementName($fieldName);
       $elementCreator = $this->getElementCreator($def)
-        ->setFlag(ElementCreator\AbstractCreator::EXPLICIT_VALIDATORS, $this->isCreateDefaultValidators())
+        ->setFlag(ElementCreator\AbstractCreator::EXPLICIT_VALIDATORS, !$this->isDisabledDefaultValidators())
         ->setValidators($this->entity->getFieldValidators($fieldName));
       $labels = $this->getFieldLabels();
       if (\array_key_exists($fieldName, $labels)) {
@@ -267,22 +334,6 @@ class FormBuilder implements IEntityVisitor {
       }
     }
     return $this;
-  }
-
-  /**
-   * Create every elements and a submit button
-   * if form object is not a subform.
-   */
-  protected function createElements() {
-    $this->createNormalElements();
-    if (!$this->disabledForeignElements) {
-      $this->createForeignElements();
-    }
-    if (!($this->form instanceof \Zend_Form_SubForm)) {
-      $save = $this->getElementCreatorFactory()->createSubmitCreator()->createElement('save');
-      $save->setOrder(100);
-      $this->form->addElement($save);
-    }
   }
 
 }

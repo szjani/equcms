@@ -1,5 +1,6 @@
 <?php
 namespace Equ\Controller\Plugin;
+use Equ\Controller\Exception\UnexpectedValueException;
 
 class Language extends \Zend_Controller_Plugin_Abstract {
 
@@ -56,7 +57,7 @@ class Language extends \Zend_Controller_Plugin_Abstract {
 
       // there is az invalid lang param in request
       if (isset($origLang)) {
-        throw new \Exception("Invalid language '$origLang'");
+        throw new UnexpectedValueException("Invalid language '$origLang'");
       }
     }
     

@@ -1,4 +1,4 @@
 <?php
-namespace Equ\Crud;
+namespace Equ\Form;
 
 interface Exception extends \Equ\Exception {}

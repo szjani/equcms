@@ -1,6 +1,8 @@
 <?php
 namespace Equ\DTO;
-use Equ\AbstractEntityBuilder;
+use
+  Equ\AbstractEntityBuilder,
+  Equ\DTO\Exception\RuntimeException;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -35,7 +37,7 @@ class EntityBuilder extends AbstractEntityBuilder implements IDTOVisitor {
             $relatedClass = $metadata->associationMappings[$name]['targetEntity'];
             $targetEntity = $this->entityManager->getReference($relatedClass, $value);
             if (!isset($targetEntity)) {
-              throw new \Equ\Exception("Invalid '$relatedClass' id: $value");
+              throw new RuntimeException("Invalid '$relatedClass' id: $value");
             }
           }
           $this->getEntity()->$setterMethod($targetEntity);

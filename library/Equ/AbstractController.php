@@ -17,7 +17,7 @@ abstract class AbstractController extends \Zend_Controller_Action {
     $flashMessenger = $this->_helper->getHelper('flashMessenger');
     $flashMessenger->setNamespace($namespace);
     $messageObj = null;
-    if ($message instanceof Exception) {
+    if ($message instanceof \Exception) {
       $messageObj = new Message($message->getMessage(), Message::ERROR);
     } else {
       $messageObj = new Message($message, $type);

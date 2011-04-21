@@ -47,7 +47,7 @@ class DoctrineAdapter implements \Zend_Auth_Adapter_Interface {
     try {
       $user = $this->repository->authenticate($this->credential, $this->password);
       $result = new \Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $user);
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
       $result = new \Zend_Auth_Result(Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND, null);
     }
     return $result;

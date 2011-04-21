@@ -1,5 +1,6 @@
 <?php
 namespace Equ\Form\ElementCreator;
+use Equ\Form\ElementCreator\Exception\InvalidArgumentException;
 
 /**
  * Abstract form element creator class.
@@ -171,13 +172,14 @@ abstract class AbstractCreator {
   }
 
   /**
+   * @throws InvalidArgumentException
    * @param \Zend_Form_Element $element
    * @return AbstractCreator
    */
   protected function createImplicitValidators(\Zend_Form_Element $element) {
     foreach ($this->getValidators() as $validator) {
       if (!($validator instanceof \Zend_Validate_Abstract)) {
-        throw new Exception("Validator object must extends \Zend_Validate_Abstract");
+        throw new InvalidArgumentException("Validator object must extends \Zend_Validate_Abstract");
       }
       $element->addValidator($validator);
       $this->validatorAdded($element, $validator);

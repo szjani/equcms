@@ -1,6 +1,8 @@
 <?php
 namespace Equ\Symfony\Component;
-use Symfony\Component\DependencyInjection;
+use
+  Symfony\Component\DependencyInjection,
+  Equ\Exception\UnexpectedValueException;
 
 class ServiceContainerFactory {
 
@@ -28,7 +30,7 @@ class ServiceContainerFactory {
         break;
 
       default:
-        throw new \Equ\Exception("Invalid configuration file provided; unknown config type '$suffix'");
+        throw new UnexpectedValueException("Invalid configuration file provided; unknown config type '$suffix'");
     }
     $loader->load($file);
   }

@@ -1,4 +1,5 @@
 <?php
 namespace Equ\Form\ElementCreator;
 
-class Exception extends \Exception {}
+interface Exception {}
+//class Exception extends \Exception {}
