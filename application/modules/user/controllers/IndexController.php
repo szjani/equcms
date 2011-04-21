@@ -1,7 +1,7 @@
 <?php
 use modules\user\forms\Login;
 
-class User_IndexController extends \Equ\Controller {
+class User_IndexController extends \Zend_Controller_Action {
 
   public function loginAction() {
     $form = new Login();
@@ -14,11 +14,11 @@ class User_IndexController extends \Equ\Controller {
           $form->getValue('email'),
           $form->getValue('password')
         );
-        $this->addMessage('Login success');
+        $this->_helper->flashMessenger('Login success');
         $this->redirector->gotoRouteAndExit(array(), null, true);
       }
     } catch (\Exception $e) {
-      $this->addMessage($e);
+      $this->_helper->flashMessenger($e, Equ\Message::ERROR);
     }
     $this->view->loginForm = $form;
   }

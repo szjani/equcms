@@ -1,5 +1,5 @@
 <?php
-class IndexController extends \Equ\AbstractController {
+class IndexController extends \Zend_Controller_Action {
   public function indexAction() {
   }
 }

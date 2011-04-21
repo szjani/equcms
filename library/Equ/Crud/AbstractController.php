@@ -18,7 +18,7 @@ use
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-abstract class AbstractController extends \Equ\AbstractController {
+abstract class AbstractController extends \Zend_Controller_Action {
 
   /**
    * @var FormBuilder
@@ -251,12 +251,12 @@ abstract class AbstractController extends \Equ\AbstractController {
         $dtoBuilder = new \Equ\Form\DTOBuilder();
         $form->accept($dtoBuilder);
         $this->getCrudService()->create($dtoBuilder->getDTO());
-        $this->addMessage('Crud/Create/Success');
+        $this->_helper->flashMessenger('Crud/Create/Success');
         $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
       }
       $this->view->createForm = $form;
     } catch (\Exception $e) {
-        $this->addMessage('Crud/Create/UnSuccess', 'default', Message::ERROR);
+        $this->_helper->flashMessenger('Crud/Create/UnSuccess', Message::ERROR);
         $this->view->createForm = $form;
     }
     $this->renderScript('create.phtml');
@@ -278,12 +278,12 @@ abstract class AbstractController extends \Equ\AbstractController {
         $dtoBuilder = new \Equ\Form\DTOBuilder();
         $form->accept($dtoBuilder);
         $this->getCrudService()->update($id, $dtoBuilder->getDTO());
-        $this->addMessage('Crud/Update/Success');
+        $this->_helper->flashMessenger('Crud/Update/Success');
         $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
       }
       $this->view->updateForm = $form;
     } catch (\Exception $e) {
-      $this->addMessage('Crud/Update/UnSuccess', 'default', Message::ERROR);
+      $this->_helper->flashMessenger('Crud/Update/UnSuccess', Message::ERROR);
       $this->view->updateForm = $form;
     }
     $this->renderScript('update.phtml');
@@ -296,10 +296,10 @@ abstract class AbstractController extends \Equ\AbstractController {
     $id = $this->_getParam('id');
     try {
       $this->getCrudService()->delete($id);
-      $this->addMessage('Crud/Delete/Success');
+      $this->_helper->flashMessenger('Crud/Delete/Success');
       $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
     } catch (Exception $e) {
-      $this->addMessage('Crud/Delete/UnSuccess', 'default', Message::ERROR);
+      $this->_helper->flashMessenger('Crud/Delete/UnSuccess', Message::ERROR);
     }
     $this->renderScript('delete.phtml');
   }

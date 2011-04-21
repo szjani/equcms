@@ -1,5 +1,5 @@
 <?php
-class AdminController extends \Equ\AbstractController {
+class AdminController extends \Zend_Controller_Action {
 
   public function indexAction() {
 //    $route = $this->getFrontController()->getRouter()->getCurrentRouteName();

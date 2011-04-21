@@ -1,5 +1,5 @@
 <?php
-class Role_AdminController extends \Equ\AbstractController {
+class Role_AdminController extends \Zend_Controller_Action {
 
   public function autocompleteAction() {
     $role = $this->_getParam("role", null);
