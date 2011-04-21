@@ -3,10 +3,6 @@ namespace Equ;
 
 abstract class AbstractController extends \Zend_Controller_Action {
 
-  public function init() {
-    $this->view->messages = array();
-  }
-
   /**
    * Add a message object to flashmessenger
    *
