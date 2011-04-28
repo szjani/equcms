@@ -167,6 +167,11 @@ class FormBuilder implements IEntityVisitor {
   public function getIgnoredFields() {
     return $this->ignoredFields;
   }
+  
+  public function setIgnoredFields(array $fields) {
+    $this->ignoredFields = $fields;
+    return $this;
+  }
 
   protected function getFieldLabels() {
     return $this->fieldLabels;

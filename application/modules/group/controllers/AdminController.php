@@ -10,8 +10,10 @@ class Group_AdminController extends AbstractController {
 
   public function init() {
     parent::init();
-    $mainFormBuilder = new CrudFormBuilder($this->getEntityManager());
-    $mainFormBuilder->setElementCreatorFactory(new Dojo\Factory());
+    $mainFormBuilder = $this->getMainFormBuilder();
+    $mainFormBuilder
+      ->setIgnoredFields($this->ignoredFields)
+      ->setElementCreatorFactory(new Dojo\Factory());
     $this
       ->setMainFormBuilder($mainFormBuilder)
       ->setFilterFormBuilder($mainFormBuilder);
