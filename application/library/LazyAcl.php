@@ -36,7 +36,8 @@ class LazyAcl extends \Zend_Acl implements \Serializable {
   public function __construct(EntityManager $em) {
     $this->setEntityManager($em);
     $this->_roleRegistry = new RoleRegistry($this);
-    $resources = $em->getRepository('entities\Resource')->findAll();
+    $query = $em->createQuery('SELECT r FROM entities\Resource r ORDER BY r.lvl');
+    $resources = $query->getResult();
     /* @var $resource Resource */
     foreach ($resources as $resource) {
       $this->addResource($resource->getResourceId(), $resource->getParent());

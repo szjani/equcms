@@ -1,7 +1,7 @@
 <?php
 namespace entities;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use Equ\Auth;
+use Equ\Auth\RepositoryInterface;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL

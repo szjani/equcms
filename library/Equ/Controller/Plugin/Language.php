@@ -35,7 +35,7 @@ class Language extends \Zend_Controller_Plugin_Abstract {
     }
 
     // add simple lang route
-    $router->addRoute('lang', $routeLang);
+//    $router->addRoute('lang', $routeLang);
   }
 
   /**

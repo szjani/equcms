@@ -10,7 +10,14 @@
 <meta name="rating" content="General" />
 <meta name="doc-type" content="Web Page" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<?php $this->headScript()->captureStart() ?>
+  $(document).ready(function() {
+    $("#mainMenu ul.navigation > li > a").click(function() {
+      $(this).attr('href', '#');
+      $(this).parent().toggleClass('open');
+    });
+  });
+<?php $this->headScript()->captureEnd() ?>
 <?php
   $this->headScript()
     ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'text/javascript');
