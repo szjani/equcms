@@ -5,7 +5,9 @@ require_once '../defines.php';
 require_once 'Zend/Loader/Autoloader.php';
 
 $autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->setFallbackAutoloader(true);
+$autoloader
+  ->setFallbackAutoloader(true)
+  ->suppressNotFoundWarnings(true);
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
