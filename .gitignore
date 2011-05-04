@@ -5,4 +5,4 @@ tests/log/*
 .settings
 .buildpath
 nbproject/
-application/entities/Proxy/*
+application/entities/Proxy/*.php
