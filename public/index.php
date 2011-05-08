@@ -1,10 +1,5 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .'..' . DIRECTORY_SEPARATOR . 'defines.php';
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader
-  ->setFallbackAutoloader(true)
-  ->suppressNotFoundWarnings(true);
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
