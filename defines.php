@@ -26,33 +26,19 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 
 require_once 'Zend/Loader/Autoloader.php';
+require_once 'Doctrine/Common/ClassLoader.php';
+use Doctrine\Common\ClassLoader;
 
 $autoloader = Zend_Loader_Autoloader::getInstance();
 
-require_once 'Doctrine/Common/ClassLoader.php';
-
-$doctrineAutoloader = new \Doctrine\Common\ClassLoader('Doctrine');
-$doctrineAutoloader->register();
-
-$symfonyAutoloader = new \Doctrine\Common\ClassLoader('Symfony');
-$symfonyAutoloader->register();
-
-$gedmoAutoloader = new \Doctrine\Common\ClassLoader('Gedmo');
-$gedmoAutoloader->register();
-
-$extAutoloader = new \Doctrine\Common\ClassLoader('DoctrineExtensions');
-$extAutoloader->register();
-
-$equAutoloader = new \Doctrine\Common\ClassLoader('Equ');
-$equAutoloader->register();
-
-$appAutoloader = new \Doctrine\Common\ClassLoader('modules', APPLICATION_PATH);
-$appAutoloader->register();
-$appAutoloader = new \Doctrine\Common\ClassLoader('entities', APPLICATION_PATH);
-$appAutoloader->register();
-$appAutoloader = new \Doctrine\Common\ClassLoader('library', APPLICATION_PATH);
-$appAutoloader->register();
-$appAutoloader = new \Doctrine\Common\ClassLoader('services', APPLICATION_PATH);
-$appAutoloader->register();
-$appAutoloader = new \Doctrine\Common\ClassLoader('plugins', APPLICATION_PATH);
-$appAutoloader->register();
+$autoloader
+  ->pushAutoloader(array(new ClassLoader('DoctrineExtensions'), 'loadClass'), 'DoctrineExtensions')
+  ->pushAutoloader(array(new ClassLoader('Doctrine'), 'loadClass'), 'Doctrine')
+  ->pushAutoloader(array(new ClassLoader('Symfony'), 'loadClass'), 'Symfony')
+  ->pushAutoloader(array(new ClassLoader('Gedmo'), 'loadClass'), 'Gedmo')
+  ->pushAutoloader(array(new ClassLoader('Equ'), 'loadClass'), 'Equ')
+  ->pushAutoloader(array(new ClassLoader('modules', APPLICATION_PATH), 'loadClass'), 'modules')
+  ->pushAutoloader(array(new ClassLoader('entities', APPLICATION_PATH), 'loadClass'), 'entities')
+  ->pushAutoloader(array(new ClassLoader('library', APPLICATION_PATH), 'loadClass'), 'library')
+  ->pushAutoloader(array(new ClassLoader('services', APPLICATION_PATH), 'loadClass'), 'services')
+  ->pushAutoloader(array(new ClassLoader('plugins', APPLICATION_PATH), 'loadClass'), 'plugins');
