@@ -60,6 +60,13 @@ class FormBuilder implements IEntityVisitor {
     $this->entityManager = $em;
     $this->disableDefaultValidators = $disableDefaultValidators;
   }
+  
+  /**
+   * @return EntityManager $em
+   */
+  public function getEntityManager() {
+    return $this->entityManager;
+  }
 
   /**
    * @see disableExplicitValidators()
