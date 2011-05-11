@@ -11,8 +11,6 @@ use Equ\Entity\FormBuilder;
  */
 class UserFormBuilder extends FormBuilder {
 
-  protected $ignoredFields = array('lft', 'rgt', 'lvl', 'passwordHash', 'activationCode', 'role');
-
   /**
    * Add password field to form
    */

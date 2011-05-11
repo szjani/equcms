@@ -1,8 +1,7 @@
 <?php
 use
   Equ\Crud\AbstractController,
-  modules\permission\plugins\CrudFormBuilder,
-  Equ\Form\ElementCreator\Dojo;
+  modules\permission\plugins\CrudFormBuilder;
 
 class Permission_AdminController extends AbstractController {
 
@@ -10,11 +9,14 @@ class Permission_AdminController extends AbstractController {
 
   public function init() {
     parent::init();
-    $mainFormBuilder = new CrudFormBuilder($this->getEntityManager());
-    $mainFormBuilder->setElementCreatorFactory(new Dojo\Factory());
+    $mainFormBuilder = new CrudFormBuilder(
+        $this->getEntityManager(),
+        $this->_helper->serviceContainer('form.elementcreator.factory')
+    );
+    $mainFormBuilder->setIgnoredFields(array('role'));
     $this
-      ->setMainFormBuilder($mainFormBuilder);
-    $this->setCrudService(new \services\RoleResource($this->getEntityClass()));
+      ->setMainFormBuilder($mainFormBuilder)
+      ->setCrudService(new \services\RoleResource($this->getEntityClass()));
   }
 
   protected function getEntityClass() {

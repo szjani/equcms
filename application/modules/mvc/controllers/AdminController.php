@@ -23,10 +23,7 @@ class Mvc_AdminController extends AbstractController {
   public function init() {
     parent::init();
     $mainFormBuilder = $this->getMainFormBuilder();
-    $mainFormBuilder
-      ->setIgnoredFields($this->ignoredFields)
-      ->setElementCreatorFactory(new Dojo\Factory());
-    $mainFormBuilder->setElementCreatorFactory(new Dojo\Factory());
+    $mainFormBuilder->setIgnoredFields($this->ignoredFields);
     $this
       ->setMainFormBuilder($mainFormBuilder)
       ->setFilterFormBuilder($mainFormBuilder);

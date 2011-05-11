@@ -5,8 +5,6 @@ use Equ\Entity\FormBuilder;
 
 class CrudFormBuilder extends FormBuilder {
 
-  protected $ignoredFields = array('role');
-
   public function postVisit() {
     $this->getForm()->getElement('f_resource')->setOrder(1);
     $this->getForm()->getElement('f_privilege')->setOrder(2);

@@ -106,7 +106,10 @@ abstract class AbstractController extends \Zend_Controller_Action {
    */
   public final function getMainFormBuilder() {
     if ($this->mainFormBuilder === null) {
-      $this->mainFormBuilder = new FormBuilder($this->getEntityManager());
+      $this->mainFormBuilder = new FormBuilder(
+        $this->getEntityManager(),
+        $this->_helper->serviceContainer('form.elementcreator.factory')
+      );
     }
     return $this->mainFormBuilder;
   }
@@ -125,7 +128,10 @@ abstract class AbstractController extends \Zend_Controller_Action {
    */
   public final function getFilterFormBuilder() {
     if ($this->filterFormBuilder === null) {
-      $this->filterFormBuilder = new FormBuilder($this->getEntityManager());
+      $this->filterFormBuilder = new FormBuilder(
+        $this->getEntityManager(),
+        $this->_helper->serviceContainer('form.elementcreator.factory')
+      );
     }
     return $this->filterFormBuilder;
   }

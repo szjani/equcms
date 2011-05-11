@@ -1,8 +1,7 @@
 <?php
 use
   Equ\Crud\AbstractController,
-  modules\group\plugins\CrudFormBuilder,
-  Equ\Form\ElementCreator\Dojo;
+  modules\group\plugins\CrudFormBuilder;
 
 class Group_AdminController extends AbstractController {
 
@@ -12,8 +11,7 @@ class Group_AdminController extends AbstractController {
     parent::init();
     $mainFormBuilder = $this->getMainFormBuilder();
     $mainFormBuilder
-      ->setIgnoredFields($this->ignoredFields)
-      ->setElementCreatorFactory(new Dojo\Factory());
+      ->setIgnoredFields($this->ignoredFields);
     $this
       ->setMainFormBuilder($mainFormBuilder)
       ->setFilterFormBuilder($mainFormBuilder);

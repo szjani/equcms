@@ -36,9 +36,11 @@
      <parameter key="doctrine.password">1master</parameter>
      <parameter key="doctrine.dbname">equcms</parameter>
      <parameter key="doctrine.charset">UTF8</parameter>
+     <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Dojo\Factory</parameter>
    </parameters>
    
    <services>
+     <service id="form.elementcreator.factory" class="%form.elementcreator.factory.class%" />
      <service id="acl" class="library\LazyAcl">
        <argument type="service" id="doctrine.entitymanager" />
      </service>

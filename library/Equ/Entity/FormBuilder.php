@@ -54,11 +54,14 @@ class FormBuilder implements IEntityVisitor {
   
   /**
    * @param EntityManager $em
+   * @param ElementCreator\IFactory $elementCreator
+   * @param boolean $disableDefaultValidators
    * @param \Zend_Form $form
    */
-  public function __construct(EntityManager $em, $disableDefaultValidators = false) {
+  public function __construct(EntityManager $em, ElementCreator\IFactory $elementCreator, $disableDefaultValidators = false) {
     $this->entityManager = $em;
     $this->disableDefaultValidators = $disableDefaultValidators;
+    $this->setElementCreatorFactory($elementCreator);
   }
   
   /**

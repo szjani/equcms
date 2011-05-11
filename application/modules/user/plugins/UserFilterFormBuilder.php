@@ -13,8 +13,6 @@ use Equ\Entity\FormBuilder;
  */
 class UserFilterFormBuilder extends FormBuilder {
 
-  protected $ignoredFields = array('lft', 'rgt', 'lvl', 'passwordHash', 'role');
-
   /**
    * Removes initialized activation code value
    */

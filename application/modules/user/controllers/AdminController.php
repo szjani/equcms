@@ -11,14 +11,15 @@ class User_AdminController extends AbstractController {
 
   public function init() {
     parent::init();
-    $formBuilder = new UserFormBuilder($this->getEntityManager());
-    $formBuilder->setElementCreatorFactory(new Factory());
-    $filterFormBuilder = new UserFilterFormBuilder($this->getEntityManager());
-    $filterFormBuilder->setElementCreatorFactory(new Factory());
+    $elementCreator    = $this->_helper->serviceContainer('form.elementcreator.factory');
+    $formBuilder       = new UserFormBuilder($this->getEntityManager(), $elementCreator);
+    $filterFormBuilder = new UserFilterFormBuilder($this->getEntityManager(), $elementCreator);
     $this
       ->setMainFormBuilder($formBuilder)
       ->setFilterFormBuilder($filterFormBuilder);
 
+    $formBuilder->setIgnoredFields(array('lft', 'rgt', 'lvl', 'passwordHash', 'activationCode', 'role'));
+    $filterFormBuilder->setIgnoredFields(array('lft', 'rgt', 'lvl', 'passwordHash', 'role'));
     $this->setCrudService(new \services\User($this->getEntityClass()));
   }
 
