@@ -1,8 +1,5 @@
 <?php
-use
-  Equ\Crud\AbstractController,
-  modules\mvc\plugins\MvcFormBuilder,
-  Equ\Form\ElementCreator\Dojo;
+use Equ\Crud\AbstractController;
 
 /**
  * Mvc controller. You can manage module/controller/action records.

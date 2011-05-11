@@ -1,7 +1,5 @@
 <?php
-use
-  Equ\Crud\AbstractController,
-  modules\group\plugins\CrudFormBuilder;
+use Equ\Crud\AbstractController;
 
 class Group_AdminController extends AbstractController {
 

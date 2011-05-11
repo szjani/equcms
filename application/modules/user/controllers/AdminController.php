@@ -2,8 +2,7 @@
 use
   Equ\Crud\AbstractController,
   modules\user\plugins\UserFormBuilder,
-  modules\user\plugins\UserFilterFormBuilder,
-  Equ\Form\ElementCreator\Dojo\Factory;
+  modules\user\plugins\UserFilterFormBuilder;
 
 class User_AdminController extends AbstractController {
 
