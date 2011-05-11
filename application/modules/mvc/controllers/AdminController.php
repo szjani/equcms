@@ -24,9 +24,7 @@ class Mvc_AdminController extends AbstractController {
     parent::init();
     $mainFormBuilder = $this->getMainFormBuilder();
     $mainFormBuilder->setIgnoredFields($this->ignoredFields);
-    $this
-      ->setMainFormBuilder($mainFormBuilder)
-      ->setFilterFormBuilder($mainFormBuilder);
+    $this->setFilterFormBuilder($mainFormBuilder);
   }
 
   protected function getEntityClass() {
