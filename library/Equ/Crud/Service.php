@@ -153,7 +153,7 @@ class Service extends AbstractService implements ICrudService {
       $this->preCreate($dto);
       $entityBuilder = $this->getEntityBuilder();
       $dto->accept($entityBuilder);
-      $entity = $entityBuilder->getEntity();
+      $this->entity = $entity = $entityBuilder->getEntity();
       $em->persist($entity);
       $this->postCreate();
       $em->flush();
