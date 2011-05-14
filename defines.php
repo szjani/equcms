@@ -17,28 +17,29 @@ defined('APPLICATION_ENV')
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
-  realpath(APPLICATION_PATH . '/../library'),
   '/home/szjani/development/php/libs/ZF/1.11/library',
-  '/home/szjani/development/php/libs/doctrine2-orm/lib',
-  '/home/szjani/development/php/libs/beberlei/DoctrineExtensions/lib',
-  '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions/lib',
-  get_include_path()
+  '/development/Frameworks/zf1-classmap/library',
 )));
 
-require_once 'Zend/Loader/Autoloader.php';
-require_once 'Doctrine/Common/ClassLoader.php';
-use Doctrine\Common\ClassLoader;
-
-$autoloader = Zend_Loader_Autoloader::getInstance();
-
-$autoloader
-  ->pushAutoloader(array(new ClassLoader('DoctrineExtensions'), 'loadClass'), 'DoctrineExtensions')
-  ->pushAutoloader(array(new ClassLoader('Doctrine'), 'loadClass'), 'Doctrine')
-  ->pushAutoloader(array(new ClassLoader('Symfony'), 'loadClass'), 'Symfony')
-  ->pushAutoloader(array(new ClassLoader('Gedmo'), 'loadClass'), 'Gedmo')
-  ->pushAutoloader(array(new ClassLoader('Equ'), 'loadClass'), 'Equ')
-  ->pushAutoloader(array(new ClassLoader('modules', APPLICATION_PATH), 'loadClass'), 'modules')
-  ->pushAutoloader(array(new ClassLoader('entities', APPLICATION_PATH), 'loadClass'), 'entities')
-  ->pushAutoloader(array(new ClassLoader('library', APPLICATION_PATH), 'loadClass'), 'library')
-  ->pushAutoloader(array(new ClassLoader('services', APPLICATION_PATH), 'loadClass'), 'services')
-  ->pushAutoloader(array(new ClassLoader('plugins', APPLICATION_PATH), 'loadClass'), 'plugins');
+require_once 'ZendX/Loader/AutoloaderFactory.php';
+ZendX_Loader_AutoloaderFactory::factory(array(
+  'ZendX_Loader_ClassMapAutoloader' => array(
+      __DIR__ . '/library/.classmap.php',
+      __DIR__ . '/application/.classmap.php',
+  ),
+  'ZendX_Loader_StandardAutoloader' => array(
+    'namespaces' => array(
+      'library'  => APPLICATION_PATH . '/library',
+      'entities' => APPLICATION_PATH . '/entities',
+      'modules'  => APPLICATION_PATH . '/modules',
+      'services' => APPLICATION_PATH . '/services',
+      'plugins'  => APPLICATION_PATH . '/plugins',
+      'Equ'      => __DIR__ . '/library/Equ',
+      'Symfony'  => __DIR__ . '/library/Symfony',
+      'Doctrine' => '/home/szjani/development/php/libs/doctrine2-orm/lib/Doctrine',
+      'Gedmo'    => '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions/lib/Gedmo',
+      'DoctrineExtensions' => '/home/szjani/development/php/libs/beberlei/DoctrineExtensions/lib/DoctrineExtensions',
+    ),
+    'fallback_autoloader' => true,
+  ),
+));
