@@ -15,19 +15,13 @@ class Navigation extends \Zend_Controller_Plugin_Abstract {
       $navContainer = $container->get('navigation');
       /* @var $em \Doctrine\ORM\EntityManager */
       $em = $container->get('doctrine.entitymanager');
-      $leaves = $em->getRepository('\entities\Mvc')->getLeafs();
-      /* @var $mvc \entities\Mvc */
-      foreach ($leaves as $mvc) {
-        $parent = $mvc->getParent();
-        while ($parent !== null) {
-          if (false !== strpos((string)$mvc->getNavigationPage()->getResource(), 'update')) {
-            $mvc->getNavigationPage()->setVisible(false);
-          }
-          $parent->getNavigationPage()->addPage($mvc->getNavigationPage());
-          $mvc = $parent;
-          $parent = $mvc->getParent();
+      $query = $em->createQuery('SELECT m FROM entities\Mvc m ORDER BY m.lvl');
+      foreach ($query->getResult() as $mvc) {
+        if (false !== strpos((string)$mvc->getNavigationPage()->getResource(), 'update')) {
+          $mvc->getNavigationPage()->setVisible(false);
         }
-        $navContainer->addPage($mvc->getNavigationPage());
+        $parentNav = $mvc->getParent() ? $mvc->getParent()->getNavigationPage() : $navContainer;
+        $parentNav->addPage($mvc->getNavigationPage());
       }
       $cache->save($navContainer, 'navigation');
     }
