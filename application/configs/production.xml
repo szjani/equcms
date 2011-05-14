@@ -4,9 +4,9 @@
    xsi:schemaLocation='http://www.symfony-project.org/schema/dic/services ../../library/Symfony/Component/DependencyInjection/Loader/schema/dic/services/services-1.0.xsd'>
 
    <parameters>
-     <parameter key="cache.data.backend">File</parameter>
+     <parameter key="cache.data.backend">Apc</parameter>
      <parameter key="cache.data.lifetime">7200</parameter>
-     <parameter key="cache.system.backend">File</parameter>
+     <parameter key="cache.system.backend">Apc</parameter>
      <parameter key="cache.system.lifetime">7200</parameter>
      <parameter key="translate.adapter">gettext</parameter>
      <parameter key="translate.content"><const name="APPLICATION_PATH" />/lang/other</parameter>
