@@ -34,7 +34,7 @@ ZendX_Loader_AutoloaderFactory::factory(array(
       'modules'  => APPLICATION_PATH . '/modules',
       'services' => APPLICATION_PATH . '/services',
       'plugins'  => APPLICATION_PATH . '/plugins',
-      'Equ'      => __DIR__ . '/library/Equ',
+      'Equ'      => __DIR__ . '/library/Equ/lib/Equ',
       'Symfony'  => __DIR__ . '/library/Symfony',
       'Doctrine' => '/home/szjani/development/php/libs/doctrine2-orm/lib/Doctrine',
       'Gedmo'    => '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions/lib/Gedmo',
