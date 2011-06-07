@@ -5,3 +5,4 @@ tests/log/*
 .settings
 .buildpath
 nbproject/
+tests/bin/selenium-server.jar
