@@ -1,3 +1,6 @@
 [submodule "library/Equ"]
 	path = library/Equ
 	url = git@github.com:szjani/equlib.git
+[submodule "library/Symfony"]
+	path = library/Symfony
+	url = git://github.com/symfony/symfony.git

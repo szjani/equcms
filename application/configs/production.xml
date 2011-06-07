@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-   xmlns='http://www.symfony-project.org/schema/dic/services'
-   xsi:schemaLocation='http://www.symfony-project.org/schema/dic/services ../../library/Symfony/Component/DependencyInjection/Loader/schema/dic/services/services-1.0.xsd'>
+   xmlns='http://symfony.com/schema/dic/services'
+   xsi:schemaLocation='http://symfony.com/schema/dic/services ../../library/Symfony/Component/DependencyInjection/Loader/schema/dic/services/services-1.0.xsd'>
 
    <parameters>
+     <parameter key="APPLICATION_PATH" type="constant">APPLICATION_PATH</parameter>
+     <parameter key="CURRENT_DATE" type="constant">CURRENT_DATE</parameter>
      <parameter key="cache.data.backend">Apc</parameter>
      <parameter key="cache.data.lifetime">7200</parameter>
      <parameter key="cache.system.backend">Apc</parameter>
      <parameter key="cache.system.lifetime">7200</parameter>
      <parameter key="translate.adapter">gettext</parameter>
-     <parameter key="translate.content"><const name="APPLICATION_PATH" />/lang/other</parameter>
+     <parameter key="translate.content">%APPLICATION_PATH%/lang/other</parameter>
      <parameter key="translate.scan">filename</parameter>
      <parameter key="translate.logUntranslated">false</parameter>
      <parameter key="validation.translate.adapter">array</parameter>
-     <parameter key="validation.translate.content"><const name="APPLICATION_PATH" />/lang/validation</parameter>
+     <parameter key="validation.translate.content">%APPLICATION_PATH%/lang/validation</parameter>
      <parameter key="validation.translate.scan">filename</parameter>
      <parameter key="messages.translate.adapter">array</parameter>
-     <parameter key="messages.translate.content"><const name="APPLICATION_PATH" />/lang/messages</parameter>
+     <parameter key="messages.translate.content">%APPLICATION_PATH%/lang/messages</parameter>
      <parameter key="messages.translate.scan">filename</parameter>
      <parameter key="locale.default">hu_HU</parameter>
      <parameter key="mailer.class">Zend_Mail</parameter>
@@ -25,9 +27,9 @@
      <parameter key="mail.transport.username">info@test.com</parameter>
      <parameter key="mail.transport.password">testpass</parameter>
      <parameter key="log.writer">Stream</parameter>
-     <parameter key="log.writer.file"><const name="APPLICATION_PATH" />/../data/logs/<const name="CURRENT_DATE" /></parameter>
+     <parameter key="log.writer.file">%APPLICATION_PATH%/../data/logs/%CURRENT_DATE%</parameter>
      <parameter key="translatelog.writer">Stream</parameter>
-     <parameter key="translatelog.writer.file"><const name="APPLICATION_PATH" />/../data/logs/untranslated.log</parameter>
+     <parameter key="translatelog.writer.file">%APPLICATION_PATH%/../data/logs/untranslated.log</parameter>
      <parameter key="translatelog.writer.writerNamespace">Zend_Log_Writer</parameter>
      <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ApcCache</parameter>
      <parameter key="doctrine.autogenerateproxyclasses">true</parameter>
@@ -45,7 +47,7 @@
        <argument type="service" id="doctrine.entitymanager" />
      </service>
      <service id="navigation" class="Zend_Navigation" />
-     <service id="doctrine.entitymanager" class="Doctrine\ORM\EntityManager" factory-method="create">
+     <service id="doctrine.entitymanager" class="Doctrine\ORM\EntityManager" factory-class="Doctrine\ORM\EntityManager" factory-method="create">
        <argument type="collection">
          <argument key="driver">%doctrine.driver%</argument>
          <argument key="user">%doctrine.user%</argument>
@@ -72,7 +74,7 @@
          <argument type="service" id="doctrine.log" />
        </call>-->
      </service>
-     <service id="translatelog" class="Zend_Log" factory-method="factory">
+     <service id="translatelog" class="Zend_Log" factory-class="Zend_Log" factory-method="factory">
        <argument type="collection">
          <argument type="collection">
            <argument key="writerName">%translatelog.writer%</argument>
@@ -87,7 +89,7 @@
      <service id="doctrine.log" class="Equ\Log\Doctrine">
        <argument type="service" id="log" />
      </service>
-     <service id="log" class="Zend_Log" factory-method="factory">
+     <service id="log" class="Zend_Log" factory-class="Zend_Log" factory-method="factory">
        <argument type="collection">
          <argument type="collection" key="error">
            <argument key="writerName">%log.writer%</argument>
@@ -150,7 +152,7 @@
          </argument>
        </argument>
      </service>
-     <service id="cache.data" class="Zend_Cache" factory-method="factory">
+     <service id="cache.data" class="Zend_Cache" factory-class="Zend_Cache" factory-method="factory">
        <argument>Core</argument>
        <argument>%cache.data.backend%</argument>
        <argument type="collection">
@@ -158,10 +160,10 @@
          <argument key="automatic_serialization">true</argument>
        </argument>
        <argument type="collection">
-         <argument key="cache_dir"><const name="APPLICATION_PATH" />/../data/cache</argument>
+         <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
        </argument>
      </service>
-     <service id="cache.system" class="Zend_Cache" factory-method="factory">
+     <service id="cache.system" class="Zend_Cache" factory-class="Zend_Cache" factory-method="factory">
        <argument>Core</argument>
        <argument>%cache.system.backend%</argument>
        <argument type="collection">
@@ -169,7 +171,7 @@
          <argument key="automatic_serialization">true</argument>
        </argument>
        <argument type="collection">
-         <argument key="cache_dir"><const name="APPLICATION_PATH" />/../data/cache</argument>
+         <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
        </argument>
      </service>
      <service id="mail.transport" class="Zend_Mail_Transport_Smtp">
@@ -180,7 +182,7 @@
          <argument key="password">%mail.transport.password%</argument>
        </argument>
      </service>
-     <service id="mailer" class="%mailer.class%" shared="false">
+     <service id="mailer" class="%mailer.class%" synthetic="true">
        <call method="setDefaultTransport">
          <argument type="service" id="mail.transport" />
        </call>
@@ -195,7 +197,7 @@
          <argument type="service" id="cache.system" />
        </call>
      </service>
-     <service id="registry" class="Zend_Registry" factory-method="getInstance">
+     <service id="registry" class="Zend_Registry" factory-class="Zend_Registry" factory-method="getInstance">
        <call method="offsetSet">
          <argument>Zend_Translate</argument>
          <argument type="service" id="translate" />
