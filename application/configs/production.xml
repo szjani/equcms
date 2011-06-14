@@ -11,14 +11,14 @@
      <parameter key="cache.system.backend">Apc</parameter>
      <parameter key="cache.system.lifetime">7200</parameter>
      <parameter key="translate.adapter">gettext</parameter>
-     <parameter key="translate.content">%APPLICATION_PATH%/lang/other</parameter>
+     <parameter key="translate.content">lang/other</parameter>
      <parameter key="translate.scan">filename</parameter>
      <parameter key="translate.logUntranslated">false</parameter>
      <parameter key="validation.translate.adapter">array</parameter>
-     <parameter key="validation.translate.content">%APPLICATION_PATH%/lang/validation</parameter>
+     <parameter key="validation.translate.content">lang/validation</parameter>
      <parameter key="validation.translate.scan">filename</parameter>
      <parameter key="messages.translate.adapter">array</parameter>
-     <parameter key="messages.translate.content">%APPLICATION_PATH%/lang/messages</parameter>
+     <parameter key="messages.translate.content">lang/messages</parameter>
      <parameter key="messages.translate.scan">filename</parameter>
      <parameter key="locale.default">hu_HU</parameter>
      <parameter key="mailer.class">Zend_Mail</parameter>
@@ -27,9 +27,9 @@
      <parameter key="mail.transport.username">info@test.com</parameter>
      <parameter key="mail.transport.password">testpass</parameter>
      <parameter key="log.writer">Stream</parameter>
-     <parameter key="log.writer.file">%APPLICATION_PATH%/../data/logs/%CURRENT_DATE%</parameter>
+     <parameter key="log.writer.file">../data/logs/</parameter>
      <parameter key="translatelog.writer">Stream</parameter>
-     <parameter key="translatelog.writer.file">%APPLICATION_PATH%/../data/logs/untranslated.log</parameter>
+     <parameter key="translatelog.writer.file">../data/logs/untranslated.log</parameter>
      <parameter key="translatelog.writer.writerNamespace">Zend_Log_Writer</parameter>
      <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ApcCache</parameter>
      <parameter key="doctrine.autogenerateproxyclasses">true</parameter>
@@ -80,7 +80,7 @@
            <argument key="writerName">%translatelog.writer%</argument>
            <argument key="writerNamespace">%translatelog.writer.writerNamespace%</argument>
            <argument key="writerParams" type="collection">
-             <argument key="stream">%translatelog.writer.file%</argument>
+             <argument key="stream">%APPLICATION_PATH%/%translatelog.writer.file%</argument>
              <argument key="mode">a</argument>
            </argument>
          </argument>
@@ -94,7 +94,7 @@
          <argument type="collection" key="error">
            <argument key="writerName">%log.writer%</argument>
            <argument key="writerParams" type="collection">
-             <argument key="stream">%log.writer.file%.error.log</argument>
+             <argument key="stream">%APPLICATION_PATH%/%log.writer.file%/%CURRENT_DATE%.error.log</argument>
              <argument key="mode">a</argument>
            </argument>
            <argument key="filterName">Priority</argument>
@@ -105,7 +105,7 @@
          <argument type="collection" key="warn">
            <argument key="writerName">%log.writer%</argument>
            <argument key="writerParams" type="collection">
-             <argument key="stream">%log.writer.file%.warn.log</argument>
+             <argument key="stream">%APPLICATION_PATH%/%log.writer.file%/%CURRENT_DATE%.warn.log</argument>
              <argument key="mode">a</argument>
            </argument>
            <argument key="filterName">Priority</argument>
@@ -117,7 +117,7 @@
          <argument type="collection" key="notice">
            <argument key="writerName">%log.writer%</argument>
            <argument key="writerParams" type="collection">
-             <argument key="stream">%log.writer.file%.notice.log</argument>
+             <argument key="stream">%APPLICATION_PATH%/%log.writer.file%/%CURRENT_DATE%.notice.log</argument>
              <argument key="mode">a</argument>
            </argument>
            <argument key="filterName">Priority</argument>
@@ -129,7 +129,7 @@
          <argument type="collection" key="info">
            <argument key="writerName">%log.writer%</argument>
            <argument key="writerParams" type="collection">
-             <argument key="stream">%log.writer.file%.info.log</argument>
+             <argument key="stream">%APPLICATION_PATH%/%log.writer.file%/%CURRENT_DATE%.info.log</argument>
              <argument key="mode">a</argument>
            </argument>
            <argument key="filterName">Priority</argument>
@@ -141,7 +141,7 @@
          <argument type="collection" key="debug">
            <argument key="writerName">%log.writer%</argument>
            <argument key="writerParams" type="collection">
-             <argument key="stream">%log.writer.file%.debug.log</argument>
+             <argument key="stream">%APPLICATION_PATH%/%log.writer.file%/%CURRENT_DATE%.debug.log</argument>
              <argument key="mode">a</argument>
            </argument>
            <argument key="filterName">Priority</argument>
@@ -214,7 +214,7 @@
      <service id="translate" class="Zend_Translate">
        <argument type="collection">
          <argument key="adapter">%translate.adapter%</argument>
-         <argument key="content">%translate.content%</argument>
+         <argument key="content">%APPLICATION_PATH%/%translate.content%</argument>
          <argument key="scan">%translate.scan%</argument>
          <argument key="logUntranslated">%translate.logUntranslated%</argument>
          <argument key="log" type="service" id="translatelog" />
@@ -234,7 +234,7 @@
      <service id="validation.translate" class="Zend_Translate">
        <argument type="collection">
          <argument key="adapter">%validation.translate.adapter%</argument>
-         <argument key="content">%validation.translate.content%</argument>
+         <argument key="content">%APPLICATION_PATH%/%validation.translate.content%</argument>
          <argument key="scan">%validation.translate.scan%</argument>
        </argument>
        <call method="setLocale">

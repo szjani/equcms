@@ -17,7 +17,7 @@ defined('APPLICATION_ENV')
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
-  '/home/szjani/development/php/libs/ZF/1.11/library',
+  '/development/Frameworks/ZF_1.11_svn/library',
   '/development/Frameworks/zf1-classmap/library',
 )));
 
