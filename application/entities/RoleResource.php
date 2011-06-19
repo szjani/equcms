@@ -47,7 +47,7 @@ class RoleResource extends \Equ\Entity {
    * @Column(name="privilege", type="string", length=255, nullable=true)
    * @var string
    */
-  private $privilege = false;
+  private $privilege = null;
 
   public function getId() {
     return $this->id;
@@ -91,7 +91,7 @@ class RoleResource extends \Equ\Entity {
    * @param boolean $allow
    * @return RoleResource
    */
-  public function setAllow($allow = true) {
+  public function setAllowed($allow = true) {
     $this->allowed = (boolean)$allow;
     return $this;
   }

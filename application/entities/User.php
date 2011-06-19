@@ -1,6 +1,9 @@
 <?php
 namespace entities;
-use Equ\ClassMetadata;
+use
+  Equ\ClassMetadata,
+  Equ\Object\Validatable,
+  Equ\Object\Validator;
 
 /**
  * User entity
@@ -14,19 +17,20 @@ use Equ\ClassMetadata;
  * @gedmo:Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`user`")
+ * @HasLifecycleCallbacks
  */
-class User extends Role {
+class User extends Role implements Validatable {
   
   const PASSWORD_SALT = '958rg!DdfJko$~tz)3/Tiq3rf9;a43gFT]A46DFaAeg;a43';
 
   /**
-   * @Column(name="email", type="string", unique="true")
+   * @Column(name="email", type="string", unique="true", nullable=false)
    * @var string
    */
   private $email;
 
   /**
-   * @Column(name="password_hash", type="string", length=32)
+   * @Column(name="password_hash", type="string", length=32, nullable=false)
    * @var string
    */
   private $passwordHash;
@@ -48,15 +52,18 @@ class User extends Role {
       ->setPassword($password);
   }
   
-  public function init() {
-    $emailValidator = new \Zend_Validate_EmailAddress();
-    try {
-//      $emailValidator->setValidateMx(true);
-    } catch (\Zend_Validate_Exception $e) {}
-    
-    $this
-      ->setActivationCode($this->generateString(12))
-      ->addFieldValidator('email', $emailValidator);
+  public static function loadValidators(Validator $validator) {
+    $validator
+      ->add('email', new \Zend_Validate_EmailAddress())
+      ->add('password', new \Zend_Validate_NotEmpty())
+      ->add('password', new \Zend_Validate_StringLength(5, 12));
+  }
+  
+  /**
+   * @PrePersist
+   */
+  public function initActivationCode() {
+    $this->setActivationCode(self::generateString(12));
   }
 
   /**
@@ -65,7 +72,7 @@ class User extends Role {
    * @param int $length
    * @return string
    */
-  public function generateString($length = 8) {
+  public static function generateString($length = 8) {
     $length = (int) $length;
     if ($length < 0) {
       throw new Exception("Invalid password length '$length'");
