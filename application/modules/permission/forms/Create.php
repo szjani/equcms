@@ -11,7 +11,7 @@ class Create implements IMappedType {
     $builder
       ->add('role')
       ->add('resource')
-      ->add('allowed')
+      ->add('allowed', 'boolean')
       ->add('privilege');
   }
   
