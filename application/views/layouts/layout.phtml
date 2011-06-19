@@ -19,6 +19,16 @@
   });
 <?php $this->headScript()->captureEnd() ?>
 <?php
+  $this->dojo()
+    ->setDjConfigOption('usePlainJson',true)
+    ->setDjConfigOption('locale', Zend_Controller_Front::getInstance()->getRequest()->getParam('lang'))
+    ->addStylesheetModule('dijit.themes.claro')
+    ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+    ->setCdnVersion('1.5')
+    ->requireModule('dojo.i18n');
+  echo $this->dojo();
+?>
+<?php
   $this->headScript()
     ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'text/javascript');
   $this->headLink()
