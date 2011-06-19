@@ -1,19 +1,20 @@
 <?php
 use Equ\Crud\AbstractController;
+use
+  modules\group\forms\Create as CreateForm,
+  modules\group\forms\Filter as FilterForm;
 
 class Group_AdminController extends AbstractController {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
 
-  public function init() {
-    parent::init();
-    $mainFormBuilder = $this->getMainFormBuilder();
-    $mainFormBuilder->setIgnoredFields($this->ignoredFields);
-    $this->setFilterFormBuilder($mainFormBuilder);
+  public function getFilterForm() {
+    return new FilterForm();
   }
 
-  protected function getEntityClass() {
-    return 'entities\UserGroup';
+  public function getMainForm() {
+    return new CreateForm();
   }
+
 
 }

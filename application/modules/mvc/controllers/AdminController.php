@@ -1,5 +1,8 @@
 <?php
 use Equ\Crud\AbstractController;
+use
+  modules\mvc\forms\Create as CreateForm,
+  modules\mvc\forms\Filter as FilterForm;
 
 /**
  * Mvc controller. You can manage module/controller/action records.
@@ -17,15 +20,11 @@ class Mvc_AdminController extends AbstractController {
    */
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'resource');
 
-  public function init() {
-    parent::init();
-    $mainFormBuilder = $this->getMainFormBuilder();
-    $mainFormBuilder->setIgnoredFields($this->ignoredFields);
-    $this->setFilterFormBuilder($mainFormBuilder);
+  public function getFilterForm() {
+    return new FilterForm();
   }
 
-  protected function getEntityClass() {
-    return 'entities\Mvc';
+  public function getMainForm() {
+    return new CreateForm();
   }
-
 }

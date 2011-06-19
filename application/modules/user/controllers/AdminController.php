@@ -2,41 +2,26 @@
 use
   Equ\Crud\AbstractController,
   modules\user\plugins\UserFormBuilder,
-  modules\user\plugins\UserFilterFormBuilder;
+  modules\user\plugins\UserFilterFormBuilder,
+  modules\user\forms\Create as CreateForm,
+  modules\user\forms\Update as UpdateForm,
+  modules\user\forms\Filter as FilterForm;
 
 class User_AdminController extends AbstractController {
 
   protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
-
-  public function init() {
-    parent::init();
-    $elementCreator    = $this->_helper->serviceContainer('form.elementcreator.factory');
-    $formBuilder       = new UserFormBuilder($this->getEntityManager(), $elementCreator);
-    $filterFormBuilder = new UserFilterFormBuilder($this->getEntityManager(), $elementCreator);
-    $this
-      ->setMainFormBuilder($formBuilder)
-      ->setFilterFormBuilder($filterFormBuilder);
-
-    $formBuilder->setIgnoredFields(array('lft', 'rgt', 'lvl', 'passwordHash', 'activationCode', 'role'));
-    $filterFormBuilder->setIgnoredFields(array('lft', 'rgt', 'lvl', 'passwordHash', 'role'));
-    $this->setCrudService(new \services\User($this->getEntityClass()));
+  
+//  protected $useFilterForm = false;
+  
+  public function getFilterForm() {
+    return new FilterForm();
   }
 
-  protected function getEntityClass() {
-    return 'entities\User';
+  public function getMainForm() {
+    return new CreateForm();
   }
-
-  /**
-   * @param int $id
-   * @param boolean $refresh
-   * @return \Zend_Form
-   */
-  public function getCUForm($id = null, $refresh = false) {
-    $form = parent::getCUForm($id, $refresh);
-    if ($id !== null) {
-      $form->removeElement('password');
-    }
-    return $form;
+  
+  public function getUpdateForm() {
+    return new UpdateForm();
   }
-
 }
