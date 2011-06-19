@@ -39,9 +39,17 @@
      <parameter key="doctrine.dbname">equcms</parameter>
      <parameter key="doctrine.charset">UTF8</parameter>
      <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Dojo\Factory</parameter>
+     <parameter key="filterQueryBuilderCreator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
+     <parameter key="paginatorCreator.class">Equ\Doctrine\PaginatorCreator</parameter>
    </parameters>
    
    <services>
+     <service id="paginatorCreator" class="%paginatorCreator.class%">
+       <argument type="service" id="filterQueryBuilderCreator" />
+     </service>
+     <service id="filterQueryBuilderCreator" class="%filterQueryBuilderCreator.class%">
+       <argument type="service" id="doctrine.entitymanager" />
+     </service>
      <service id="form.elementcreator.factory" class="%form.elementcreator.factory.class%" />
      <service id="acl" class="library\LazyAcl">
        <argument type="service" id="doctrine.entitymanager" />
