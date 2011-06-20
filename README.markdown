@@ -1,6 +1,6 @@
 EquCMS
 ======
-This is a Zend Framework and Doctrine 2 based MVC system, which supports CRUD operations.
+This is a Zend Framework and Doctrine 2 based CMS system, which supports CRUD operations.
 
 Screenshot: [http://bit.ly/fEmkdQ](http://bit.ly/fEmkdQ)
 
