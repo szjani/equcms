@@ -123,7 +123,7 @@ class CommentType implements IMappedType {
 </pre>
 
 <pre>
-$builder = $this->_helper->createFormBuilder('CommentType', 'Comment');
+$builder = $this->_helper->createFormBuilder(new CommentType(), 'Comment');
 $form = $builder->getForm();
 if ($builder->getMapper()->isValid($this->_request)) {
   $comment = $builder->getMapper()->getObject();
