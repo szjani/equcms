@@ -1,3 +1,9 @@
 [submodule "library/Equ"]
 	path = library/Equ
 	url = git@github.com:szjani/equlib.git
+[submodule "library/Symfony/Component/DependencyInjection"]
+	path = library/Symfony/Component/DependencyInjection
+	url = git://github.com/symfony/DependencyInjection.git
+[submodule "library/Symfony/Component/Config"]
+	path = library/Symfony/Component/Config
+	url = git://github.com/symfony/Config.git
