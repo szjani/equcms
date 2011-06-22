@@ -9,7 +9,7 @@ defined('CURRENT_DATE')
 
 // Define path to application directory
 defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/application'));
+    || define('APPLICATION_PATH', __DIR__ . '/application');
 
 // Define application environment
 defined('APPLICATION_ENV')
