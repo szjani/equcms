@@ -2,6 +2,7 @@
 return array (
   'Equ\\AbstractService' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Equ/lib/Equ/AbstractService.php',
   'Equ\\Application\\Bootstrap\\Bootstrap' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Equ/lib/Equ/Application/Bootstrap/Bootstrap.php',
+  'Equ\\Application' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Equ/lib/Equ/Application.php',
   'Equ\\Auth\\DoctrineAdapter' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Equ/lib/Equ/Auth/DoctrineAdapter.php',
   'Equ\\Auth\\Exception' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Equ/lib/Equ/Auth/Exception.php',
   'Equ\\Auth\\RepositoryInterface' => dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Equ/lib/Equ/Auth/RepositoryInterface.php',
