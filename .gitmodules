@@ -7,3 +7,6 @@
 [submodule "library/Symfony/Component/Config"]
 	path = library/Symfony/Component/Config
 	url = git://github.com/symfony/Config.git
+[submodule "library/Symfony/Component/Console"]
+	path = library/Symfony/Component/Console
+	url = git://github.com/symfony/Console.git
