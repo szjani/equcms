@@ -62,6 +62,9 @@
          <argument key="password">%doctrine.password%</argument>
          <argument key="dbname">%doctrine.dbname%</argument>
          <argument key="charset">%doctrine.charset%</argument>
+         <argument key="driverOptions" type="collection">
+           <argument key="1002">SET NAMES utf8</argument>
+         </argument>
        </argument>
        <argument type="service" id="doctrine.configuration" />
        <argument type="service" id="doctrine.eventmanager" />
