@@ -15,7 +15,7 @@ use
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @gedmo:Tree(type="nested")
- * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @Entity(repositoryClass="entities\UserRepository")
  * @Table(name="`user`")
  * @HasLifecycleCallbacks
  */
@@ -143,23 +143,6 @@ class User extends Role implements Validatable {
   public function setActivationCode($activationCode) {
     $this->activationCode = $activationCode;
     return $this;
-  }
-
-  public function serialize() {
-    $res = \unserialize(parent::serialize());
-    $res['id']    = $this->getId();
-    $res['email'] = $this->email;
-    $res['passwordHash'] = $this->passwordHash;
-    $res['activationCode'] = $this->activationCode;
-    return \serialize($res);
-  }
-
-  public function unserialize($serialized) {
-    parent::unserialize($serialized);
-    $serialized = \unserialize($serialized);
-    $this->email = $serialized['email'];
-    $this->passwordHash = $serialized['passwordHash'];
-    $this->activationCode = $serialized['activationCode'];
   }
 
 }

@@ -41,6 +41,8 @@
      <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Dojo\Factory</parameter>
      <parameter key="filterQueryBuilderCreator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
      <parameter key="paginatorCreator.class">Equ\Doctrine\PaginatorCreator</parameter>
+     <parameter key="form.formClass">\Zend_Form</parameter>
+     <parameter key="form.subFormClass">\Zend_Form_SubForm</parameter>
    </parameters>
    
    <services>

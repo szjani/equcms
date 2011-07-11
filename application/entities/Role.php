@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"user" = "User", "usergroup" = "UserGroup"})
  */
-abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, \Serializable {
+abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 
   /**
    * @Column(name="id", type="integer")
@@ -31,6 +31,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, \Se
   /**
    * @gedmo:TreeParent
    * @ManyToOne(targetEntity="UserGroup", inversedBy="children")
+   * @JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
    * @var UserGroup
    */
   protected $parent;
@@ -115,27 +116,6 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, \Se
 
   public function getId() {
     return $this->id;
-  }
-
-  public function serialize() {
-    return serialize(array(
-      'id' => $this->getId(),
-      'lft' => $this->lft,
-      'rgt' => $this->rgt,
-      'lvl' => $this->lvl,
-      'role' => $this->role
-    ));
-  }
-
-  public function unserialize($serialized) {
-    $serialized = \unserialize($serialized);
-    $this->id = $serialized['id'];
-    $this->lft = $serialized['lft'];
-    $this->rgt = $serialized['rgt'];
-    $this->lvl = $serialized['lvl'];
-    $this->role = $serialized['role'];
-    $this->roleResources = new ArrayCollection();
-    $this->children      = new ArrayCollection();
   }
 
 }

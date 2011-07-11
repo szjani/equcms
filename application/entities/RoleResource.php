@@ -25,14 +25,14 @@ class RoleResource extends \Equ\Entity {
 
   /**
    * @ManyToOne(targetEntity="Role", inversedBy="roleResources")
-   * @JoinColumn(name="role_id", referencedColumnName="id", nullable=false)
+   * @JoinColumn(name="role_id", referencedColumnName="id", nullable=false, onDelete="cascade")
    * @var Role
    */
   private $role;
 
   /**
    * @ManyToOne(targetEntity="Resource", inversedBy="roleResources")
-   * @JoinColumn(name="resource_id", referencedColumnName="id", nullable=false)
+   * @JoinColumn(name="resource_id", referencedColumnName="id", nullable=false, onDelete="cascade")
    * @var Resource
    */
   private $resource;
@@ -94,6 +94,10 @@ class RoleResource extends \Equ\Entity {
   public function setAllowed($allow = true) {
     $this->allowed = (boolean)$allow;
     return $this;
+  }
+  
+  public function __toString() {
+    return $this->getRole() . ' - ' . $this->getResource();
   }
 
 }

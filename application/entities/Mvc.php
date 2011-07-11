@@ -44,6 +44,10 @@ class Mvc extends Resource {
    * @var \Zend_Navigation_Page_Mvc
    */
   private $navigationPage = null;
+  
+  public function __construct() {
+    $this->generateUrl();
+  }
 
   protected function generateUrl() {
     $resource = 'mvc:';
@@ -110,6 +114,7 @@ class Mvc extends Resource {
         ->setController($this->controller)
         ->setAction($this->action)
         ->setResource($this->getResourceId())
+        ->setPrivilege('list')
         ->setId($id !== '' ? $id : 'main');
       if ($this->getResourceId() == 'mvc:') {
         $page

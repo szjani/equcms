@@ -31,6 +31,7 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
   /**
    * @gedmo:TreeParent
    * @ManyToOne(targetEntity="Resource", inversedBy="children")
+   * @JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
    * @var Resource
    */
   protected $parent;
