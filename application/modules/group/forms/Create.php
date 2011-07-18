@@ -3,7 +3,8 @@ namespace modules\group\forms;
 use
   Equ\Form\IMappedType,
   Equ\Form\IBuilder,
-  Equ\Form\OptionFlags;
+  Equ\Form\OptionFlags,
+  entities\UserGroup;
 
 class Create implements IMappedType {
   
@@ -14,6 +15,6 @@ class Create implements IMappedType {
   }
   
   public function getObjectClass() {
-    return 'entities\UserGroup';
+    return UserGroup::className();
   }
 }

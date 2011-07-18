@@ -3,7 +3,8 @@ namespace modules\user\forms;
 use
   Equ\Form\IMappedType,
   Equ\Form\IBuilder,
-  Equ\Form\OptionFlags;
+  Equ\Form\OptionFlags,
+  entities\User;
 
 class Create implements IMappedType {
   
@@ -15,6 +16,6 @@ class Create implements IMappedType {
   }
   
   public function getObjectClass() {
-    return 'entities\User';
+    return User::className();
   }
 }
