@@ -29,5 +29,19 @@ class User_IndexController extends \Zend_Controller_Action {
     }
     $this->view->loginForm = $form;
   }
+  
+  /**
+   * Logout authenticated user
+   */
+  public function logoutAction() {
+    try {
+      Zend_Auth::getInstance()->clearIdentity();
+      $this->_helper->flashMessenger('Logout success', Equ\Message::SUCCESS);
+      $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
+    } catch (Exception $e) {
+      $this->_helper->serviceContainer('log')->err($e);
+      $this->_helper->flashMessenger('Logout unsuccess', Equ\Message::ERROR);
+    }
+  }
 
 }
