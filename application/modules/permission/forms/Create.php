@@ -3,7 +3,8 @@ namespace modules\permission\forms;
 use
   Equ\Form\IMappedType,
   Equ\Form\IBuilder,
-  Equ\Form\OptionFlags;
+  Equ\Form\OptionFlags,
+  entities\RoleResource;
 
 class Create implements IMappedType {
   
@@ -16,7 +17,7 @@ class Create implements IMappedType {
   }
   
   public function getObjectClass() {
-    return 'entities\RoleResource';
+    return RoleResource::className();
   }
   
   protected function getAutocompleteRoleField() {
