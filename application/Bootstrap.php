@@ -87,8 +87,8 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
 
   protected function _initNavigation() {
-    $user = $this->getContainer()->get('doctrine.entitymanager')->getRepository('entities\User')->findOneBy(array('email' => 'szjani@szjani.hu'));
-    Zend_Auth::getInstance()->getStorage()->write((string)$user);
+//    $user = $this->getContainer()->get('doctrine.entitymanager')->getRepository('entities\User')->findOneBy(array('email' => 'szjani@szjani.hu'));
+//    Zend_Auth::getInstance()->getStorage()->write((string)$user);
     $this->bootstrap('frontController');
     $this->bootstrap('view');
 

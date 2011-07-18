@@ -24,9 +24,9 @@ class UserRepository extends NestedTreeRepository implements RepositoryInterface
    * @return User
    */
   public function authenticate($credential, $password) {
-    $user = $this->findBy(array(
+    $user = $this->findOneBy(array(
       'email' => $credential,
-      'password' => User::generatePasswordHash($password)
+      'passwordHash' => User::generatePasswordHash($password)
     ));
     if ($user === null) {
       throw new Exception("Invalid user with credential '$credential'");
