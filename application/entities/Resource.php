@@ -13,7 +13,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @gedmo:Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
- * @Table(name="`resource`")
+ * @Table(name="`resource`", indexes={
+ *   @index(name="resource_resource_idx", columns={"resource"}),
+ *   @index(name="resource_lft_idx", columns={"lft"}),
+ *   @index(name="resource_rgt_idx", columns={"rgt"}),
+ *   @index(name="resource_lvl_idx", columns={"lvl"})
+ * })
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"mvc" = "Mvc"})

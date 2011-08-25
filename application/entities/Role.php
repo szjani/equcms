@@ -14,7 +14,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @gedmo:Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`role`", indexes={
- *   @index(name="role_role_idx", columns={"role"})
+ *   @index(name="role_role_idx", columns={"role"}),
+ *   @index(name="role_lft_idx", columns={"lft"}),
+ *   @index(name="role_rgt_idx", columns={"rgt"}),
+ *   @index(name="role_lvl_idx", columns={"lvl"})
  * })
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
