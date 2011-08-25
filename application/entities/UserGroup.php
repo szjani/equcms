@@ -43,16 +43,4 @@ class UserGroup extends Role {
     return $this;
   }
 
-  public function serialize() {
-    $res = \unserialize(parent::serialize());
-    $res['name']    = $this->getName();
-    return \serialize($res);
-  }
-
-  public function unserialize($serialized) {
-    parent::unserialize($serialized);
-    $serialized = \unserialize($serialized);
-    $this->name = $serialized['name'];
-  }
-
 }

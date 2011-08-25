@@ -30,7 +30,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 
   /**
    * @gedmo:TreeParent
-   * @ManyToOne(targetEntity="UserGroup", inversedBy="children")
+   * @ManyToOne(targetEntity="Role", inversedBy="children")
    * @JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
    * @var UserGroup
    */
