@@ -15,7 +15,7 @@ use
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @Entity(repositoryClass="entities\UserRepository")
- * @Table(name="`user`")
+ * @Table(name="`user`", indexes={@index(name="user_password_idx", columns={"password_hash"})})
  * @HasLifecycleCallbacks
  */
 class User extends Role implements Validatable {
@@ -26,21 +26,21 @@ class User extends Role implements Validatable {
    * @Column(name="email", type="string", unique="true", nullable=false)
    * @var string
    */
-  private $email;
+  protected $email;
 
   /**
    * @Column(name="password_hash", type="string", length=32, nullable=false)
    * @var string
    */
-  private $passwordHash;
+  protected $passwordHash;
 
   /**
    * @Column(name="activation_code", type="string", length=12)
    * @var string
    */
-  private $activationCode;
+  protected $activationCode;
   
-  private $isLoggedIn = false;
+  protected $isLoggedIn = false;
 
   /**
    * @param string $email

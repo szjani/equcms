@@ -13,7 +13,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @gedmo:Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
- * @Table(name="`role`")
+ * @Table(name="`role`", indexes={
+ *   @index(name="role_role_idx", columns={"role"})
+ * })
  * @InheritanceType("JOINED")
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"user" = "User", "usergroup" = "UserGroup"})
