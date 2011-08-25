@@ -45,6 +45,7 @@ class UserRepository extends NestedTreeRepository implements RepositoryInterface
         if (!$user) {
           throw new \RuntimeException('You have to be authenticated!');
         }
+        $user->setLoggedIn();
       }
       $this->authenticatedUser = $user;
     }

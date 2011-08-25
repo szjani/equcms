@@ -39,6 +39,8 @@ class User extends Role implements Validatable {
    * @var string
    */
   private $activationCode;
+  
+  private $isLoggedIn = false;
 
   /**
    * @param string $email
@@ -141,6 +143,22 @@ class User extends Role implements Validatable {
    */
   public function setActivationCode($activationCode) {
     $this->activationCode = $activationCode;
+    return $this;
+  }
+  
+  /**
+   * @return boolean
+   */
+  public function isLoggedIn() {
+    return $this->isLoggedIn;
+  }
+
+  /**
+   * @param boolean $loggedIn
+   * @return User 
+   */
+  public function setLoggedIn($loggedIn = true) {
+    $this->isLoggedIn = (boolean)$loggedIn;
     return $this;
   }
 

@@ -21,5 +21,9 @@ class Anonymous extends User {
   public function getRoleId() {
     return self::NAME;
   }
+  
+  public function isLoggedIn() {
+    return false;
+  }
 
 }
