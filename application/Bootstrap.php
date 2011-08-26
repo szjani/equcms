@@ -1,12 +1,15 @@
 <?php
 use
   Equ\Controller\Plugin,
-  Equ\Controller\Action\Helper;
+  Equ\Controller\Action\Helper,
+  entities\User;
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
   protected function _initAuthenticatedUserHelper() {
-    Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser());
+    $this->bootstrap('doctrine');
+    $userRepo = $this->getContainer()->get('doctrine.entitymanager')->getRepository(User::className());
+    Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser($userRepo));
   }
 
   protected function _initCleanQuery() {

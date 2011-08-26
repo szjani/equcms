@@ -1,7 +1,9 @@
 <?php
 namespace entities;
-use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use Equ\Auth\RepositoryInterface;
+use
+  Gedmo\Tree\Entity\Repository\NestedTreeRepository,
+  Equ\Auth\AuthenticatedUserStorage,
+  Equ\Auth\RepositoryInterface;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -10,7 +12,7 @@ use Equ\Auth\RepositoryInterface;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class UserRepository extends NestedTreeRepository implements RepositoryInterface {
+class UserRepository extends NestedTreeRepository implements RepositoryInterface, AuthenticatedUserStorage {
 
   /**
    * @var User
