@@ -32,7 +32,7 @@
      <parameter key="translatelog.writer.file">../data/logs/untranslated.log</parameter>
      <parameter key="translatelog.writer.writerNamespace">Zend_Log_Writer</parameter>
      <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ApcCache</parameter>
-     <parameter key="doctrine.autogenerateproxyclasses">true</parameter>
+     <parameter key="doctrine.autogenerateproxyclasses">false</parameter>
      <parameter key="doctrine.driver">pdo_mysql</parameter>
      <parameter key="doctrine.user">root</parameter>
      <parameter key="doctrine.password">1master</parameter>
