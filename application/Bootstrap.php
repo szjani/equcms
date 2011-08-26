@@ -1,25 +1,24 @@
 <?php
+use
+  Equ\Controller\Plugin,
+  Equ\Controller\Action\Helper;
+
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
-//  protected function _initAutoload() {
-//    $autoloader = new Zend_Application_Module_Autoloader(array(
-//      'namespace' => 'Application',
-//      'basePath'  => dirname(__FILE__),
-//    ));
-//    $autoloader->addResourceType('lib', 'library', 'Library');
-//    return $autoloader;
-//  }
+  protected function _initAuthenticatedUserHelper() {
+    Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser());
+  }
 
   protected function _initCleanQuery() {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new \Equ\Controller\Plugin\CleanQuery());
+    $frontController->registerPlugin(new Plugin\CleanQuery());
   }
 
   protected function _initAdminroute() {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new \Equ\Controller\Plugin\AdminRoute(), 30);
+    $frontController->registerPlugin(new Plugin\AdminRoute(), 30);
   }
 
   protected function _initAdminLayout() {
@@ -33,7 +32,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
     /* @var $frontController \Zend_Controller_Front */
-    $frontController->registerPlugin(new \Equ\Controller\Plugin\Language(), 40);
+    $frontController->registerPlugin(new Plugin\Language(), 40);
     return $this->getContainer()->get('registry');
   }
 
@@ -55,6 +54,9 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $evm = $this->getContainer()->get('doctrine.eventmanager');
     $treeListener = new \Gedmo\Tree\TreeListener();
     $evm->addEventSubscriber($treeListener);
+    
+    $timestampableListener = new \Gedmo\Timestampable\TimestampableListener();
+    $evm->addEventSubscriber($timestampableListener);
   }
 
   protected function _initAcl() {
@@ -69,14 +71,12 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
       $acl = $this->getContainer()->get('acl');
       $cache->save($acl, 'acl');
     }
-//    var_dump($acl->has('mvc:admin.user-group.create'));
-//    var_dump($acl->isAllowed('szjani@szjani.hu', 'mvc:admin.user-group.create'));
   }
 
   protected function _initMvcPermission() {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new \Equ\Controller\Plugin\MvcPermission());
+    $frontController->registerPlugin(new Plugin\MvcPermission());
   }
 
   protected function _initDojo() {
@@ -87,14 +87,12 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
 
   protected function _initNavigation() {
-//    $user = $this->getContainer()->get('doctrine.entitymanager')->getRepository('entities\User')->findOneBy(array('email' => 'szjani@szjani.hu'));
-//    Zend_Auth::getInstance()->getStorage()->write((string)$user);
     $this->bootstrap('frontController');
     $this->bootstrap('view');
 
     $frontController = $this->getResource('frontController');
     /* @var $frontController \Zend_Controller_Front */
-    $frontController->registerPlugin(new \Equ\Controller\Plugin\Navigation());
+    $frontController->registerPlugin(new Plugin\Navigation());
   }
 
 }
