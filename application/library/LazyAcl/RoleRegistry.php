@@ -32,12 +32,8 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
   }
 
   protected function storePermissionsByDb(Role $role) {
-    $roleResources = $this->getEntityManager()
-      ->createQuery("SELECT rr, re FROM entities\RoleResource rr JOIN rr.resource re WHERE rr.role = :roleId")
-      ->setParameter('roleId', $role->getId())
-      ->getResult();
     /* @var $roleResource \entities\RoleResource */
-    foreach ($roleResources as $roleResource) {
+    foreach ($role->getRoleResources() as $roleResource) {
       if ($roleResource->isAllowed()) {
         $this->acl->allow($role, $roleResource->getResource(), $roleResource->getPrivilege());
       } else {
@@ -55,7 +51,17 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
       return;
     }
     /* @var $role entities\Role */
-    $nodes = $repo->getPath($role);
+    $nodes = $repo->createQueryBuilder('r')
+      ->select('r, rr, res')
+      ->leftJoin('r.roleResources', 'rr')
+      ->leftJoin('rr.resource', 'res')
+      ->where('r.lft <= :left')
+      ->andWhere('r.rgt >= :right')
+      ->orderBy('r.lft', 'ASC')
+      ->getQuery()
+      ->setParameter('left', $role->getLeft())
+      ->setParameter('right', $role->getRight())
+      ->getResult();
 
     /* @var $node entities\Role */
     foreach ($nodes as $node) {
