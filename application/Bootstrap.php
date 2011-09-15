@@ -2,7 +2,8 @@
 use
   Equ\Controller\Plugin,
   Equ\Controller\Action\Helper,
-  entities\User;
+  entities\User,
+  entities\Mvc;
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
@@ -64,22 +65,30 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
   protected function _initAcl() {
     $this->bootstrap('doctrine');
+    $container  = $this->getContainer();
     /* @var $cache Zend_Cache_Core */
-    $cache = $this->getContainer()->get('cache.system');
-    $acl = null;
-    if ($acl = ($cache->load('acl'))) {
-      $this->getContainer()->set('acl', $acl);
-      $acl->setEntityManager($this->getContainer()->get('doctrine.entitymanager'));
+    $cache = $container->get('cache.system');
+    $acl   = $cache->load('acl');
+    if (false !== $acl) {
+      $container->set('acl', $acl);
+      $acl->setEntityManager($container->get('doctrine.entitymanager'));
     } else {
-      $acl = $this->getContainer()->get('acl');
+      $acl = $container->get('acl');
       $cache->save($acl, 'acl');
     }
   }
 
   protected function _initMvcPermission() {
     $this->bootstrap('frontController');
+    $this->bootstrap('doctrine');
+    $this->bootstrap('acl');
+    
+    $container = $this->getContainer();
     $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new Plugin\MvcPermission());
+    $frontController->registerPlugin(new Plugin\MvcPermission(
+      $container->get('doctrine.entitymanager')->getRepository(User::className()),
+      $container->get('acl')
+    ));
   }
 
   protected function _initDojo() {
@@ -92,10 +101,30 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   protected function _initNavigation() {
     $this->bootstrap('frontController');
     $this->bootstrap('view');
+    $this->bootstrap('doctrine');
+    $this->bootstrap('acl');
 
     $frontController = $this->getResource('frontController');
-    /* @var $frontController \Zend_Controller_Front */
-    $frontController->registerPlugin(new Plugin\Navigation());
+    
+    $container  = $this->getContainer();
+    $cache      = $container->get('cache.system');
+    $navigation = $cache->load('navigation');
+    if (false !== $navigation) {
+      $container->set('navigation', $navigation);
+    } else {
+      $navigation = $container->get('navigation');
+      /* @var $frontController \Zend_Controller_Front */
+      $frontController->registerPlugin(new Plugin\Navigation(
+        $navigation,
+        $container->get('doctrine.entitymanager')->getRepository(Mvc::className()),
+        $cache
+      ));
+    }
+    
+    $view = $this->getResource('view');
+    $view->getHelper('navigation')->setContainer($navigation);
+    $view->getHelper('navigation')->setAcl($container->get('acl'));
+    $view->getHelper('navigation')->setRole(\Zend_Auth::getInstance()->getIdentity());
   }
 
 }

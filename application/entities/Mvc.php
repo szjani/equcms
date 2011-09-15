@@ -11,7 +11,7 @@ namespace entities;
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @gedmo:Tree(type="nested")
- * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @Entity(repositoryClass="entities\MvcRepository")
  * @Table(name="`mvc`")
  */
 class Mvc extends Resource {
