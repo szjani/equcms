@@ -6,6 +6,7 @@
    <parameters>
      <parameter key="APPLICATION_PATH" type="constant">APPLICATION_PATH</parameter>
      <parameter key="CURRENT_DATE" type="constant">CURRENT_DATE</parameter>
+     <parameter key="cache.prefix">equcms_</parameter>
      <parameter key="cache.data.backend">Apc</parameter>
      <parameter key="cache.data.lifetime">7200</parameter>
      <parameter key="cache.system.backend">Apc</parameter>
@@ -171,6 +172,7 @@
        <argument type="collection">
          <argument key="lifetime">%cache.data.lifetime%</argument>
          <argument key="automatic_serialization">true</argument>
+         <argument key="cache_id_prefix">%cache.prefix%</argument>
        </argument>
        <argument type="collection">
          <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
@@ -182,6 +184,7 @@
        <argument type="collection">
          <argument key="lifetime">%cache.system.lifetime%</argument>
          <argument key="automatic_serialization">true</argument>
+         <argument key="cache_id_prefix">%cache.prefix%</argument>
        </argument>
        <argument type="collection">
          <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
