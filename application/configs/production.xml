@@ -73,7 +73,11 @@
        <argument type="service" id="doctrine.eventmanager" />
      </service>
      <service id="doctrine.eventmanager" class="Doctrine\Common\EventManager" />
-     <service id="doctrine.cache" class="%doctrine.cache.class%" />
+     <service id="doctrine.cache" class="%doctrine.cache.class%">
+       <call method="setNamespace">
+         <argument>%cache.prefix%</argument>
+       </call>
+     </service>
      <service id="doctrine.configuration" class="Doctrine\ORM\Configuration">
        <call method="setMetadataCacheImpl">
          <argument type="service" id="doctrine.cache" />
