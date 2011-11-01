@@ -107,24 +107,13 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $frontController = $this->getResource('frontController');
     
     $container  = $this->getContainer();
-    $cache      = $container->get('cache.system');
-    $navigation = $cache->load('navigation');
-    if (false !== $navigation) {
-      $container->set('navigation', $navigation);
-    } else {
-      $navigation = $container->get('navigation');
-      /* @var $frontController \Zend_Controller_Front */
-      $frontController->registerPlugin(new Plugin\Navigation(
-        $navigation,
-        $container->get('doctrine.entitymanager')->getRepository(Mvc::className()),
-        $cache
-      ));
-    }
-    
-    $view = $this->getResource('view');
-    $view->getHelper('navigation')->setContainer($navigation);
-    $view->getHelper('navigation')->setAcl($container->get('acl'));
-    $view->getHelper('navigation')->setRole(\Zend_Auth::getInstance()->getIdentity());
+    $frontController->registerPlugin(new Plugin\Navigation(
+      $container,
+      $container->get('doctrine.entitymanager')->getRepository(Mvc::className()),
+      $container->get('cache.system'),
+      $container->get('acl'),
+      $this->getResource('view')
+    ));
   }
 
 }
