@@ -10,7 +10,6 @@ namespace entities;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @gedmo:Tree(type="nested")
  * @Entity(repositoryClass="entities\MvcRepository")
  * @Table(name="`mvc`")
  */

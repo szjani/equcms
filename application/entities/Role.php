@@ -1,6 +1,7 @@
 <?php
 namespace entities;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Abstract Role class to handle roles (users, groups hierarchy)
@@ -11,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @gedmo:Tree(type="nested")
+ * @Gedmo\Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`role`", indexes={
  *   @index(name="role_role_idx", columns={"role"}),
@@ -34,7 +35,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   protected $id;
 
   /**
-   * @gedmo:TreeParent
+   * @Gedmo\TreeParent
    * @ManyToOne(targetEntity="Role", inversedBy="children")
    * @JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
    * @var UserGroup
@@ -48,13 +49,13 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   protected $children;
 
   /**
-   * @gedmo:TreeLeft
+   * @Gedmo\TreeLeft
    * @Column(name="lft", type="integer")
    */
   protected $lft;
 
   /**
-   * @gedmo:TreeRight
+   * @Gedmo\TreeRight
    * @Column(name="rgt", type="integer")
    */
   protected $rgt;
@@ -66,7 +67,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   protected $roleResources;
 
   /**
-   * @gedmo:TreeLevel
+   * @Gedmo\TreeLevel
    * @Column(name="lvl", type="integer")
    */
   protected $lvl;
