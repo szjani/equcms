@@ -123,12 +123,4 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
     return $this->id;
   }
   
-  public function getLeft() {
-    return $this->lft;
-  }
-  
-  public function getRight() {
-    return $this->rgt;
-  }
-
 }

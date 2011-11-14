@@ -43,7 +43,8 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
   }
 
   protected function storeRoleByDb($role) {
-    $repo = $this->getEntityManager()->getRepository('entities\Role');
+    $repo = $this->getEntityManager()->getRepository(Role::className());
+    /* @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
     if (\is_string($role)) {
       $role = $repo->findOneBy(array('role' => (string)$role));
     }
@@ -51,16 +52,11 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
       return;
     }
     /* @var $role entities\Role */
-    $nodes = $repo->createQueryBuilder('r')
-      ->select('r, rr, res')
-      ->leftJoin('r.roleResources', 'rr')
+    $nodes = $repo->getPathQueryBuilder($role)
+      ->select('node, rr, res')
+      ->leftJoin('node.roleResources', 'rr')
       ->leftJoin('rr.resource', 'res')
-      ->where('r.lft <= :left')
-      ->andWhere('r.rgt >= :right')
-      ->orderBy('r.lft', 'ASC')
       ->getQuery()
-      ->setParameter('left', $role->getLeft())
-      ->setParameter('right', $role->getRight())
       ->getResult();
 
     /* @var $node entities\Role */
