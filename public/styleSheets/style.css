@@ -5,11 +5,26 @@ body {
 	font-size: 12px;
 }
 #page {
-  margin-top: 10px;
+  margin: 10px auto;
+  width: 950px;
+  border-radius: 4px;
+	-moz-border-radius: 4px;
+  box-shadow: 0px 10px 40px #eee;
+  -moz-box-shadow: 0px 10px 40px #eee;
+  -webkit-box-shadow: 0px 10px 40px #eee;
 }
 h1 {
 	font-size: x-large;
 	margin: 0.5em;
+}
+h1 > a {
+  padding-left: 4px;
+  padding-right: 4px;
+  color: white;
+  border-left: 2px solid transparent;
+}
+h1 > a:hover {
+  border-left: 2px solid white;
 }
 h2 {
 	font-size: medium;
@@ -188,4 +203,12 @@ dl dd ul.errors li {
 .messages div.error {
 	background-color: #FDF7F7;
 	border-color: #D46464;
+}
+.headericon {
+  float: right;
+}
+.container_12 > .grid_3,
+.container_12 > .grid_9,
+.container_12 > .grid_12 {
+  margin-left: 0px;
 }

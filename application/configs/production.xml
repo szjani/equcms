@@ -39,6 +39,9 @@
      <parameter key="doctrine.password">1master</parameter>
      <parameter key="doctrine.dbname">equcms</parameter>
      <parameter key="doctrine.charset">UTF8</parameter>
+     <parameter key="doctrine.entitypath">entities</parameter>
+     <parameter key="doctrine.proxypath">entities/Proxy</parameter>
+     <parameter key="doctrine.proxynamespace">entities\Proxy</parameter>
      <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Dojo\Factory</parameter>
      <parameter key="filterQueryBuilderCreator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
      <parameter key="paginatorCreator.class">Equ\Doctrine\PaginatorCreator</parameter>
@@ -72,7 +75,21 @@
        <argument type="service" id="doctrine.configuration" />
        <argument type="service" id="doctrine.eventmanager" />
      </service>
-     <service id="doctrine.eventmanager" class="Doctrine\Common\EventManager" />
+     <service id="doctrine.mappingdriver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" factory-service="doctrine.configuration" factory-method="newDefaultAnnotationDriver">
+       <argument>%APPLICATION_PATH%/%doctrine.entitypath%</argument>
+     </service>
+     <service id="doctrine.eventmanager" class="Doctrine\Common\EventManager">
+       <call method="addEventSubscriber">
+         <argument type="service">
+           <service class="Gedmo\Tree\TreeListener" />
+         </argument>
+       </call>
+       <call method="addEventSubscriber">
+         <argument type="service">
+           <service class="Gedmo\Timestampable\TimestampableListener" />
+         </argument>
+       </call>
+     </service>
      <service id="doctrine.cache" class="%doctrine.cache.class%">
        <call method="setNamespace">
          <argument>%cache.prefix%</argument>
@@ -87,6 +104,15 @@
        </call>
        <call method="setAutoGenerateProxyClasses">
          <argument>%doctrine.autogenerateproxyclasses%</argument>
+       </call>
+       <call method="setMetadataDriverImpl">
+         <argument type="service" id="doctrine.mappingdriver" />
+       </call>
+       <call method="setProxyDir">
+         <argument>%APPLICATION_PATH%/%doctrine.proxypath%</argument>
+       </call>
+       <call method="setProxyNamespace">
+         <argument>%doctrine.proxynamespace%</argument>
        </call>
 <!--       <call method="setSQLLogger">
          <argument type="service" id="doctrine.log" />
@@ -169,6 +195,7 @@
            </argument>
          </argument>
        </argument>
+       <call method="registerErrorHandler" />
      </service>
      <service id="cache.data" class="Zend_Cache" factory-class="Zend_Cache" factory-method="factory">
        <argument>Core</argument>

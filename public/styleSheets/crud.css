@@ -22,8 +22,14 @@ td {
   font-size: 12px;
   vertical-align: middle;
 }
-tr:hover {
-  background-color: #eee;
+tr.even:hover {
+  background-color: #f0f0f0;
+}
+tr.odd:hover {
+  background-color: #eeeeee;
+}
+tr.even {
+  background-color: #fafafa;
 }
 th {
 	background: url(/images/table_bg.jpg) repeat-x;

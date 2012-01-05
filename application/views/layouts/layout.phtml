@@ -15,6 +15,7 @@
     $("#mainMenu ul.navigation > li > a").click(function() {
       $(this).attr('href', '#');
       $(this).parent().toggleClass('open');
+      return false;
     });
   });
 <?php $this->headScript()->captureEnd() ?>
@@ -30,7 +31,7 @@
 ?>
 <?php
   $this->headScript()
-    ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'text/javascript');
+    ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'text/javascript');
   $this->headLink()
     ->appendStylesheet($this->baseUrl('/styleSheets/reset.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/960.css'))
@@ -51,13 +52,17 @@
       <div class="container_12">
         <div class="grid_12" id="head">
         	<div id="logo" class="grid_3">
-            <h1>EquCMS</h1>
-            <fb:login-button autologoutlink="true" perms="email"></fb:login-button>
-            <fb:like></fb:like>
-            <?php if (Zend_Auth::getInstance()->hasIdentity() && !(Zend_Auth::getInstance()->getIdentity() instanceof \modules\user\models\Anonymous)): ?>
-              <a href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout')) ?>">Logout</a>
-            <?php endif ?>
+            <h1><a href="/">EquCMS</a></h1>
           </div>
+          <?php if ($this->authenticatedUser->isLoggedIn()): ?>
+            <a class="headericon" title="Logout" href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout'), 'defaultlang') ?>">
+              <img src="/images/logout.png" alt="Logout" />
+            </a>
+          <?php else: ?>
+            <a class="headericon" href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'login')) ?>">
+              <img src="/images/login.png" alt="Login" />
+            </a>
+          <?php endif ?>
       	</div>
       </div>
       <div class="grid_3" id="mainMenu">
@@ -80,24 +85,5 @@
     </div>
   </div>
   <div id="fb-root"></div>
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({appId: '129406290458108', status: true, cookie: true,
-             xfbml: true});
-  };
-  (function() {
-    var e = document.createElement('script');
-    e.type = 'text/javascript';
-    e.src = document.location.protocol +
-      '//connect.facebook.net/hu_HU/all.js';
-    e.async = true;
-    document.getElementById('fb-root').appendChild(e);
-  }());
-
-  // whenever the user logs in, we refresh the page
-//  FB.Event.subscribe('auth.login', function() {
-//  window.location.reload();
-//  });
-</script>
 </body>
 </html>

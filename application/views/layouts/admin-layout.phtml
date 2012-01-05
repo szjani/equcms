@@ -16,6 +16,7 @@
     $("#mainMenu ul.navigation > li > a").click(function() {
       $(this).attr('href', '#');
       $(this).parent().toggleClass('open');
+      return false;
     });
   });
 <?php $this->headScript()->captureEnd() ?>
@@ -31,7 +32,7 @@
 ?>
 <?php
   $this->headScript()
-    ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'text/javascript');
+    ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'text/javascript');
   $this->headLink()
     ->appendStylesheet($this->baseUrl('/styleSheets/reset.css'))
     ->appendStylesheet($this->baseUrl('/styleSheets/960.css'))
@@ -52,8 +53,13 @@
       <div class="container_12">
         <div class="grid_12" id="head">
         	<div id="logo" class="grid_3">
-            <h1>EquCMS</h1>
+            <h1><a href="/">EquCMS</a></h1>
           </div>
+          <?php if ($this->authenticatedUser->isLoggedIn()): ?>
+            <a class="headericon" title="Logout" href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout'), 'defaultlang') ?>">
+              <img src="/images/logout.png" alt="Logout" />
+            </a>
+          <?php endif ?>
       	</div>
       </div>
       <div class="grid_3" id="mainMenu">
