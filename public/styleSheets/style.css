@@ -192,3 +192,6 @@ dl dd ul.errors li {
 	background-color: #FDF7F7;
 	border-color: #D46464;
 }
+.headericon {
+  float: right;
+}
