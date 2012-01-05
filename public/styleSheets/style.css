@@ -12,7 +12,13 @@ h1 {
 	margin: 0.5em;
 }
 h1 > a {
+  padding-left: 4px;
+  padding-right: 4px;
   color: white;
+  border-left: 2px solid transparent;
+}
+h1 > a:hover {
+  border-left: 2px solid white;
 }
 h2 {
 	font-size: medium;
