@@ -43,7 +43,13 @@ class UserRepository extends NestedTreeRepository implements RepositoryInterface
     if (is_null($this->authenticatedUser)) {
       $user = \Zend_Auth::getInstance()->getIdentity();
       if (is_string($user)) {
-        $user = $this->findOneBy(array('role' => $user));
+        $user = $this->createQueryBuilder('u')
+          ->select('u, rr')
+          ->leftJoin('u.roleResources', 'rr')
+          ->where('u.role = :user')
+          ->setParameter('user', $user)
+          ->getQuery()
+          ->getSingleResult();
         if (!$user) {
           throw new \RuntimeException('You have to be authenticated!');
         }
