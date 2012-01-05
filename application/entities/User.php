@@ -161,5 +161,16 @@ class User extends Role implements Validatable {
     $this->isLoggedIn = (boolean)$loggedIn;
     return $this;
   }
+  
+  /**
+   * @return array
+   */
+  public function toArray() {
+    return array(
+      'id' => $this->getId(),
+      'roleId' => $this->getRoleId(),
+      'email' => $this->getEmail()
+    );
+  }
 
 }
