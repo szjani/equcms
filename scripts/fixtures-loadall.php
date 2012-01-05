@@ -11,10 +11,6 @@ $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
-$application->bootstrap('Doctrine');
-
-// Retrieve Doctrine Container resource
-$container = $application->getBootstrap()->getResource('doctrine');
 
 /* @var $em Doctrine\ORM\EntityManager */
 $em = $application->getBootstrap()->getContainer()->get('doctrine.entitymanager');

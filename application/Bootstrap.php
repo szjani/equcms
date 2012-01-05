@@ -3,12 +3,13 @@ use
   Equ\Controller\Plugin,
   Equ\Controller\Action\Helper,
   entities\User,
-  entities\Mvc;
+  entities\Mvc,
+  modules\user\plugins\AclInitializer,
+  modules\user\models\Anonymous;
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
   protected function _initAuthenticatedUserHelper() {
-    $this->bootstrap('doctrine');
     $userRepo = $this->getContainer()->get('doctrine.entitymanager')->getRepository(User::className());
     Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser($userRepo));
   }
@@ -43,28 +44,10 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   protected function _initDefaultLog() {
     libxml_use_internal_errors(true);
     /* @var $log Zend_Log */
-    $log = $this->getContainer()->get('log');
-    $log->registerErrorHandler();
-    return $log;
+    return $this->getContainer()->get('log');
   }
   
-  protected function _initDoctrine() {
-    $config = $this->getContainer()->get('doctrine.configuration');
-    $driverImpl = $config->newDefaultAnnotationDriver(APPLICATION_PATH . '/entities');
-    $config->setMetadataDriverImpl($driverImpl);
-    $config->setProxyDir(APPLICATION_PATH . '/entities/Proxy');
-    $config->setProxyNamespace('entities\Proxy');
-
-    $evm = $this->getContainer()->get('doctrine.eventmanager');
-    $treeListener = new \Gedmo\Tree\TreeListener();
-    $evm->addEventSubscriber($treeListener);
-    
-    $timestampableListener = new \Gedmo\Timestampable\TimestampableListener();
-    $evm->addEventSubscriber($timestampableListener);
-  }
-
   protected function _initAcl() {
-    $this->bootstrap('doctrine');
     $container  = $this->getContainer();
     /* @var $cache Zend_Cache_Core */
     $cache = $container->get('cache.system');
@@ -80,7 +63,6 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
   protected function _initMvcPermission() {
     $this->bootstrap('frontController');
-    $this->bootstrap('doctrine');
     $this->bootstrap('acl');
     
     $container = $this->getContainer();
@@ -101,7 +83,6 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   protected function _initNavigation() {
     $this->bootstrap('frontController');
     $this->bootstrap('view');
-    $this->bootstrap('doctrine');
     $this->bootstrap('acl');
 
     $frontController = $this->getResource('frontController');
@@ -114,6 +95,14 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
       $container->get('acl'),
       $this->getResource('view')
     ));
+  }
+  
+  protected function _initAnonymousUser() {
+    Zend_Controller_Front::getInstance()->registerPlugin(new AclInitializer());
+    $auth = Zend_Auth::getInstance();
+    if (!$auth->hasIdentity()) {
+      $auth->getStorage()->write(new Anonymous());
+    }
   }
 
 }
