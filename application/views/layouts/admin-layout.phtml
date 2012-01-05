@@ -16,6 +16,7 @@
     $("#mainMenu ul.navigation > li > a").click(function() {
       $(this).attr('href', '#');
       $(this).parent().toggleClass('open');
+      return false;
     });
   });
 <?php $this->headScript()->captureEnd() ?>
