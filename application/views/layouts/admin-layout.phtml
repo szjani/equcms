@@ -52,7 +52,7 @@
       <div class="container_12">
         <div class="grid_12" id="head">
         	<div id="logo" class="grid_3">
-            <h1>EquCMS</h1>
+            <h1><a href="/">EquCMS</a></h1>
             <?php if ($this->authenticatedUser->isLoggedIn()): ?>
               <a href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout'), 'defaultlang') ?>">Logout</a>
             <?php endif ?>

@@ -11,6 +11,9 @@ h1 {
 	font-size: x-large;
 	margin: 0.5em;
 }
+h1 > a {
+  color: white;
+}
 h2 {
 	font-size: medium;
 	margin: 1em 0px;
