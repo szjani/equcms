@@ -1,4 +1,6 @@
 <?php
+use entities\Role;
+
 class Role_AdminController extends \Zend_Controller_Action {
 
   public function autocompleteAction() {
@@ -9,7 +11,7 @@ class Role_AdminController extends \Zend_Controller_Action {
     $em = $this->_helper->serviceContainer('doctrine.entitymanager');
     $results = $em->createQueryBuilder()
       ->select('r.id, r.role')
-      ->from('entities\Role', 'r')
+      ->from(Role::className(), 'r')
       ->where("r.role LIKE :role")
       ->setParameter('role', '%'.$role.'%')
       ->setMaxResults(3)
