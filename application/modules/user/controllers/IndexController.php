@@ -5,6 +5,15 @@ use
 
 class User_IndexController extends \Zend_Controller_Action {
 
+  public function init() {
+    parent::init();
+    $contextSwitch = $this->_helper->getHelper('contextSwitch');
+    $contextSwitch
+      ->addActionContext('login', 'json')
+      ->addActionContext('logout', 'json')
+      ->initContext();
+  }
+  
   public function loginAction() {
     $form = null;
     try {
@@ -22,7 +31,9 @@ class User_IndexController extends \Zend_Controller_Action {
         );
         Zend_Auth::getInstance()->getStorage()->write($user->getRoleId());
         $this->_helper->flashMessenger('Login success');
-        $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
+        if (!$this->_request->isXmlHttpRequest()) {
+          $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
+        }
       }
     } catch (\Exception $e) {
       $this->_helper->flashMessenger($e, Equ\Message::ERROR);
@@ -37,7 +48,9 @@ class User_IndexController extends \Zend_Controller_Action {
     try {
       Zend_Auth::getInstance()->clearIdentity();
       $this->_helper->flashMessenger('Logout success', Equ\Message::SUCCESS);
-      $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
+      if (!$this->_request->isXmlHttpRequest()) {
+        $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
+      }
     } catch (Exception $e) {
       $this->_helper->serviceContainer('log')->err($e);
       $this->_helper->flashMessenger('Logout unsuccess', Equ\Message::ERROR);
