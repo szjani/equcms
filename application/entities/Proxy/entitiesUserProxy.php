@@ -90,6 +90,12 @@ class entitiesUserProxy extends \entities\User implements \Doctrine\ORM\Proxy\Pr
         return parent::setLoggedIn($loggedIn);
     }
 
+    public function toArray()
+    {
+        $this->__load();
+        return parent::toArray();
+    }
+
     public function getParent()
     {
         $this->__load();
@@ -124,18 +130,6 @@ class entitiesUserProxy extends \entities\User implements \Doctrine\ORM\Proxy\Pr
     {
         $this->__load();
         return parent::getId();
-    }
-
-    public function getLeft()
-    {
-        $this->__load();
-        return parent::getLeft();
-    }
-
-    public function getRight()
-    {
-        $this->__load();
-        return parent::getRight();
     }
 
     public function setValidator(\Equ\Object\Validator $validator)

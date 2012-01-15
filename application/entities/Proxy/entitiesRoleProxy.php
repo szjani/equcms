@@ -72,18 +72,6 @@ class entitiesRoleProxy extends \entities\Role implements \Doctrine\ORM\Proxy\Pr
         return parent::getId();
     }
 
-    public function getLeft()
-    {
-        $this->__load();
-        return parent::getLeft();
-    }
-
-    public function getRight()
-    {
-        $this->__load();
-        return parent::getRight();
-    }
-
     public function setValidator(\Equ\Object\Validator $validator)
     {
         $this->__load();

@@ -84,18 +84,6 @@ class entitiesUserGroupProxy extends \entities\UserGroup implements \Doctrine\OR
         return parent::getId();
     }
 
-    public function getLeft()
-    {
-        $this->__load();
-        return parent::getLeft();
-    }
-
-    public function getRight()
-    {
-        $this->__load();
-        return parent::getRight();
-    }
-
     public function setValidator(\Equ\Object\Validator $validator)
     {
         $this->__load();
