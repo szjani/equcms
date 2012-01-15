@@ -1,8 +1,7 @@
-data/cache/*
-data/logs/*
 tests/log/*
 .project
 .settings
 .buildpath
 nbproject/
 tests/bin/selenium-server.jar
+!.gitignore
