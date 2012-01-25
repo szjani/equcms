@@ -2,6 +2,7 @@
 namespace entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Equ\Crud\SortableEntity;
 
 /**
  * Abstract Role class to handle roles (users, groups hierarchy)
@@ -24,7 +25,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"user" = "User", "usergroup" = "UserGroup"})
  */
-abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
+abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, SortableEntity {
 
   /**
    * @Column(name="id", type="integer")
@@ -121,6 +122,10 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 
   public function getId() {
     return $this->id;
+  }
+  
+  public static function getSortField() {
+    return 'role';
   }
   
 }
