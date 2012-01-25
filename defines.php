@@ -4,9 +4,6 @@ ini_set('display_errors', true);
 
 date_default_timezone_set('Europe/Budapest');
 
-defined('CURRENT_DATE')
-    || define('CURRENT_DATE', date('Y-m-d'));
-
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', __DIR__ . '/application');
