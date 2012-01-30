@@ -5,6 +5,10 @@ use
 
 class User_IndexController extends \Zend_Controller_Action {
 
+  public $em;
+  
+  public $log;
+  
   public function init() {
     parent::init();
     $contextSwitch = $this->_helper->getHelper('contextSwitch');
@@ -23,9 +27,7 @@ class User_IndexController extends \Zend_Controller_Action {
         if (!$form->isValid($this->_request->getPost())) {
           throw new \Exception('Invalid login data');
         }
-        /* @var $em \Doctrine\ORM\EntityManager */
-        $em = $this->_helper->serviceContainer('doctrine.entitymanager');
-        $user = $em->getRepository(User::className())->authenticate(
+        $user = $this->em->getRepository(User::className())->authenticate(
           $form->getValue('email'),
           $form->getValue('password')
         );
@@ -52,7 +54,7 @@ class User_IndexController extends \Zend_Controller_Action {
         $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
       }
     } catch (Exception $e) {
-      $this->_helper->serviceContainer('log')->err($e);
+      $this->log->err($e);
       $this->_helper->flashMessenger('Logout unsuccess', Equ\Message::ERROR);
     }
   }

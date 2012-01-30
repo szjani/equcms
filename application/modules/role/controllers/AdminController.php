@@ -3,13 +3,13 @@ use entities\Role;
 
 class Role_AdminController extends \Zend_Controller_Action {
 
+  public $em;
+  
   public function autocompleteAction() {
     $role = $this->_getParam("role", null);
     $role = substr($role, 0, -1); //fix : remove * at the end of the ID.
 
-    /* @var $em \Doctrine\ORM\EntityManager */
-    $em = $this->_helper->serviceContainer('doctrine.entitymanager');
-    $results = $em->createQueryBuilder()
+    $results = $this->em->createQueryBuilder()
       ->select('r.id, r.role')
       ->from(Role::className(), 'r')
       ->where("r.role LIKE :role")
