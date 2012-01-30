@@ -1,5 +1,6 @@
 <?php
 namespace entities;
+use Equ\Navigation\Item as NavigationItem;
 
 /**
  * Mvc URL entity
@@ -13,7 +14,7 @@ namespace entities;
  * @Entity(repositoryClass="entities\MvcRepository")
  * @Table(name="`mvc`")
  */
-class Mvc extends Resource {
+class Mvc extends Resource implements NavigationItem {
 
   const SEPARATOR = '/';
 
