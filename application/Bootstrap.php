@@ -13,6 +13,10 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $userRepo = $this->getContainer()->get('doctrine.entitymanager')->getRepository(User::className());
     Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser($userRepo));
   }
+  
+  protected function _initServiceInjector() {
+    Zend_Controller_Action_HelperBroker::addHelper(new Helper\ServiceInjector($this->getContainer()));
+  }
 
   protected function _initCleanQuery() {
     $this->bootstrap('frontController');
