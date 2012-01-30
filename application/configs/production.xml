@@ -60,6 +60,7 @@
        <argument type="service" id="doctrine.entitymanager" />
      </service>
      <service id="navigation" class="Zend_Navigation" />
+     <service id="em" alias="doctrine.entitymanager" />
      <service id="doctrine.entitymanager" class="Doctrine\ORM\EntityManager" factory-class="Doctrine\ORM\EntityManager" factory-method="create">
        <argument type="collection">
          <argument key="driver">%doctrine.driver%</argument>
