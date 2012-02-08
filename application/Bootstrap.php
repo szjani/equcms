@@ -9,6 +9,15 @@ use
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
+  protected function _initCreateFormBuilderHelper() {
+    $container = $this->getContainer();
+    Zend_Controller_Action_HelperBroker::addHelper(new Helper\CreateFormBuilder(
+      $container->get('form.elementcreator.factory'),
+      $container->getParameter('form.formClass'),
+      $container->getParameter('form.subFormClass')
+    ));
+  }
+
   protected function _initRedirectHereAfterPostHelper() {
     Zend_Controller_Action_HelperBroker::addHelper(new Helper\RedirectHereAfterPost());
   }
