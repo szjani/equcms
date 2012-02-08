@@ -6,7 +6,9 @@ body {
 }
 #page {
   margin: 10px auto;
-  width: 950px;
+  padding-bottom: 30px;
+  width: 948px;
+  border: 1px solid #ececec;
   border-radius: 4px;
 	-moz-border-radius: 4px;
   box-shadow: 0px 10px 40px #eee;
