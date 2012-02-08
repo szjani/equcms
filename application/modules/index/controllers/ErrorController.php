@@ -1,6 +1,18 @@
 <?php
+use 
+  Equ\Controller\Exception\PermissionException,
+  Equ\Message;
+  
 class ErrorController extends Zend_Controller_Action {
 
+  public function init() {
+    parent::init();
+    $contextSwitch = $this->_helper->getHelper('contextSwitch');
+    $contextSwitch
+      ->addActionContext('error', 'json')
+      ->initContext();
+  }
+  
   public function errorAction() {
     $this->_helper->layout->disableLayout();
     if ($this->getInvokeArg('errorview') && $this->getInvokeArg('errorview') != 'error') {
@@ -8,6 +20,17 @@ class ErrorController extends Zend_Controller_Action {
     }
     
     $errors = $this->_getParam('error_handler');
+    
+    if ($errors->exception instanceof PermissionException) {
+      $this->_helper->flashMessenger($errors->exception->getMessage(), Message::ERROR);
+      if (!$this->_request->isXmlHttpRequest()) {
+        $this->_helper->redirectHereAfterPost();
+        $this->_helper->redirector->gotoRouteAndExit(
+          array('module' => 'user', 'controller' => 'index', 'action' => 'login'), 'defaultlang'
+        );
+      }
+    }
+
     switch ($errors->type) {
       case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
       case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -26,6 +49,7 @@ class ErrorController extends Zend_Controller_Action {
     if ($this->getInvokeArg('displayExceptions') == true) {
       $this->view->exception = $errors->exception;
     }
+    $this->view->exceptionMessage = $errors->exception->getMessage();
     $this->view->request = $errors->request;
   }
 

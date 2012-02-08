@@ -33,7 +33,7 @@ class User_IndexController extends \Zend_Controller_Action {
         );
         Zend_Auth::getInstance()->getStorage()->write($user->getRoleId());
         $this->_helper->flashMessenger('Login success');
-        if (!$this->_request->isXmlHttpRequest()) {
+        if (!$this->_request->isXmlHttpRequest() && !$this->_helper->redirectHereAfterPost->hasUrl()) {
           $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
         }
       }
