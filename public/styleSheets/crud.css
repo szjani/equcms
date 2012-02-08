@@ -89,8 +89,33 @@ a {
   padding: 10px 0px;
 }
 .paginationControl {
+  padding: 10px 0px;
 }
-.paginationControl span, .paginationControl a{
+.paginationControl a {
+  color: inherit;
+}
+.paginationControl a:hover span {
+/*  background-color: #E9F4FE;
+  border: 1px solid #789EC0;*/
+  background-color: #F7FCFF;
+  border: 1px solid #B5BCC7;
+}
+.paginationControl span.disabled {
+  background-color: #ececec;
+  border: 1px solid #B5BCC7;
+}
+.paginationControl span.current {
+  background-color: #eee;
+  border: 1px solid #B5BCC7;
+}
+.paginationControl span {
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+/*  border: 1px solid #B5BCC7;
+  background-color: #F7FCFF;*/
+  border: 1px solid #789EC0;
+  background-color: #E9F4FE;
+  padding: 2px 8px;
 }
 
 textarea {
