@@ -5,7 +5,8 @@ use
   Doctrine\ORM\EntityManager,
   Doctrine\Common\DataFixtures\FixtureInterface,
   Doctrine\Common\DataFixtures\OrderedFixtureInterface,
-  Doctrine\Common\DataFixtures\AbstractFixture;
+  Doctrine\Common\DataFixtures\AbstractFixture,
+  Doctrine\Common\Persistence\ObjectManager;
 
 class LoadNavigation extends AbstractFixture implements OrderedFixtureInterface {
 
@@ -13,7 +14,7 @@ class LoadNavigation extends AbstractFixture implements OrderedFixtureInterface 
     return 20;
   }
   
-  public function load($manager) {
+  public function load(ObjectManager $manager) {
     $root = new \entities\Mvc();
     $manager->persist($root);
     
