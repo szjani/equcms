@@ -9,6 +9,10 @@ use
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
+  protected function _initRedirectHereAfterPostHelper() {
+    Zend_Controller_Action_HelperBroker::addHelper(new Helper\RedirectHereAfterPost());
+  }
+  
   protected function _initAuthenticatedUserHelper() {
     $userRepo = $this->getContainer()->get('doctrine.entitymanager')->getRepository(User::className());
     Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser($userRepo));
@@ -70,8 +74,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $this->bootstrap('acl');
     
     $container = $this->getContainer();
-    $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new Plugin\MvcPermission(
+    Zend_Controller_Action_HelperBroker::addHelper(new Helper\MvcPermission(
       $container->get('doctrine.entitymanager')->getRepository(User::className()),
       $container->get('acl')
     ));
@@ -89,11 +92,10 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $this->bootstrap('view');
     $this->bootstrap('acl');
 
-    $frontController = $this->getResource('frontController');
-    
     $container  = $this->getContainer();
+    $frontController = $this->getResource('frontController');
     $frontController->registerPlugin(new Plugin\Navigation(
-      $container,
+      $container->get('navigation'),
       $container->get('doctrine.entitymanager')->getRepository(Mvc::className()),
       $container->get('cache.system'),
       $container->get('acl'),
