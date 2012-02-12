@@ -41,11 +41,11 @@
      <parameter key="doctrine.entitypath">entities</parameter>
      <parameter key="doctrine.proxypath">entities/Proxy</parameter>
      <parameter key="doctrine.proxynamespace">entities\Proxy</parameter>
-     <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Dojo\Factory</parameter>
+     <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Bootstrap\Factory</parameter>
      <parameter key="filterQueryBuilderCreator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
      <parameter key="paginatorCreator.class">Equ\Doctrine\PaginatorCreator</parameter>
-     <parameter key="form.formClass">\Zend_Form</parameter>
-     <parameter key="form.subFormClass">\Zend_Form_SubForm</parameter>
+     <parameter key="form.formClass">\Equ\Form\ElementCreator\Bootstrap\Form\Form</parameter>
+     <parameter key="form.subFormClass">\Equ\Form\ElementCreator\Bootstrap\Form\SubForm</parameter>
    </parameters>
    
    <services>
