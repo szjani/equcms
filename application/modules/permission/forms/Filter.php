@@ -13,9 +13,9 @@ class Filter extends Create {
     ));
     
    $builder
-//      ->add('role')
+      ->add('role')
       ->add('resource')
-      ->add('allowed', 'boolean')
-      ->add('privilege');
+      ->add('privilege')
+      ->add('allowed');
   }
 }

@@ -10,10 +10,10 @@ class Create implements IMappedType {
   
   public function buildForm(IBuilder $builder) {
     $builder
-      ->add('role', $this->getAutocompleteRoleField())
+      ->add('role')
       ->add('resource')
-      ->add('allowed', 'boolean')
-      ->add('privilege');
+      ->add('privilege')
+      ->add('allowed');
   }
   
   public function getObjectClass() {
