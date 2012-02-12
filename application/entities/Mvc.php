@@ -110,6 +110,7 @@ class Mvc extends Resource implements NavigationItem {
       $id = $this->createPath('_');
       $page = new \Zend_Navigation_Page_Mvc();
       $page
+        ->setClass($this->createPath(' '))
         ->setModule($this->module)
         ->setController($this->controller)
         ->setAction($this->action)
