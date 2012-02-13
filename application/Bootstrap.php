@@ -10,6 +10,14 @@ use
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
+  protected function getMasterConfigFiles() {
+    return array(
+      APPLICATION_PATH . '/configs/production.xml',
+      APPLICATION_PATH . '/configs/production_doctrine.xml',
+      APPLICATION_PATH . '/configs/development.xml',
+    );
+  }
+  
   protected function _initHelpers() {
     $container = $this->getContainer();
     
