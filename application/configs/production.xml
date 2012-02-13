@@ -5,6 +5,7 @@
 
   <imports>
     <import resource="production_doctrine.xml" />
+    <import resource="production_plugins.xml" />
   </imports>
    <parameters>
      <parameter key="APPLICATION_PATH" type="constant">APPLICATION_PATH</parameter>
@@ -40,33 +41,12 @@
      <parameter key="form.formClass">\Equ\Form\ElementCreator\Bootstrap\Form\Form</parameter>
      <parameter key="form.subFormClass">\Equ\Form\ElementCreator\Bootstrap\Form\SubForm</parameter>
      <parameter key="form.builder.class">Equ\Controller\Action\Helper\CreateFormBuilder</parameter>
-     <parameter key="mvc.permission.helper.class">Equ\Controller\Action\Helper\MvcPermission</parameter>
-     <parameter key="authenticated.user.helper.class">Equ\Controller\Action\Helper\AuthenticatedUser</parameter>
-     <parameter key="redirect.here.after.post.helper.class">Equ\Controller\Action\Helper\RedirectHereAfterPost</parameter>
-     <parameter key="clean.query.plugin.class">Equ\Controller\Plugin\CleanQuery</parameter>
-     <parameter key="admin.route.plugin.class">Equ\Controller\Plugin\AdminRoute</parameter>
-     <parameter key="admin.layout.plugin.class">library\Controller\Plugin\AdminLayout</parameter>
-     <parameter key="language.plugin.class">Equ\Controller\Plugin\Language</parameter>
-     <parameter key="anonymous.acl.init.plugin.class">modules\user\plugins\AclInitializer</parameter>
      <parameter key="acl.class">library\LazyAcl</parameter>
    </parameters>
    
    <services>
-     <service id="mvc.permission.helper" class="%mvc.permission.helper.class%">
-       <argument type="service" id="user.repository" />
-       <argument type="service" id="acl" />
-     </service>
-     <service id="anonymous.acl.init.plugin" class="%anonymous.acl.init.plugin.class%" />
-     <service id="language.plugin" class="%language.plugin.class%" />
-     <service id="admin.layout.plugin" class="%admin.layout.plugin.class%" />
-     <service id="admin.route.plugin" class="%admin.route.plugin.class%" />
-     <service id="clean.query.plugin" class="%clean.query.plugin.class%" />
-     <service id="redirect.here.after.post.helper" class="%redirect.here.after.post.helper.class%" />
      <service id="user.repository" class="Doctrine\ORM\EntityRepository" factory-service="em" factory-method="getRepository">
        <argument>%doctrine.entitypath%\User</argument>
-     </service>
-     <service id="authenticated.user.helper" class="%authenticated.user.helper.class%">
-       <argument type="service" id="user.repository" />
      </service>
      <service id="form.builder" class="%form.builder.class%">
        <argument type="service" id="form.elementcreator.factory" />
