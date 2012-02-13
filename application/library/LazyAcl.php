@@ -6,9 +6,12 @@ use entities\Role;
 use entities\UserGroup;
 use entities\Resource;
 use entities\Mvc;
+use Zend_Cache_Core;
 
-class LazyAcl extends \Zend_Acl implements \Serializable {
+class LazyAcl extends \Zend_Acl {
 
+  const KEY = 'acl';
+  
   /**
    * @var EntityManager
    */
@@ -32,15 +35,23 @@ class LazyAcl extends \Zend_Acl implements \Serializable {
 
   /**
    * @param EntityManager $em
+   * @param Zend_Cache_Core $cache 
    */
-  public function __construct(EntityManager $em) {
+  public function __construct(EntityManager $em, Zend_Cache_Core $cache) {
     $this->setEntityManager($em);
     $this->_roleRegistry = new RoleRegistry($this);
-    $query = $em->createQuery('SELECT r, p FROM entities\Resource r LEFT JOIN r.parent p ORDER BY r.lvl');
-    $resources = $query->getResult();
-    /* @var $resource Resource */
-    foreach ($resources as $resource) {
-      $this->addResource($resource->getResourceId(), $resource->getParent());
+    
+    $resources = $cache->load(self::KEY);
+    if ($resources !== false) {
+      $this->_resources = $resources;
+    } else {
+      $query = $em->createQuery('SELECT r, p FROM entities\Resource r LEFT JOIN r.parent p ORDER BY r.lvl');
+      $resources = $query->getResult();
+      /* @var $resource Resource */
+      foreach ($resources as $resource) {
+        $this->addResource($resource->getResourceId(), $resource->getParent());
+      }
+      $cache->save($this->_resources, self::KEY);
     }
   }
 
@@ -69,17 +80,17 @@ class LazyAcl extends \Zend_Acl implements \Serializable {
     }
   }
 
-  public function serialize() {
-    return serialize(array(
-      '_resources' => $this->_resources,
-    ));
-  }
-
-  public function unserialize($serialized) {
-    $serialized = unserialize($serialized);
-    $this->_resources = $serialized['_resources'];
-    $this->_roleRegistry = new RoleRegistry($this);
-  }
+//  public function serialize() {
+//    return serialize(array(
+//      '_resources' => $this->_resources,
+//    ));
+//  }
+//
+//  public function unserialize($serialized) {
+//    $serialized = unserialize($serialized);
+//    $this->_resources = $serialized['_resources'];
+//    $this->_roleRegistry = new RoleRegistry($this);
+//  }
 
 
 }

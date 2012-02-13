@@ -5,56 +5,36 @@ use
   entities\User,
   entities\Mvc,
   modules\user\plugins\AclInitializer,
-  modules\user\models\Anonymous;
+  modules\user\models\Anonymous,
+  Zend_Controller_Action_HelperBroker as HelperBroker;
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
 
-  protected function _initCreateFormBuilderHelper() {
+  protected function _initHelpers() {
     $container = $this->getContainer();
-    Zend_Controller_Action_HelperBroker::addHelper(new Helper\CreateFormBuilder(
-      $container->get('form.elementcreator.factory'),
-      $container->getParameter('form.formClass'),
-      $container->getParameter('form.subFormClass')
-    ));
-  }
-
-  protected function _initRedirectHereAfterPostHelper() {
-    Zend_Controller_Action_HelperBroker::addHelper(new Helper\RedirectHereAfterPost());
+    
+    HelperBroker::addHelper(new Helper\ServiceInjector($container));
+    HelperBroker::addHelper($container->get('form.builder'));
+    HelperBroker::addHelper($container->get('redirect.here.after.post.helper'));
+    HelperBroker::addHelper($container->get('authenticated.user.helper'));
+    HelperBroker::addHelper($container->get('mvc.permission.helper'));
   }
   
-  protected function _initAuthenticatedUserHelper() {
-    $userRepo = $this->getContainer()->get('doctrine.entitymanager')->getRepository(User::className());
-    Zend_Controller_Action_HelperBroker::addHelper(new Helper\AuthenticatedUser($userRepo));
-  }
-  
-  protected function _initServiceInjector() {
-    Zend_Controller_Action_HelperBroker::addHelper(new Helper\ServiceInjector($this->getContainer()));
-  }
-
-  protected function _initCleanQuery() {
+  protected function _initPlugins() {
     $this->bootstrap('frontController');
     $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new Plugin\CleanQuery());
+    $container = $this->getContainer();
+    
+    $frontController
+      ->registerPlugin($container->get('clean.query.plugin'))
+      ->registerPlugin($container->get('admin.route.plugin'), 30)
+      ->registerPlugin($container->get('admin.layout.plugin'))
+      ->registerPlugin($container->get('language.plugin'), 40)
+      ->registerPlugin($container->get('anonymous.acl.init.plugin'));
   }
 
-  protected function _initAdminroute() {
-    $this->bootstrap('frontController');
-    $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new Plugin\AdminRoute(), 30);
-  }
-
-  protected function _initAdminLayout() {
-    $this->bootstrap('frontController');
-    $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new library\Controller\Plugin\AdminLayout());
-  }
-
-  protected function _initLangPlugin() {
+  protected function _initDefaultLocalePlugin() {
     Zend_Registry::set(Zend_Application_Resource_Locale::DEFAULT_REGISTRY_KEY, new Zend_Locale('hu_HU'));
-    $this->bootstrap('frontController');
-    $frontController = $this->getResource('frontController');
-    /* @var $frontController \Zend_Controller_Front */
-    $frontController->registerPlugin(new Plugin\Language(), 40);
     return $this->getContainer()->get('registry');
   }
 
@@ -64,42 +44,9 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     return $this->getContainer()->get('log');
   }
   
-  protected function _initAcl() {
-    $container  = $this->getContainer();
-    /* @var $cache Zend_Cache_Core */
-    $cache = $container->get('cache.system');
-    $acl   = $cache->load('acl');
-    if (false !== $acl) {
-      $container->set('acl', $acl);
-      $acl->setEntityManager($container->get('doctrine.entitymanager'));
-    } else {
-      $acl = $container->get('acl');
-      $cache->save($acl, 'acl');
-    }
-  }
-
-  protected function _initMvcPermission() {
-    $this->bootstrap('frontController');
-    $this->bootstrap('acl');
-    
-    $container = $this->getContainer();
-    Zend_Controller_Action_HelperBroker::addHelper(new Helper\MvcPermission(
-      $container->get('doctrine.entitymanager')->getRepository(User::className()),
-      $container->get('acl')
-    ));
-  }
-
-  protected function _initDojo() {
-    $this->bootstrap('view');
-    /* @var $view Zend_View */
-    $view = $this->getResource('view');
-    Zend_Dojo::enableView($view);
-  }
-
   protected function _initNavigation() {
     $this->bootstrap('frontController');
     $this->bootstrap('view');
-    $this->bootstrap('acl');
 
     $container  = $this->getContainer();
     $frontController = $this->getResource('frontController');
@@ -113,7 +60,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
   
   protected function _initAnonymousUser() {
-    Zend_Controller_Front::getInstance()->registerPlugin(new AclInitializer());
+    $this->bootstrap('helpers');
     $auth = Zend_Auth::getInstance();
     if (!$auth->hasIdentity()) {
       $auth->getStorage()->write(new Anonymous());
