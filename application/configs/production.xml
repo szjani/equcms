@@ -37,7 +37,7 @@
      <parameter key="translatelog.writer.writerNamespace">Zend_Log_Writer</parameter>
      <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Bootstrap\Factory</parameter>
      <parameter key="filter.query.builder.creator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
-     <parameter key="paginator.creator.class">Equ\Doctrine\paginatorCreator</parameter>
+     <parameter key="paginator.creator.class">Equ\Doctrine\PaginatorCreator</parameter>
      <parameter key="form.formClass">\Equ\Form\ElementCreator\Bootstrap\Form\Form</parameter>
      <parameter key="form.subFormClass">\Equ\Form\ElementCreator\Bootstrap\Form\SubForm</parameter>
      <parameter key="form.builder.class">Equ\Controller\Action\Helper\CreateFormBuilder</parameter>
