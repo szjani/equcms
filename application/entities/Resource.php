@@ -16,7 +16,6 @@ use Equ\Crud\SortableEntity;
  * @Gedmo\Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`resource`", indexes={
- *   @index(name="resource_resource_idx", columns={"resource"}),
  *   @index(name="resource_lft_idx", columns={"lft"}),
  *   @index(name="resource_rgt_idx", columns={"rgt"}),
  *   @index(name="resource_lvl_idx", columns={"lvl"})
@@ -68,7 +67,7 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
   protected $lvl;
 
   /**
-   * @Column(name="resource", type="string", length=255, nullable=false)
+   * @Column(name="resource", type="string", length=255, nullable=false, unique=true)
    * @var string
    */
   protected $resource;

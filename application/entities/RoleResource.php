@@ -11,7 +11,12 @@ namespace entities;
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @Entity
- * @Table(name="role_resource")
+ * @Table(
+ *   name="role_resource",
+ *   uniqueConstraints={
+ *     @UniqueConstraint(name="roleresource_role_resource_constraint", columns={"role_id", "resource_id"})
+ *   }
+ * )
  */
 class RoleResource extends \Equ\Entity {
 

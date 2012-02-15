@@ -16,7 +16,6 @@ use Equ\Crud\SortableEntity;
  * @Gedmo\Tree(type="nested")
  * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @Table(name="`role`", indexes={
- *   @index(name="role_role_idx", columns={"role"}),
  *   @index(name="role_lft_idx", columns={"lft"}),
  *   @index(name="role_rgt_idx", columns={"rgt"}),
  *   @index(name="role_lvl_idx", columns={"lvl"})
@@ -74,7 +73,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface, Sor
   protected $lvl;
 
   /**
-   * @Column(name="role", type="string", length=255, nullable=false)
+   * @Column(name="role", type="string", length=255, nullable=false, unique=true)
    * @var string
    */
   protected $role;
