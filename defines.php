@@ -16,6 +16,7 @@ defined('APPLICATION_ENV')
 set_include_path(implode(PATH_SEPARATOR, array(
   '/development/Frameworks/ZF_1.11_svn/library',
   '/development/Frameworks/zf1-classmap/library',
+  __DIR__ . '/library/ZFDebug/library',
 )));
 
 require_once 'ZendX/Loader/AutoloaderFactory.php';
@@ -36,6 +37,9 @@ ZendX_Loader_AutoloaderFactory::factory(array(
       'Doctrine' => '/home/szjani/development/php/libs/Doctrine-2.1/lib/Doctrine',
       'Gedmo'    => '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions2.1/lib/Gedmo',
       'DoctrineExtensions' => '/home/szjani/development/php/libs/beberlei/DoctrineExtensions/lib/DoctrineExtensions',
+    ),
+    'prefixes' => array(
+      'ZFDebug' => __DIR__ . '/library/ZFDebug/library/ZFDebug'
     ),
     'fallback_autoloader' => true,
   ),

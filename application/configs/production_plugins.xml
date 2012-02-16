@@ -27,5 +27,19 @@
     <service id="authenticated.user.helper" class="%authenticated.user.helper.class%">
       <argument type="service" id="user.repository" />
     </service>
+    <service id="zfdebug.plugin" class="ZFDebug_Controller_Plugin_Debug">
+      <argument type="collection">
+        <argument type="collection" key="plugins">
+          <argument>Variables</argument>
+          <argument type="collection" key="File">
+            <argument type="collection" key="basePath">
+              <argument>%APPLICATION_PATH%</argument>
+            </argument>
+          </argument>
+          <argument>Exception</argument>
+          <argument>Html</argument>
+        </argument>
+      </argument>
+    </service>
   </services>
 </container>

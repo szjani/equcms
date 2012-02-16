@@ -10,3 +10,6 @@
 [submodule "library/Symfony/Component/Console"]
 	path = library/Symfony/Component/Console
 	url = git://github.com/symfony/Console.git
+[submodule "library/ZFDebug"]
+	path = library/ZFDebug
+	url = git://github.com/jokkedk/ZFDebug.git
