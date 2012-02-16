@@ -2,7 +2,6 @@
 namespace entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Equ\Crud\SortableEntity;
 
 /**
  * Resource entity
@@ -24,7 +23,7 @@ use Equ\Crud\SortableEntity;
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"mvc" = "Mvc"})
  */
-abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interface, \Serializable, SortableEntity {
+abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interface, \Serializable {
 
   /**
    * @Column(name="id", type="integer")
@@ -144,7 +143,7 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
     $this->children      = new ArrayCollection();
   }
 
-  public static function getSortField() {
+  public static function getDisplayField() {
     return 'resource';
   }
 

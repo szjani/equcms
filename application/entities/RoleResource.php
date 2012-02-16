@@ -104,5 +104,9 @@ class RoleResource extends \Equ\Entity {
   public function __toString() {
     return $this->getRole() . ' - ' . $this->getResource();
   }
+  
+  public static function getDisplayField() {
+    return 'id';
+  }
 
 }
