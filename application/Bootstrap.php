@@ -27,6 +27,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     HelperBroker::addHelper($container->get('redirect.here.after.post.helper'));
     HelperBroker::addHelper($container->get('authenticated.user.helper'));
     HelperBroker::addHelper($container->get('mvc.permission.helper'));
+    HelperBroker::addHelper($container->get('lookup.helper'));
   }
   
   protected function _initPlugins() {
@@ -44,8 +45,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
 
   protected function _initDefaultLocalePlugin() {
-    Zend_Registry::set(Zend_Application_Resource_Locale::DEFAULT_REGISTRY_KEY, new Zend_Locale('hu_HU'));
-    return $this->getContainer()->get('registry');
+    $this->getContainer()->get('registry');
   }
 
   protected function _initDefaultLog() {

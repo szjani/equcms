@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @Gedmo\Tree(type="nested")
- * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @Entity(repositoryClass="entities\RoleRepository")
  * @Table(name="`role`", indexes={
  *   @index(name="role_lft_idx", columns={"lft"}),
  *   @index(name="role_rgt_idx", columns={"rgt"}),

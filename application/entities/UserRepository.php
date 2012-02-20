@@ -12,7 +12,7 @@ use
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class UserRepository extends NestedTreeRepository implements RepositoryInterface, AuthenticatedUserStorage {
+class UserRepository extends RoleRepository implements RepositoryInterface, AuthenticatedUserStorage {
 
   /**
    * @var User
