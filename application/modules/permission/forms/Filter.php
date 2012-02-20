@@ -11,17 +11,6 @@ class Filter extends Create {
     $builder->setOptionFlags(new OptionFlags(
        OptionFlags::ALL & ~OptionFlags::IMPLICIT_VALIDATORS & ~OptionFlags::EXPLICIT_VALIDATORS
     ));
-    
-   $builder
-      ->add('role', 'string')
-      ->add('resource')
-      ->add('privilege')
-      ->add('allowed');
-   
-   $role = $builder->getForm()->getElement('role');
-   $role
-    ->setAttrib('data-provide', 'typeaheadajax')
-    ->setAttrib('data-source', '/admin/role/lookup/format/json/q/')
-    ->setAttrib('data-findone', '/admin/role/lookup/format/json/id/');
+    parent::buildForm($builder);
   }
 }
