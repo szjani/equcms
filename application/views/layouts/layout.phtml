@@ -11,6 +11,7 @@
 
 <?php
   $this->headScript()
+    ->prependFile('/js/site.js', 'text/javascript')
     ->prependFile('/js/bootstrap.min.js', 'text/javascript')
     ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'text/javascript');
   $this->headLink()
@@ -27,8 +28,8 @@
 </head>
 <body>
   <div class="container">
-    <div class="row">
-      <div class="navbar navbar-fixed-top">
+    <div class="row navbar-fixed-top">
+      <div class="navbar">
         <div class="navbar-inner">
           <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
