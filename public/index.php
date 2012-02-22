@@ -1,8 +1,10 @@
 <?php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR .'..' . DIRECTORY_SEPARATOR . 'defines.php';
-require_once APPLICATION_PATH . '/Bootstrap2.php';
+require_once APPLICATION_PATH . '/Bootstrap.php';
 
-$bootstrap = new Bootstrap2(APPLICATION_ENV);
+Zend_Session::start();
+
+$bootstrap = new Bootstrap(APPLICATION_ENV);
 $bootstrap
   ->init()
   ->run();

@@ -12,7 +12,7 @@ use
   Equ\Symfony\Component\ServiceContainerFactory,
   Equ\Controller\Action\Helper\ServiceContainer;
 
-class Bootstrap2 {
+class Bootstrap {
 
   protected $_container;
   
