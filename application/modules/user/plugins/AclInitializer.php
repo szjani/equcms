@@ -1,6 +1,8 @@
 <?php
 namespace modules\user\plugins;
-use modules\user\models\Anonymous;
+use
+  modules\user\models\Anonymous,
+  Zend_Acl;
 
 /**
  * Add anonymous user to ACL
@@ -13,14 +15,18 @@ use modules\user\models\Anonymous;
  */
 class AclInitializer extends \Zend_Controller_Plugin_Abstract {
 
+  private $acl;
+  
+  public function __construct(Zend_Acl $acl) {
+    $this->acl = $acl;
+  }
+  
   /**
    * @param Zend_Controller_Request_Abstract $request
    */
   public function routeStartup(\Zend_Controller_Request_Abstract $request) {
     if (\Zend_Auth::getInstance()->getIdentity() == Anonymous::NAME) {
-      $container = \Zend_Controller_Front::getInstance()->getParam('bootstrap')->getContainer();
-      $acl = $container->get('acl');
-      $acl->addRole(Anonymous::NAME, 'Everybody');
+      $this->acl->addRole(Anonymous::NAME, 'Everybody');
     }
   }
 }

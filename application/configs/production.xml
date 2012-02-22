@@ -45,10 +45,43 @@
    </parameters>
    
    <services>
+     <service id="front.controller" class="Zend_Controller_Front" factory-class="Zend_Controller_Front" factory-method="getInstance">
+       <call method="throwExceptions">
+         <argument>true</argument>
+       </call>
+       <call method="setDefaultModule">
+         <argument>index</argument>
+       </call>
+       <call method="addModuleDirectory">
+         <argument>%APPLICATION_PATH%/modules</argument>
+       </call>
+       <call method="setParam">
+         <argument>errorview</argument>
+         <argument>shiny</argument>
+       </call>
+     </service>
+     <service id="layout" class="Zend_Layout" factory-class="Zend_Layout" factory-method="startMvc">
+       <call method="setLayoutPath">
+         <argument>%APPLICATION_PATH%/views/layouts</argument>
+       </call>
+     </service>
+     <service id="view" class="Zend_View">
+       <call method="addHelperPath">
+         <argument>%APPLICATION_PATH%/../library/Equ/lib/Equ/View/Helper</argument>
+         <argument>Equ\View\Helper\</argument>
+       </call>
+       <call method="addScriptPath">
+         <argument>%APPLICATION_PATH%/views/scripts</argument>
+       </call>
+       <call method="addScriptPath">
+         <argument>%APPLICATION_PATH%/../library/Equ/lib/Equ/Crud/views/scripts</argument>
+       </call>
+     </service>
      <service id="user.repository" class="Doctrine\ORM\EntityRepository" factory-service="em" factory-method="getRepository">
        <argument>%doctrine.entitypath%\User</argument>
      </service>
      <service id="form.builder" class="%form.builder.class%">
+       <argument type="service" id="em" />
        <argument type="service" id="form.elementcreator.factory" />
        <argument>%form.formClass%</argument>
        <argument>%form.subFormClass%</argument>
@@ -187,9 +220,6 @@
      </service>
      <service id="locale" class="Zend_Locale">
        <argument>%locale.default%</argument>
-       <call method="setCache">
-         <argument type="service" id="cache.system" />
-       </call>
      </service>
      <service id="registry" class="Zend_Registry" factory-class="Zend_Registry" factory-method="getInstance">
        <call method="offsetSet">
@@ -215,9 +245,6 @@
        </argument>
        <call method="setLocale">
          <argument type="service" id="locale" />
-       </call>
-       <call method="setCache">
-         <argument type="service" id="cache.system" />
        </call>
        <call method="addTranslation">
          <argument type="collection">
