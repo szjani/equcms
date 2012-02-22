@@ -2,18 +2,13 @@
 define('APPLICATION_ENV', 'development');
 
 require_once '../defines.php';
+require_once APPLICATION_PATH . '/Bootstrap.php';
 
-/** Zend_Application */
-require_once 'Zend/Application.php';
-
-// Create application, bootstrap, and run
-$application = new Zend_Application(
-    APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
-);
+$bootstrap = new Bootstrap(APPLICATION_ENV);
+$bootstrap->init();
 
 /* @var $em Doctrine\ORM\EntityManager */
-$em = $application->getBootstrap()->getContainer()->get('doctrine.entitymanager');
+$em = $bootstrap->getContainer()->get('doctrine.entitymanager');
 
 // Console
 $cli = new \Symfony\Component\Console\Application(
