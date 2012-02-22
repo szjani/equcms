@@ -47,7 +47,7 @@
    <services>
      <service id="front.controller" class="Zend_Controller_Front" factory-class="Zend_Controller_Front" factory-method="getInstance">
        <call method="throwExceptions">
-         <argument>true</argument>
+         <argument>false</argument>
        </call>
        <call method="setDefaultModule">
          <argument>index</argument>
@@ -58,6 +58,10 @@
        <call method="setParam">
          <argument>errorview</argument>
          <argument>shiny</argument>
+       </call>
+       <call method="setParam">
+         <argument>displayExceptions</argument>
+         <argument>true</argument>
        </call>
      </service>
      <service id="layout" class="Zend_Layout" factory-class="Zend_Layout" factory-method="startMvc">
