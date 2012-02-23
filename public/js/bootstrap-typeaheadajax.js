@@ -166,10 +166,11 @@
           break
 
         default:
-          if (this.lastTypeTime + this.delay < new Date().getTime()) {
-            this.lookup()
-          }
-          this.lastTypeTime = new Date().getTime()
+          var self = this;
+          clearTimeout(this.lastTypeTime);
+          this.lastTypeTime = setTimeout(function() {
+            self.lookup();
+          }, 210);
       }
 
   }
