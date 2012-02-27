@@ -49,6 +49,7 @@
        <argument>%doctrine.entitypath%\User</argument>
      </service>
      <service id="form.builder" class="%form.builder.class%">
+       <argument type="service" id="em" />
        <argument type="service" id="form.elementcreator.factory" />
        <argument>%form.formClass%</argument>
        <argument>%form.subFormClass%</argument>
