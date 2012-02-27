@@ -1,6 +1,6 @@
 <?php
 namespace modules\user\models;
-use entities\User;
+use Equ\Auth\UserInterface;
 
 /**
  * Unauthenticated user (null object pattern)
@@ -12,11 +12,9 @@ use entities\User;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Anonymous extends User {
+class Anonymous implements UserInterface {
 
   const NAME = 'anonymous';
-
-  public function __construct() {}
 
   public function getRoleId() {
     return self::NAME;
@@ -24,6 +22,16 @@ class Anonymous extends User {
   
   public function isLoggedIn() {
     return false;
+  }
+  
+  public function toArray() {
+    return array(
+      'roleId' => $this->getRoleId()
+    );
+  }
+  
+  public function __toString() {
+    return $this->getRoleId();
   }
 
 }

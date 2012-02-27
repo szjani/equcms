@@ -3,7 +3,8 @@ namespace entities;
 use
   Equ\ClassMetadata,
   Equ\Object\Validatable,
-  Equ\Object\Validator;
+  Equ\Object\Validator,
+  Equ\Auth\UserInterface;
 
 /**
  * User entity
@@ -18,12 +19,12 @@ use
  * @Table(name="`user`", indexes={@index(name="user_password_idx", columns={"password_hash"})})
  * @HasLifecycleCallbacks
  */
-class User extends Role implements Validatable {
+class User extends Role implements Validatable, UserInterface {
   
   const PASSWORD_SALT = '958rg!DdfJko$~tz)3/Tiq3rf9;a43gFT]A46DFaAeg;a43';
 
   /**
-   * @Column(name="email", type="string", unique="true", nullable=false)
+   * @Column(name="email", type="string", unique=true, nullable=false)
    * @var string
    */
   protected $email;
@@ -172,5 +173,5 @@ class User extends Role implements Validatable {
       'email' => $this->getEmail()
     );
   }
-
+  
 }
