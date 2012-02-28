@@ -12,6 +12,8 @@
 <?php
   $this->headScript()
     ->prependFile('/js/site.js', 'text/javascript')
+    ->prependScript("initTranslate('{$this->url(array('module' => 'translate', 'controller' => 'dict'), 'defaultlang')}')")
+    ->prependFile('/js/init-translate.js', 'text/javascript')
     ->prependFile('/js/jquery.jsperanto.js', 'text/javascript')
     ->prependFile('/js/bootstrap-typeaheadajax.js', 'text/javascript')
     ->prependFile('/js/bootstrap.min.js', 'text/javascript')
@@ -24,7 +26,7 @@
     $this->headTitle('EquCMS')->setSeparator(' - ') .
     $this->headLink() .
     $this->headStyle();
-
+  
   $mainMenuItem = $this->navigation()->findById('index_admin');
 ?>
 </head>
