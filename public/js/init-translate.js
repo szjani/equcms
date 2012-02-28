@@ -1,6 +1,5 @@
 function initTranslate(urlString) {
   $.ajax({
-//    url: '<?php echo $this->url(array('module' => 'translate', 'controller' => 'dict'), 'defaultlang') ?>',
     url: urlString,
     success: function(data) {
       $.jsperanto.init(function(t) {}, {
