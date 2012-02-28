@@ -22,6 +22,10 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   protected function _initHelpers() {
     $container = $this->getContainer();
     
+    Zend_Translate::setCache($container->get('cache.system'));
+    Zend_Locale::setCache($container->get('cache.system'));
+    Zend_Currency::setCache($container->get('cache.system'));
+    
     HelperBroker::addHelper(new Helper\ServiceInjector($container));
     HelperBroker::addHelper($container->get('form.builder'));
     HelperBroker::addHelper($container->get('redirect.here.after.post.helper'));

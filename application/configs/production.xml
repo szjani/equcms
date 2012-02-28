@@ -188,9 +188,6 @@
      </service>
      <service id="locale" class="Zend_Locale">
        <argument>%locale.default%</argument>
-       <call method="setCache">
-         <argument type="service" id="cache.system" />
-       </call>
      </service>
      <service id="registry" class="Zend_Registry" factory-class="Zend_Registry" factory-method="getInstance">
        <call method="offsetSet">
@@ -217,12 +214,10 @@
        <call method="setLocale">
          <argument type="service" id="locale" />
        </call>
-       <call method="setCache">
-         <argument type="service" id="cache.system" />
-       </call>
        <call method="addTranslation">
          <argument type="collection">
            <argument key="content" type="service" id="validation.translate" />
+           <argument key="locale">auto</argument>
          </argument>
        </call>
      </service>
@@ -231,6 +226,8 @@
          <argument key="adapter">%validation.translate.adapter%</argument>
          <argument key="content">%APPLICATION_PATH%/%validation.translate.content%</argument>
          <argument key="scan">%validation.translate.scan%</argument>
+         <argument key="logUntranslated">%translate.logUntranslated%</argument>
+         <argument key="log" type="service" id="translatelog" />
        </argument>
        <call method="setLocale">
          <argument type="service" id="locale" />
