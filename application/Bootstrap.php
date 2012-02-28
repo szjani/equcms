@@ -19,6 +19,10 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     );
   }
   
+  protected function _initPageCache() {
+    $this->getContainer()->get('cache.page')->start();
+  }
+  
   protected function _initHelpers() {
     $container = $this->getContainer();
     

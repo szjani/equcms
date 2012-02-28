@@ -14,6 +14,8 @@
      <parameter key="cache.data.lifetime">7200</parameter>
      <parameter key="cache.system.backend">Apc</parameter>
      <parameter key="cache.system.lifetime">7200</parameter>
+     <parameter key="cache.page.backend">File</parameter>
+     <parameter key="cache.page.lifetime">7200</parameter>
      <parameter key="translate.adapter">gettext</parameter>
      <parameter key="translate.content">lang/other</parameter>
      <parameter key="translate.scan">filename</parameter>
@@ -164,6 +166,28 @@
          <argument key="lifetime">%cache.system.lifetime%</argument>
          <argument key="automatic_serialization">true</argument>
          <argument key="cache_id_prefix">%cache.prefix%</argument>
+       </argument>
+       <argument type="collection">
+         <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
+       </argument>
+     </service>
+     <service id="cache.page" class="Zend_Cache" factory-class="Zend_Cache" factory-method="factory">
+       <argument>Page</argument>
+       <argument>%cache.page.backend%</argument>
+       <argument type="collection">
+         <argument key="lifetime">%cache.page.lifetime%</argument>
+         <argument key="automatic_serialization">true</argument>
+         <argument key="cache_id_prefix">%cache.prefix%</argument>
+         <argument key="memorize_headers" type="collection">
+           <argument>Content-Type</argument>
+         </argument>
+         <argument key="regexps" type="collection">
+           <argument key="translate/dict$" type="collection">
+             <argument key="cache_with_get_variables">true</argument>
+             <argument key="cache_with_cookie_variables">true</argument>
+             <argument key="cache_with_session_variables">true</argument>
+           </argument>
+         </argument>
        </argument>
        <argument type="collection">
          <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
