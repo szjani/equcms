@@ -12,7 +12,7 @@
 <?php
   $this->headScript()
     ->prependFile('/js/site.js', 'text/javascript')
-    ->prependScript("initTranslate('{$this->url(array('module' => 'translate', 'controller' => 'dict'), 'defaultlang')}')")
+    ->prependScript("initTranslate('{$this->url(array('module' => 'translate', 'controller' => 'dict'), 'defaultlang', true)}')")
     ->prependFile('/js/init-translate.js', 'text/javascript')
     ->prependFile('/js/jquery.jsperanto.js', 'text/javascript')
     ->prependFile('/js/bootstrap-typeaheadajax.js', 'text/javascript')
