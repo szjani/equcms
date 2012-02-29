@@ -11,11 +11,11 @@
      <parameter key="APPLICATION_PATH" type="constant">APPLICATION_PATH</parameter>
      <parameter key="cache.prefix">equcms_</parameter>
      <parameter key="cache.data.backend">Apc</parameter>
-     <parameter key="cache.data.lifetime">7200</parameter>
+     <parameter key="cache.data.lifetime">1800</parameter>
      <parameter key="cache.system.backend">Apc</parameter>
      <parameter key="cache.system.lifetime">7200</parameter>
      <parameter key="cache.page.backend">File</parameter>
-     <parameter key="cache.page.lifetime">7200</parameter>
+     <parameter key="cache.page.lifetime">3600</parameter>
      <parameter key="translate.adapter">gettext</parameter>
      <parameter key="translate.content">lang/other</parameter>
      <parameter key="translate.scan">filename</parameter>
