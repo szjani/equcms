@@ -1,0 +1,49 @@
+<div class="alert">
+  <a class="close" data-dismiss="alert">×</a>
+  <h4 class="alert-heading"><?php echo $this->translate('Be careful!') ?></h4><?php echo $this->translate('You are going to experience slowness for a while after purging cache!') ?>
+</div>
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr>
+      <?php foreach ($this->keys as $key): ?>
+        <th>
+          <?php echo $this->translate($key) ?>
+        </th>
+      <?php endforeach ?>
+      <th><?php echo $this->translate('Crud/Methods') ?></th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php $i = 1; ?>
+  <?php foreach ($this->paginator as $record): ?>
+    <tr class="<?php echo ($i++ & 1 ? 'odd' : 'even') ?>">
+      <?php foreach ($this->keys as $key): ?>
+        <td>
+        <?php
+        $field = $record[$key];
+        if (is_bool($field)) {
+          echo $field ? $this->translate('Crud/True') : $this->translate('Crud/False');
+        } elseif ($field instanceof DateTime) {
+          $date = new Zend_Date($field->getTimestamp());
+          echo $date->toString();
+        } elseif (is_object($field)) {
+          echo (string)$field;
+        }
+        else {
+          echo $field;
+        }
+        ?>
+        </td>
+      <?php endforeach ?>
+      <td class="methods">
+        <a class="btn btn-warning btn-small"
+          onclick="javascript: return confirm('<?php echo $this->translate('Crud/Purge/Confirm')?>')"
+          title="<?php echo $this->translate('Crud/Purge/Label') ?>"
+          href="<?php echo $this->url(array('action' => 'purge', 'id' => $record['id'])) ?>">
+          <i class="icon-exclamation-sign icon-white"></i> <?php echo $this->translate('Purge') ?>
+        </a>
+      </td>
+    </tr>
+  <?php endforeach ?>
+  </tbody>
+</table>

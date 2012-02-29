@@ -55,6 +55,13 @@ class LoadNavigation extends AbstractFixture implements OrderedFixtureInterface 
       ->setParent($adminRoot);
     $manager->persist($permission);
     
+    $cache = new \entities\Mvc();
+    $cache
+      ->setModule('cache')
+      ->setController('admin')
+      ->setParent($adminRoot);
+    $manager->persist($cache);
+    
     $this->addReference('mvc-admin-mvc', $mvc);
     $this->addReference('mvc-admin-user', $user);
     $this->addReference('mvc-admin-group', $group);
@@ -155,6 +162,14 @@ class LoadNavigation extends AbstractFixture implements OrderedFixtureInterface 
       ->setController('admin')
       ->setAction('update')
       ->setParent($permission);
+    $manager->persist($rec);
+    
+    $rec = new \entities\Mvc();
+    $rec
+      ->setModule('cache')
+      ->setController('admin')
+      ->setAction('list')
+      ->setParent($cache);
     $manager->persist($rec);
     
     $manager->flush();

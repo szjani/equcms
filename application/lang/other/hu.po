@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: EquCMS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-03 23:26+0100\n"
-"PO-Revision-Date: 2012-02-15 09:57+0100\n"
+"PO-Revision-Date: 2012-02-29 21:27+0100\n"
 "Last-Translator: Szurovecz János <szjani@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -246,4 +246,28 @@ msgstr "Szülő"
 
 msgid "entities/Mvc/save"
 msgstr "Mentés"
+
+msgid "Navigation/cache/admin/list/label"
+msgstr "Gyorsítótárak listája"
+
+msgid "Crud/Purge/Success"
+msgstr "Sikeres ürítés"
+
+msgid "Crud/Purge/Unsuccess"
+msgstr "Sikertelen ürítés"
+
+msgid "Crud/Purge/Confirm"
+msgstr "Biztos törli a gyorsítótárat?"
+
+msgid "Crud/Purge/Label"
+msgstr "Ürítés"
+
+msgid "Purge"
+msgstr "Ürítés"
+
+msgid "Navigation/cache/admin/label"
+msgstr "Gyorsítótárak"
+
+msgid "Navigation/cache/admin/title"
+msgstr "Gyorsítótárak"
 
