@@ -26,22 +26,21 @@
         } elseif ($field instanceof DateTime) {
           $date = new Zend_Date($field->getTimestamp());
           echo $date->toString();
-        } elseif (is_object($field)) {
+        } else {
           echo (string)$field;
-        }
-        else {
-          echo $field;
         }
         ?>
         </td>
       <?php endforeach ?>
       <td class="methods">
-        <a class="btn btn-warning btn-small"
-          onclick="javascript: return confirm('<?php echo $this->translate('Crud/Purge/Confirm')?>')"
-          title="<?php echo $this->translate('Crud/Purge/Label') ?>"
-          href="<?php echo $this->url(array('action' => 'purge', 'id' => $record['id'])) ?>">
-          <i class="icon-exclamation-sign icon-white"></i> <?php echo $this->translate('Purge') ?>
-        </a>
+        <div class="btn-group">
+          <a class="btn btn-warning"
+            onclick="javascript: return confirm('<?php echo $this->translate('Crud/Purge/Confirm')?>')"
+            title="<?php echo $this->translate('Crud/Purge/Label') ?>"
+            href="<?php echo $this->url(array('action' => 'purge', 'id' => $record['id'])) ?>">
+            <i class="icon-exclamation-sign icon-white"></i> <?php echo $this->translate('Purge') ?>
+          </a>
+        </div>
       </td>
     </tr>
   <?php endforeach ?>
