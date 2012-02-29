@@ -20,12 +20,10 @@
      <parameter key="translate.content">lang/other</parameter>
      <parameter key="translate.scan">filename</parameter>
      <parameter key="translate.logUntranslated">false</parameter>
+     <parameter key="translate.disableNotices">true</parameter>
      <parameter key="validation.translate.adapter">array</parameter>
      <parameter key="validation.translate.content">lang/validation</parameter>
      <parameter key="validation.translate.scan">filename</parameter>
-     <parameter key="messages.translate.adapter">array</parameter>
-     <parameter key="messages.translate.content">lang/messages</parameter>
-     <parameter key="messages.translate.scan">filename</parameter>
      <parameter key="locale.default">hu_HU</parameter>
      <parameter key="mailer.class">Zend_Mail</parameter>
      <parameter key="mailer.defaultFrom.email">info@test.com</parameter>
@@ -232,6 +230,7 @@
          <argument key="adapter">%translate.adapter%</argument>
          <argument key="content">%APPLICATION_PATH%/%translate.content%</argument>
          <argument key="scan">%translate.scan%</argument>
+         <argument key="disableNotices">%translate.disableNotices%</argument>
          <argument key="logUntranslated">%translate.logUntranslated%</argument>
          <argument key="log" type="service" id="translatelog" />
        </argument>
@@ -250,6 +249,7 @@
          <argument key="adapter">%validation.translate.adapter%</argument>
          <argument key="content">%APPLICATION_PATH%/%validation.translate.content%</argument>
          <argument key="scan">%validation.translate.scan%</argument>
+         <argument key="disableNotices">%translate.disableNotices%</argument>
          <argument key="logUntranslated">%translate.logUntranslated%</argument>
          <argument key="log" type="service" id="translatelog" />
        </argument>

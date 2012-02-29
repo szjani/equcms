@@ -7,11 +7,14 @@
     <import resource="production.xml" />
   </imports>
   <parameters>
-    <parameter key="doctrine.autogenerateproxyclasses">true</parameter>
+    <parameter key="cache.data.backend">File</parameter>
+    <parameter key="cache.system.backend">File</parameter>
     <parameter key="cache.data.lifetime">10</parameter>
     <parameter key="cache.system.lifetime">10</parameter>
     <parameter key="cache.page.lifetime">10</parameter>
+    <parameter key="doctrine.autogenerateproxyclasses">true</parameter>
     <parameter key="doctrine.cache.class">Doctrine\Common\Cache\ArrayCache</parameter>
     <parameter key="translate.logUntranslated">true</parameter>
+    <parameter key="translate.disableNotices">false</parameter>
   </parameters>
 </container>
