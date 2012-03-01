@@ -87,7 +87,7 @@ class Cache_AdminController extends Zend_Controller_Action {
     } catch (Exception $e) {
       $this->_helper->flashMessenger('Crud/Purge/UnSuccess', Message::ERROR);
     }
-    $this->_helper->redirector('list');
+    $this->_helper->redirector->gotoRouteAndExit(array('action' => 'list'));
   }
   
 }
