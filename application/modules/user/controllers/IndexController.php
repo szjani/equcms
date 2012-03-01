@@ -16,6 +16,7 @@ class User_IndexController extends \Zend_Controller_Action {
       ->addActionContext('login', 'json')
       ->addActionContext('logout', 'json')
       ->initContext();
+    $this->_helper->autoTitle();
   }
   
   public function loginAction() {

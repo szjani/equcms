@@ -19,6 +19,13 @@ class LoadNavigation extends AbstractFixture implements OrderedFixtureInterface 
     $manager->persist($root);
     
     // level 1
+    $mainRoot = new \entities\Mvc();
+    $mainRoot
+      ->setModule('index')
+      ->setController('index')
+      ->setParent($root);
+    $manager->persist($mainRoot);
+    
     $adminRoot = new \entities\Mvc();
     $adminRoot
       ->setModule('index')

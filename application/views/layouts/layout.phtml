@@ -27,7 +27,8 @@
     $this->headLink() .
     $this->headStyle();
 
-  $mainMenuItem = $this->navigation()->findById('index_index');
+  $mainMenuItem = $this->navigation()->findById('index');
+//  var_dump(get_class($mainMenuItem));exit;
 ?>
 </head>
 <body>
@@ -43,7 +44,7 @@
             </a>
             <a href="/" class="brand" title="EquCMS">EquCMS</a>
             <div class="nav-collapse">
-              <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 0, 'maxDepth' => 0, 'ulClass' => 'nav span7')) ?>
+              <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 1, 'maxDepth' => 1, 'ulClass' => 'nav span7')) ?>
               <ul class="nav pull-right">
                 <?php if ($this->authenticatedUser->isLoggedIn()): ?>
                 <li>
@@ -67,7 +68,7 @@
         </div>
       </div>
       <div class="subnav subnav-fixed">
-        <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('onlyActiveBranch' => true, 'renderParents' => false, 'ulClass' => 'nav nav-pills')) ?>
+        <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 2, 'onlyActiveBranch' => true, 'renderParents' => false, 'ulClass' => 'nav nav-pills')) ?>
       </div>
     </div>
     <div class="row" id="page">
