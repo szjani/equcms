@@ -45,6 +45,14 @@
             <div class="nav-collapse">
               <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('minDepth' => 0, 'maxDepth' => 0, 'ulClass' => 'nav span7')) ?>
               <ul class="nav pull-right">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-flag icon-white"></i> <?php echo $this->translate('Language') ?> <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <?php foreach ($this->languages as $language): ?>
+                    <li><a href="<?php echo $this->url(array('lang' => $language), 'defaultlang') ?>"><?php echo Zend_Locale::getTranslation($language, 'language', $language) ?></a></li>
+                    <?php endforeach; ?>
+                  </ul>
+                </li>
                 <?php if ($this->authenticatedUser->isLoggedIn()): ?>
                 <li>
                   <a href="#"><i class="icon-user icon-white"></i> <?php echo $this->authenticatedUser->getRoleId() ?></a>

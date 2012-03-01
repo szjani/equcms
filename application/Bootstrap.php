@@ -36,6 +36,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     HelperBroker::addHelper($container->get('authenticated.user.helper'));
     HelperBroker::addHelper($container->get('mvc.permission.helper'));
     HelperBroker::addHelper($container->get('lookup.helper'));
+    HelperBroker::addHelper($container->get('available.languages.helper'));
   }
   
   protected function _initPlugins() {
