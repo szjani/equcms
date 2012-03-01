@@ -58,8 +58,8 @@
                   <a href="#"><i class="icon-user icon-white"></i> <?php echo $this->authenticatedUser->getRoleId() ?></a>
                 </li>
                 <li>
-                  <a title="Logout" href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout'), 'defaultlang') ?>">
-                    <i class="icon-off icon-white"></i> Logout
+                  <a title="<?php echo $this->translate('Logout') ?>" href="<?php echo $this->url(array('module' => 'user', 'controller' => 'index', 'action' => 'logout'), 'defaultlang') ?>">
+                    <i class="icon-off icon-white"></i> <?php echo $this->translate('Logout') ?>
                   </a>
                 </li>
                 <?php endif ?>
