@@ -233,6 +233,18 @@
          <argument key="disableNotices">%translate.disableNotices%</argument>
          <argument key="logUntranslated">%translate.logUntranslated%</argument>
          <argument key="log" type="service" id="translatelog" />
+         <argument key="route" type="collection">
+           <argument key="de">en</argument>
+           <argument key="fr">en</argument>
+           <argument key="hu">en</argument>
+           <argument key="ja">en</argument>
+           <argument key="nl">en</argument>
+           <argument key="pt_BR">en</argument>
+           <argument key="ru">en</argument>
+           <argument key="sr">en</argument>
+           <argument key="sv">en</argument>
+           <argument key="uk">en</argument>
+         </argument>
        </argument>
        <call method="setLocale">
          <argument type="service" id="locale" />
