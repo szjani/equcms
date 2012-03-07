@@ -2,6 +2,7 @@
 namespace entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Resource entity
@@ -13,66 +14,66 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @Gedmo\Tree(type="nested")
- * @Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
- * @Table(name="`resource`", indexes={
- *   @index(name="resource_lft_idx", columns={"lft"}),
- *   @index(name="resource_rgt_idx", columns={"rgt"}),
- *   @index(name="resource_lvl_idx", columns={"lvl"})
+ * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
+ * @ORM\Table(name="`resource`", indexes={
+ *   @ORM\Index(name="resource_lft_idx", columns={"lft"}),
+ *   @ORM\Index(name="resource_rgt_idx", columns={"rgt"}),
+ *   @ORM\Index(name="resource_lvl_idx", columns={"lvl"})
  * })
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"mvc" = "Mvc"})
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"mvc" = "Mvc"})
  */
 abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interface, \Serializable {
 
   /**
-   * @Column(name="id", type="integer")
-   * @Id
-   * @GeneratedValue
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue
    * @var int
    */
   protected $id;
 
   /**
    * @Gedmo\TreeParent
-   * @ManyToOne(targetEntity="Resource", inversedBy="children")
-   * @JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
+   * @ORM\ManyToOne(targetEntity="Resource", inversedBy="children")
+   * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
    * @var Resource
    */
   protected $parent;
 
   /**
-   * @OneToMany(targetEntity="Resource", mappedBy="parent")
+   * @ORM\OneToMany(targetEntity="Resource", mappedBy="parent")
    * @var Doctrine\Common\Collections\ArrayCollection
    */
   protected $children;
 
   /**
    * @Gedmo\TreeLeft
-   * @Column(name="lft", type="integer")
+   * @ORM\Column(name="lft", type="integer")
    */
   protected $lft;
 
   /**
    * @Gedmo\TreeRight
-   * @Column(name="rgt", type="integer")
+   * @ORM\Column(name="rgt", type="integer")
    */
   protected $rgt;
 
   /**
    * @Gedmo\TreeLevel
-   * @Column(name="lvl", type="integer")
+   * @ORM\Column(name="lvl", type="integer")
    */
   protected $lvl;
 
   /**
-   * @Column(name="resource", type="string", length=255, nullable=false, unique=true)
+   * @ORM\Column(name="resource", type="string", length=255, nullable=false, unique=true)
    * @var string
    */
   protected $resource;
   
   /**
-   * @OneToMany(targetEntity="RoleResource", mappedBy="resource")
+   * @ORM\OneToMany(targetEntity="RoleResource", mappedBy="resource")
    * @var ArrayCollection
    */
   protected $roleResources;

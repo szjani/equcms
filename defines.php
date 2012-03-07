@@ -15,32 +15,38 @@ defined('APPLICATION_ENV')
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
   '/development/Frameworks/ZF_1.11_svn/library',
-  '/development/Frameworks/zf1-classmap/library',
   __DIR__ . '/library/ZFDebug/library',
 )));
 
-require_once 'ZendX/Loader/AutoloaderFactory.php';
-ZendX_Loader_AutoloaderFactory::factory(array(
-  'ZendX_Loader_ClassMapAutoloader' => array(
-      __DIR__ . '/library/.classmap.php',
-      __DIR__ . '/application/.classmap.php',
-  ),
-  'ZendX_Loader_StandardAutoloader' => array(
-    'namespaces' => array(
-      'library'  => APPLICATION_PATH . '/library',
-      'entities' => APPLICATION_PATH . '/entities',
-      'modules'  => APPLICATION_PATH . '/modules',
-      'services' => APPLICATION_PATH . '/services',
-      'plugins'  => APPLICATION_PATH . '/plugins',
-      'Equ'      => __DIR__ . '/library/Equ/lib/Equ',
-      'Symfony'  => __DIR__ . '/library/Symfony',
-      'Doctrine' => '/home/szjani/development/php/libs/Doctrine-2.1/lib/Doctrine',
-      'Gedmo'    => '/home/szjani/development/php/libs/l3pp4rd/DoctrineExtensions2.1/lib/Gedmo',
-      'DoctrineExtensions' => '/home/szjani/development/php/libs/beberlei/DoctrineExtensions/lib/DoctrineExtensions',
-    ),
-    'prefixes' => array(
-      'ZFDebug' => __DIR__ . '/library/ZFDebug/library/ZFDebug'
-    ),
-    'fallback_autoloader' => true,
-  ),
-));
+$sources = array(
+  'Zend'     => array('/development/Frameworks/ZF_1.11_svn/library', '_'),
+  'ZFDebug'  => array(__DIR__ . '/library/ZFDebug/library', '_'),
+  'Doctrine' => '/development/Frameworks/Doctrine-2.2/lib',
+  'Gedmo'    => '/development/Frameworks/l3pp4rd_2.2/lib',
+  'library'  => APPLICATION_PATH,
+  'entities' => APPLICATION_PATH,
+  'modules'  => APPLICATION_PATH,
+  'Equ'      => __DIR__ . '/library/Equ/lib',
+  'Symfony'  => __DIR__ . '/library',
+);
+
+require_once $sources['Doctrine'] . '/Doctrine/Common/ClassLoader.php';
+use Doctrine\Common\ClassLoader;
+
+foreach ($sources as $namespace => $source) {
+  $dir = $source;
+  $separator = '\\';
+  if (is_array($source)) {
+    $dir = array_shift($source);
+    if (!empty($source)) {
+      $separator = array_shift($source);
+    }
+  }
+  $loader = new ClassLoader($namespace, $dir);
+  $loader->setNamespaceSeparator($separator);
+  $loader->register();
+}
+Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
+  'Doctrine\ORM\Mapping',
+  $sources['Doctrine']
+);

@@ -24,25 +24,47 @@
         <argument key="password">%doctrine.password%</argument>
         <argument key="dbname">%doctrine.dbname%</argument>
         <argument key="charset">%doctrine.charset%</argument>
-        <argument key="driverOptions" type="collection">
-         <argument key="1002">SET NAMES utf8</argument>
-        </argument>
+<!--         <argument key="driverOptions" type="collection"> -->
+<!--          <argument key="1002">SET NAMES utf8</argument> -->
+<!--         </argument> -->
       </argument>
       <argument type="service" id="doctrine.configuration" />
       <argument type="service" id="doctrine.eventmanager" />
     </service>
-    <service id="doctrine.mappingdriver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" factory-service="doctrine.configuration" factory-method="newDefaultAnnotationDriver">
-     <argument>%APPLICATION_PATH%/%doctrine.entitypath%</argument>
+    <service id="annotation.reader" class="Doctrine\Common\Annotations\CachedReader">
+      <argument type="service">
+        <service class="Doctrine\Common\Annotations\AnnotationReader" />
+      </argument>
+      <argument type="service" id="doctrine.cache" />
+    </service>
+    <service id="doctrine.annotation.driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver">
+      <argument type="service" id="annotation.reader" />
+      <argument>%APPLICATION_PATH%/%doctrine.entitypath%</argument>
+    </service>
+    <service id="doctrine.mappingdriver" class="Doctrine\ORM\Mapping\Driver\DriverChain">
+      <call method="addDriver">
+        <argument type="service" id="doctrine.annotation.driver" />
+        <argument>entities</argument>
+      </call>
     </service>
     <service id="doctrine.eventmanager" class="Doctrine\Common\EventManager">
      <call method="addEventSubscriber">
        <argument type="service">
-         <service class="Gedmo\Tree\TreeListener" />
+         <service class="Gedmo\Tree\TreeListener">
+           <call method="setAnnotationReader">
+             <argument type="service" id="annotation.reader" />  
+           </call>
+         </service>
        </argument>
      </call>
      <call method="addEventSubscriber">
        <argument type="service">
          <service class="Gedmo\Timestampable\TimestampableListener" />
+       </argument>
+     </call>
+     <call method="addEventSubscriber">
+       <argument type="service">
+         <service class="Doctrine\DBAL\Event\Listeners\MysqlSessionInit" />
        </argument>
      </call>
     </service>

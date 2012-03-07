@@ -1,5 +1,6 @@
 <?php
 namespace entities;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * JoinClass between Role and Resource entities
@@ -10,46 +11,46 @@ namespace entities;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @Entity
- * @Table(
+ * @ORM\Entity
+ * @ORM\Table(
  *   name="role_resource",
  *   uniqueConstraints={
- *     @UniqueConstraint(name="roleresource_role_resource_constraint", columns={"role_id", "resource_id"})
+ *     @ORM\UniqueConstraint(name="roleresource_role_resource_constraint", columns={"role_id", "resource_id"})
  *   }
  * )
  */
 class RoleResource extends \Equ\Entity {
 
   /**
-   * @Column(name="id", type="integer")
-   * @Id
-   * @GeneratedValue
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue
    * @var int
    */
   private $id;
 
   /**
-   * @ManyToOne(targetEntity="Role", inversedBy="roleResources")
-   * @JoinColumn(name="role_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+   * @ORM\ManyToOne(targetEntity="Role", inversedBy="roleResources")
+   * @ORM\JoinColumn(name="role_id", referencedColumnName="id", nullable=false, onDelete="cascade")
    * @var Role
    */
   private $role;
 
   /**
-   * @ManyToOne(targetEntity="Resource", inversedBy="roleResources")
-   * @JoinColumn(name="resource_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+   * @ORM\ManyToOne(targetEntity="Resource", inversedBy="roleResources")
+   * @ORM\JoinColumn(name="resource_id", referencedColumnName="id", nullable=false, onDelete="cascade")
    * @var Resource
    */
   private $resource;
 
   /**
-   * @Column(name="allowed", type="boolean")
+   * @ORM\Column(name="allowed", type="boolean")
    * @var boolean
    */
   private $allowed;
 
   /**
-   * @Column(name="privilege", type="string", length=255, nullable=true)
+   * @ORM\Column(name="privilege", type="string", length=255, nullable=true)
    * @var string
    */
   private $privilege = null;

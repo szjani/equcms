@@ -19,6 +19,14 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     );
   }
   
+  protected function _initGedmo() {
+    $container = $this->getContainer();
+    Gedmo\DoctrineExtensions::registerAbstractMappingIntoDriverChainORM(
+      $container->get('doctrine.mappingdriver'), // our metadata driver chain, to hook into
+      $container->get('annotation.reader') // our cached annotation reader
+    );
+  }
+  
   protected function _initPageCache() {
     $this->getContainer()->get('cache.page')->start();
   }

@@ -12,6 +12,8 @@ $application = new Zend_Application(
     APPLICATION_PATH . '/configs/application.ini'
 );
 
+$application->bootstrap('gedmo');
+
 /* @var $em Doctrine\ORM\EntityManager */
 $em = $application->getBootstrap()->getContainer()->get('doctrine.entitymanager');
 

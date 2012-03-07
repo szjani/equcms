@@ -1,6 +1,7 @@
 <?php
 namespace entities;
 use Equ\Navigation\Item as NavigationItem;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Mvc URL entity
@@ -11,8 +12,8 @@ use Equ\Navigation\Item as NavigationItem;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @Entity(repositoryClass="entities\MvcRepository")
- * @Table(name="`mvc`")
+ * @ORM\Entity(repositoryClass="entities\MvcRepository")
+ * @ORM\Table(name="`mvc`")
  */
 class Mvc extends Resource implements NavigationItem {
 
@@ -23,19 +24,19 @@ class Mvc extends Resource implements NavigationItem {
   protected $defaultAction     = 'index';
 
   /**
-   * @Column(name="module", type="string", length=84, nullable=true)
+   * @ORM\Column(name="module", type="string", length=84, nullable=true)
    * @var string
    */
   protected $module;
 
   /**
-   * @Column(name="controller", type="string", length=84, nullable=true)
+   * @ORM\Column(name="controller", type="string", length=84, nullable=true)
    * @var string
    */
   protected $controller;
 
   /**
-   * @Column(name="action", type="string", length=84, nullable=true)
+   * @ORM\Column(name="action", type="string", length=84, nullable=true)
    * @var string
    */
   protected $action;

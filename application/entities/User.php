@@ -4,7 +4,8 @@ use
   Equ\ClassMetadata,
   Equ\Object\Validatable,
   Equ\Object\Validator,
-  Equ\Auth\UserInterface;
+  Equ\Auth\UserInterface,
+  Doctrine\ORM\Mapping as ORM;
 
 /**
  * User entity
@@ -15,28 +16,28 @@ use
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  *
- * @Entity(repositoryClass="entities\UserRepository")
- * @Table(name="`user`", indexes={@index(name="user_password_idx", columns={"password_hash"})})
- * @HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass="entities\UserRepository")
+ * @ORM\Table(name="`user`", indexes={@ORM\Index(name="user_password_idx", columns={"password_hash"})})
+ * @ORM\HasLifecycleCallbacks
  */
 class User extends Role implements Validatable, UserInterface {
   
   const PASSWORD_SALT = '958rg!DdfJko$~tz)3/Tiq3rf9;a43gFT]A46DFaAeg;a43';
 
   /**
-   * @Column(name="email", type="string", unique=true, nullable=false)
+   * @ORM\Column(name="email", type="string", unique=true, nullable=false)
    * @var string
    */
   protected $email;
 
   /**
-   * @Column(name="password_hash", type="string", length=32, nullable=false)
+   * @ORM\Column(name="password_hash", type="string", length=32, nullable=false)
    * @var string
    */
   protected $passwordHash;
 
   /**
-   * @Column(name="activation_code", type="string", length=12)
+   * @ORM\Column(name="activation_code", type="string", length=12)
    * @var string
    */
   protected $activationCode;
@@ -62,7 +63,7 @@ class User extends Role implements Validatable, UserInterface {
   }
   
   /**
-   * @PrePersist
+   * @ORM\PrePersist
    */
   public function initActivationCode() {
     $this->setActivationCode(self::generateString(12));
