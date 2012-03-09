@@ -78,6 +78,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     $container  = $this->getContainer();
     $frontController = $this->getResource('frontController');
     $frontController->registerPlugin(new Plugin\Navigation(
+      $container->get('user.repository'),
       $container->get('navigation'),
       $container->get('doctrine.entitymanager')->getRepository(Mvc::className()),
       $container->get('cache.system'),

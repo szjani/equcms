@@ -1,9 +1,9 @@
 <?php
 namespace entities;
 use
-  Gedmo\Tree\Entity\Repository\NestedTreeRepository,
+  Doctrine\ORM\EntityRepository,
   Equ\Auth\AuthenticatedUserStorage,
-  Equ\Auth\RepositoryInterface;
+  Equ\Auth\Authenticator;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -12,7 +12,7 @@ use
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class UserRepository extends RoleRepository implements RepositoryInterface, AuthenticatedUserStorage {
+class UserRepository extends EntityRepository implements Authenticator, AuthenticatedUserStorage {
 
   /**
    * @var User
@@ -44,9 +44,9 @@ class UserRepository extends RoleRepository implements RepositoryInterface, Auth
       $user = \Zend_Auth::getInstance()->getIdentity();
       if (is_string($user)) {
         $user = $this->createQueryBuilder('u')
-          ->select('u, rr')
-          ->leftJoin('u.roleResources', 'rr')
-          ->where('u.role = :user')
+          ->select('u, ug')
+          ->innerJoin('u.userGroup', 'ug')
+          ->where('u.email = :user')
           ->setParameter('user', $user)
           ->getQuery()
           ->getSingleResult();

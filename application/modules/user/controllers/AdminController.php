@@ -9,7 +9,7 @@ use
 
 class User_AdminController extends AbstractController {
 
-  protected $ignoredFields = array('lft', 'rgt', 'lvl', 'role');
+  protected $ignoredFields = array('lft', 'rgt', 'lvl');
   
 //  protected $useFilterForm = false;
   

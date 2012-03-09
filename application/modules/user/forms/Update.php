@@ -10,6 +10,6 @@ class Update extends Create {
   public function buildForm(IBuilder $builder) {
     $builder
       ->add('email')
-      ->add('parent');
+      ->add('userGroup');
   }
 }

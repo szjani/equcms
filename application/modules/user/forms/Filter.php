@@ -15,6 +15,6 @@ class Filter extends Create {
     $builder
       ->add('email')
       ->add('activationCode')
-      ->add('parent');
+      ->add('userGroup');
   }
 }

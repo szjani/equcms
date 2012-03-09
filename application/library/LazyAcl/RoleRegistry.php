@@ -48,6 +48,9 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
     if (\is_string($role)) {
       $role = $repo->findOneBy(array('role' => (string)$role));
     }
+    if ($role instanceof \entities\User) {
+      $role = $role->getUserGroup();
+    }
     if (!($role instanceof Role)) {
       return;
     }
@@ -61,7 +64,7 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
 
     /* @var $node entities\Role */
     foreach ($nodes as $node) {
-      $this->activeRole = (string)$node;
+      $this->activeRole = $node->getRoleId();
       if (!$this->has($node)) {
         $parent = $node->getParent();
         $this->add($node, $parent ?: null);
@@ -72,7 +75,8 @@ class RoleRegistry extends \Zend_Acl_Role_Registry {
 
   public function has($role) {
     if (!parent::has($role)) {
-      if ($this->activeRole === (string)$role) {
+      $roleString = ($role instanceof \Zend_Acl_Role_Interface ? $role->getRoleId() : $role);
+      if ($this->activeRole === $roleString) {
         return false;
       }
       $this->storeRoleByDb($role);

@@ -12,7 +12,7 @@ class Create implements IMappedType {
     $builder
       ->add('email')
       ->add('password', 'password')
-      ->add('parent');
+      ->add('userGroup');
   }
   
   public function getObjectClass() {

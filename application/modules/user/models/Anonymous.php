@@ -30,6 +30,10 @@ class Anonymous implements UserInterface {
     );
   }
   
+  public function getPrincipal() {
+    return self::NAME;
+  }
+  
   public function __toString() {
     return $this->getRoleId();
   }
