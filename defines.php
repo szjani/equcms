@@ -12,11 +12,8 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-  '/development/Frameworks/ZF_1.11_svn/library',
-  __DIR__ . '/library/ZFDebug/library',
-)));
+$zfDir      = '/development/Frameworks/ZF_1.11_svn/library';
+$zfDebugDir = __DIR__ . '/library/ZFDebug/library';
 
 $sources = array(
   'Zend'     => array('/development/Frameworks/ZF_1.11_svn/library', '_'),
@@ -29,6 +26,10 @@ $sources = array(
   'Equ'      => __DIR__ . '/library/Equ/lib',
   'Symfony'  => __DIR__ . '/library',
 );
+
+set_include_path(implode(PATH_SEPARATOR, array(
+  $zfDir, $zfDebugDir
+)));
 
 require_once $sources['Doctrine'] . '/Doctrine/Common/ClassLoader.php';
 use Doctrine\Common\ClassLoader;
