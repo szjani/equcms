@@ -1,6 +1,7 @@
 <?php
 namespace entities;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Group entity
@@ -21,10 +22,17 @@ class UserGroup extends Role {
    * @var string
    */
   protected $name;
+  
+  /**
+   * @ORM\OneToMany(targetEntity="User", mappedBy="group")
+   * @var ArrayCollection
+   */
+  protected $users;
 
   public function __construct($name) {
     parent::__construct();
     $this->setName($name);
+    $this->users = new ArrayCollection();
   }
 
   /**

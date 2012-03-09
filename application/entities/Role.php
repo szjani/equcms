@@ -18,11 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="`role`", indexes={
  *   @ORM\Index(name="role_lft_idx", columns={"lft"}),
  *   @ORM\Index(name="role_rgt_idx", columns={"rgt"}),
- *   @ORM\Index(name="role_lvl_idx", columns={"lvl"})
+ *   @ORM\Index(name="role_lvl_idx", columns={"lvl"}),
+ *   @ORM\Index(name="role_discr_idx", columns={"discr"})
  * })
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"user" = "User", "usergroup" = "UserGroup"})
+ * @ORM\DiscriminatorMap({"usergroup" = "UserGroup"})
  */
 abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 

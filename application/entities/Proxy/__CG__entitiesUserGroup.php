@@ -138,7 +138,7 @@ class UserGroup extends \entities\UserGroup implements \Doctrine\ORM\Proxy\Proxy
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'lft', 'rgt', 'lvl', 'role', 'parent', 'children', 'roleResources', 'name');
+        return array('__isInitialized__', 'id', 'lft', 'rgt', 'lvl', 'role', 'parent', 'children', 'roleResources', 'name', 'users');
     }
 
     public function __clone()

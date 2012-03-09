@@ -12,7 +12,7 @@ class LoadUser extends AbstractFixture implements OrderedFixtureInterface {
 
   public function load(ObjectManager $manager) {
     $szjani = new \entities\User('szjani@szjani.hu', 'szjani');
-    $szjani->setParent($this->getReference('usergroup-administrators'));
+    $szjani->setUserGroup($this->getReference('usergroup-administrators'));
     $manager->persist($szjani);
     
     $manager->flush();

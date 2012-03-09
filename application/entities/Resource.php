@@ -18,7 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="`resource`", indexes={
  *   @ORM\Index(name="resource_lft_idx", columns={"lft"}),
  *   @ORM\Index(name="resource_rgt_idx", columns={"rgt"}),
- *   @ORM\Index(name="resource_lvl_idx", columns={"lvl"})
+ *   @ORM\Index(name="resource_lvl_idx", columns={"lvl"}),
+ *   @ORM\Index(name="resource_discr_idx", columns={"discr"})
  * })
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

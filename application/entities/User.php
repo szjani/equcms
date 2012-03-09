@@ -20,9 +20,17 @@ use
  * @ORM\Table(name="`user`", indexes={@ORM\Index(name="user_password_idx", columns={"password_hash"})})
  * @ORM\HasLifecycleCallbacks
  */
-class User extends Role implements Validatable, UserInterface {
+class User extends \Equ\Entity implements Validatable, UserInterface {
   
   const PASSWORD_SALT = '958rg!DdfJko$~tz)3/Tiq3rf9;a43gFT]A46DFaAeg;a43';
+  
+  /**
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue
+   * @var int
+   */
+  protected $id;
 
   /**
    * @ORM\Column(name="email", type="string", unique=true, nullable=false)
@@ -42,6 +50,13 @@ class User extends Role implements Validatable, UserInterface {
    */
   protected $activationCode;
   
+  /**
+   * @ORM\ManyToOne(targetEntity="UserGroup", inversedBy="users")
+   * @ORM\JoinColumn(name="user_group_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+   * @var UserGroup
+   */
+  protected $userGroup;
+  
   protected $isLoggedIn = false;
 
   /**
@@ -49,10 +64,17 @@ class User extends Role implements Validatable, UserInterface {
    * @param string $password
    */
   public function __construct($email, $password) {
-    parent::__construct();
     $this
       ->setEmail($email)
       ->setPassword($password);
+  }
+  
+  public function getId() {
+    return $this->id;
+  }
+  
+  public function getPrincipal() {
+    return $this->getEmail();
   }
   
   public static function loadValidators(Validator $validator) {
@@ -112,7 +134,6 @@ class User extends Role implements Validatable, UserInterface {
    */
   public function setEmail($email) {
     $this->email = $email;
-    $this->setRoleId($email);
     return $this;
   }
 
@@ -162,6 +183,33 @@ class User extends Role implements Validatable, UserInterface {
   public function setLoggedIn($loggedIn = true) {
     $this->isLoggedIn = (boolean)$loggedIn;
     return $this;
+  }
+  
+  /**
+   * @return string
+   */
+  public function getRoleId() {
+    return $this->getUserGroup()->getRoleId();
+  }
+
+  /**
+   * @return UserGroup
+   */
+  public function getUserGroup() {
+    return $this->userGroup;
+  }
+  
+  /**
+   * @param UserGroup $group
+   * @return User 
+   */
+  public function setUserGroup(UserGroup $group) {
+    $this->userGroup = $group;
+    return $this;
+  }
+  
+  public function __toString() {
+    return $this->email;
   }
   
   /**

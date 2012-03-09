@@ -42,6 +42,15 @@ class User extends \entities\User implements \Doctrine\ORM\Proxy\Proxy
     }
 
     
+    public function getId()
+    {
+        if ($this->__isInitialized__ === false) {
+            return (int) $this->_identifier["id"];
+        }
+        $this->__load();
+        return parent::getId();
+    }
+
     public function initActivationCode()
     {
         $this->__load();
@@ -96,34 +105,22 @@ class User extends \entities\User implements \Doctrine\ORM\Proxy\Proxy
         return parent::setLoggedIn($loggedIn);
     }
 
-    public function toArray()
-    {
-        $this->__load();
-        return parent::toArray();
-    }
-
-    public function getParent()
-    {
-        $this->__load();
-        return parent::getParent();
-    }
-
-    public function setParent(\entities\UserGroup $parent = NULL)
-    {
-        $this->__load();
-        return parent::setParent($parent);
-    }
-
-    public function getRoleResources()
-    {
-        $this->__load();
-        return parent::getRoleResources();
-    }
-
     public function getRoleId()
     {
         $this->__load();
         return parent::getRoleId();
+    }
+
+    public function getUserGroup()
+    {
+        $this->__load();
+        return parent::getUserGroup();
+    }
+
+    public function setUserGroup(\entities\UserGroup $group)
+    {
+        $this->__load();
+        return parent::setUserGroup($group);
     }
 
     public function __toString()
@@ -132,13 +129,10 @@ class User extends \entities\User implements \Doctrine\ORM\Proxy\Proxy
         return parent::__toString();
     }
 
-    public function getId()
+    public function toArray()
     {
-        if ($this->__isInitialized__ === false) {
-            return (int) $this->_identifier["id"];
-        }
         $this->__load();
-        return parent::getId();
+        return parent::toArray();
     }
 
     public function setValidator(\Equ\Object\Validator $validator)
@@ -186,7 +180,7 @@ class User extends \entities\User implements \Doctrine\ORM\Proxy\Proxy
 
     public function __sleep()
     {
-        return array('__isInitialized__', 'id', 'lft', 'rgt', 'lvl', 'role', 'parent', 'children', 'roleResources', 'email', 'passwordHash', 'activationCode');
+        return array('__isInitialized__', 'id', 'email', 'passwordHash', 'activationCode', 'userGroup');
     }
 
     public function __clone()
