@@ -13,3 +13,6 @@
 [submodule "library/ZFDebug"]
 	path = library/ZFDebug
 	url = git://github.com/jokkedk/ZFDebug.git
+[submodule "library/Gedmo"]
+	path = library/Gedmo
+	url = git://github.com/l3pp4rd/DoctrineExtensions.git

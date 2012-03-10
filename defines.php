@@ -16,10 +16,10 @@ $zfDir      = '/development/Frameworks/ZF_1.11_svn/library';
 $zfDebugDir = __DIR__ . '/library/ZFDebug/library';
 
 $sources = array(
-  'Zend'     => array('/development/Frameworks/ZF_1.11_svn/library', '_'),
-  'ZFDebug'  => array(__DIR__ . '/library/ZFDebug/library', '_'),
+  'Zend'     => array($zfDir, '_'),
+  'ZFDebug'  => array($zfDebugDir, '_'),
   'Doctrine' => '/development/Frameworks/Doctrine-2.2/lib',
-  'Gedmo'    => '/development/Frameworks/l3pp4rd_2.2/lib',
+  'Gedmo'    => __DIR__ . '/library/Gedmo/lib',
   'library'  => APPLICATION_PATH,
   'entities' => APPLICATION_PATH,
   'modules'  => APPLICATION_PATH,
