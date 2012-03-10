@@ -51,6 +51,12 @@ class User extends \entities\User implements \Doctrine\ORM\Proxy\Proxy
         return parent::getId();
     }
 
+    public function getPrincipal()
+    {
+        $this->__load();
+        return parent::getPrincipal();
+    }
+
     public function initActivationCode()
     {
         $this->__load();
