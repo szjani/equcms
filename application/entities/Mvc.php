@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @ORM\Entity(repositoryClass="entities\MvcRepository")
- * @ORM\Table(name="`mvc`")
+ * @ORM\Table(name="mvc")
  */
 class Mvc extends Resource implements NavigationItem {
 

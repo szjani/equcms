@@ -17,7 +17,7 @@ use
  * @author      Szurovecz János <szjani@szjani.hu>
  *
  * @ORM\Entity(repositoryClass="entities\UserRepository")
- * @ORM\Table(name="`user`", indexes={@ORM\Index(name="user_password_idx", columns={"password_hash"})})
+ * @ORM\Table(name="user", indexes={@ORM\Index(name="user_password_idx", columns={"password_hash"})})
  * @ORM\HasLifecycleCallbacks
  */
 class User extends \Equ\Entity implements Validatable, UserInterface {

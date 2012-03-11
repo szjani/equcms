@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="entities\RoleRepository")
- * @ORM\Table(name="`role`", indexes={
+ * @ORM\Table(name="role", indexes={
  *   @ORM\Index(name="role_lft_idx", columns={"lft"}),
  *   @ORM\Index(name="role_rgt_idx", columns={"rgt"}),
  *   @ORM\Index(name="role_lvl_idx", columns={"lvl"}),

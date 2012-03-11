@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
- * @ORM\Table(name="`resource`", indexes={
+ * @ORM\Table(name="resource", indexes={
  *   @ORM\Index(name="resource_lft_idx", columns={"lft"}),
  *   @ORM\Index(name="resource_rgt_idx", columns={"rgt"}),
  *   @ORM\Index(name="resource_lvl_idx", columns={"lvl"}),
