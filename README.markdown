@@ -2,6 +2,20 @@ EquCMS
 ======
 This is a Zend Framework and Doctrine 2 based CMS system, which supports CRUD operations.
 
+Changelog
+---------
+
+### 2.2.x ###
+
+* Doctrine 2.2 compatibility
+* Uses the builtin Paginator instead of beberlei's
+* Symfony classloader instead of backported ZF2 classloader (there was a problem with the last one)
+* User entity doesn't extends Role anymore. If you need fine-grained permission control you can still create a bunch of groups. All user has to belong to a group.
+* Several small modifications in configuration, user and authentication interfaces
+* [New screenshot](http://goo.gl/yPxOe)
+
+### 2.0.x ###
+
 Screenshot: [http://bit.ly/fEmkdQ](http://bit.ly/fEmkdQ)
 
 The folowing techniques are used:
