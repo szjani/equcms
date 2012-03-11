@@ -12,6 +12,8 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
+define('PROJECT_CACHE_PREFIX', 'equcms_');
+
 $zfDir      = '/development/Frameworks/ZF_1.11_svn/library';
 $zfDebugDir = __DIR__ . '/library/ZFDebug/library';
 
@@ -31,8 +33,12 @@ set_include_path(implode(PATH_SEPARATOR, array(
   $zfDir, $zfDebugDir
 )));
 
-require_once $sources['Doctrine'] . '/Doctrine/Common/ClassLoader.php';
-use Doctrine\Common\ClassLoader;
+require_once __DIR__ . '/library/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+require_once __DIR__ . '/library/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
+$loader = new ApcUniversalClassLoader(PROJECT_CACHE_PREFIX);
+$loader->register();
 
 foreach ($sources as $namespace => $source) {
   $dir = $source;
@@ -41,11 +47,11 @@ foreach ($sources as $namespace => $source) {
     $dir = array_shift($source);
     if (!empty($source)) {
       $separator = array_shift($source);
+      $loader->registerPrefix($namespace, $dir);
     }
+  } else {
+    $loader->registerNamespace($namespace, $dir);
   }
-  $loader = new ClassLoader($namespace, $dir);
-  $loader->setNamespaceSeparator($separator);
-  $loader->register();
 }
 Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
   'Doctrine\ORM\Mapping',

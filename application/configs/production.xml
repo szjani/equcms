@@ -9,7 +9,7 @@
   </imports>
    <parameters>
      <parameter key="APPLICATION_PATH" type="constant">APPLICATION_PATH</parameter>
-     <parameter key="cache.prefix">equcms_</parameter>
+     <parameter key="cache.prefix" type="constant">PROJECT_CACHE_PREFIX</parameter>
      <parameter key="cache.data.backend">Apc</parameter>
      <parameter key="cache.data.lifetime">1800</parameter>
      <parameter key="cache.system.backend">Apc</parameter>

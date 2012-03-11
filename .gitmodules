@@ -16,3 +16,6 @@
 [submodule "library/Gedmo"]
 	path = library/Gedmo
 	url = git://github.com/l3pp4rd/DoctrineExtensions.git
+[submodule "library/Symfony/Component/ClassLoader"]
+	path = library/Symfony/Component/ClassLoader
+	url = git://github.com/symfony/ClassLoader.git
