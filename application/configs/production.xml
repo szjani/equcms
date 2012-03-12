@@ -15,7 +15,7 @@
      <parameter key="cache.system.backend">Apc</parameter>
      <parameter key="cache.system.lifetime">7200</parameter>
      <parameter key="cache.page.backend">File</parameter>
-     <parameter key="cache.page.lifetime">3600</parameter>
+     <parameter key="cache.page.lifetime">360</parameter>
      <parameter key="translate.adapter">gettext</parameter>
      <parameter key="translate.content">lang/other</parameter>
      <parameter key="translate.scan">filename</parameter>
