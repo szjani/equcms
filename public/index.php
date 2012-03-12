@@ -9,7 +9,4 @@ $application = new Equ\Application(
 $application->bootstrap();
 $application->run();
 
-if (Zend_Session::getIterator()->count() == 0) {
-  Zend_Session::expireSessionCookie();
-}
 Zend_Session::writeClose(true);

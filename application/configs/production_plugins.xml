@@ -12,6 +12,7 @@
     <parameter key="admin.route.plugin.class">Equ\Controller\Plugin\AdminRoute</parameter>
     <parameter key="admin.layout.plugin.class">library\Controller\Plugin\AdminLayout</parameter>
     <parameter key="language.plugin.class">Equ\Controller\Plugin\Language</parameter>
+    <parameter key="auto.expire.session.cookie.class">Equ\Controller\Plugin\AutoExpireSessionCookie</parameter>
     <parameter key="anonymous.acl.init.plugin.class">modules\user\plugins\AclInitializer</parameter>
     <parameter key="available.languages.helper.class">Equ\Controller\Action\Helper\AvailableLanguages</parameter>
   </parameters>
@@ -28,6 +29,7 @@
       <argument type="service" id="translate" />
       <argument type="service" id="locale" />
     </service>
+    <service id="auto.expire.session.cookie" class="%auto.expire.session.cookie.class%" />
     <service id="admin.layout.plugin" class="%admin.layout.plugin.class%" />
     <service id="admin.route.plugin" class="%admin.route.plugin.class%" />
     <service id="clean.query.plugin" class="%clean.query.plugin.class%" />

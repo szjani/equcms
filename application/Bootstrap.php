@@ -57,6 +57,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
       ->registerPlugin($container->get('admin.route.plugin'), 30)
       ->registerPlugin($container->get('admin.layout.plugin'))
       ->registerPlugin($container->get('language.plugin'), 40)
+      ->registerPlugin($container->get('auto.expire.session.cookie'))
 //      ->registerPlugin($container->get('zfdebug.plugin'))
       ->registerPlugin($container->get('anonymous.acl.init.plugin'));
   }
