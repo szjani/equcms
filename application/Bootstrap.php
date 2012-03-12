@@ -87,12 +87,4 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     ));
   }
   
-  protected function _initAnonymousUser() {
-    $this->bootstrap('helpers');
-    $auth = Zend_Auth::getInstance();
-    if (!$auth->hasIdentity()) {
-      $auth->getStorage()->write(new Anonymous());
-    }
-  }
-
 }

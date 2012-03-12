@@ -3,7 +3,8 @@ namespace entities;
 use
   Doctrine\ORM\EntityRepository,
   Equ\Auth\AuthenticatedUserStorage,
-  Equ\Auth\Authenticator;
+  Equ\Auth\Authenticator,
+  Zend_Auth;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -41,19 +42,19 @@ class UserRepository extends EntityRepository implements Authenticator, Authenti
    */
   public function getAuthenticatedUser() {
     if (is_null($this->authenticatedUser)) {
-      $user = \Zend_Auth::getInstance()->getIdentity();
-      if (is_string($user)) {
+      $user = null;
+      $auth = Zend_Auth::getInstance();
+      if (!$auth->hasIdentity()) {
+        $user = new \modules\user\models\Anonymous();
+      } else {
         $user = $this->createQueryBuilder('u')
           ->select('u, ug')
           ->innerJoin('u.userGroup', 'ug')
           ->where('u.email = :user')
-          ->setParameter('user', $user)
+          ->setParameter('user', (string)$auth->getIdentity())
           ->getQuery()
-          ->getSingleResult();
-        if (!$user) {
-          throw new \RuntimeException('You have to be authenticated!');
-        }
-        $user->setLoggedIn();
+          ->getSingleResult()
+          ->setLoggedIn();
       }
       $this->authenticatedUser = $user;
     }

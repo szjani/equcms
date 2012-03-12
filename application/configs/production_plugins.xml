@@ -20,7 +20,10 @@
       <argument type="service" id="user.repository" />
       <argument type="service" id="acl" />
     </service>
-    <service id="anonymous.acl.init.plugin" class="%anonymous.acl.init.plugin.class%" />
+    <service id="anonymous.acl.init.plugin" class="%anonymous.acl.init.plugin.class%">
+      <argument type="service" id="user.repository" />
+      <argument type="service" id="acl" />
+    </service>
     <service id="language.plugin" class="%language.plugin.class%">
       <argument type="service" id="translate" />
       <argument type="service" id="locale" />

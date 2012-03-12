@@ -176,7 +176,7 @@
          <argument key="lifetime">%cache.page.lifetime%</argument>
          <argument key="automatic_serialization">true</argument>
          <argument key="cache_id_prefix">%cache.prefix%</argument>
-         <argument key="cache">false</argument>
+         <argument key="cache">true</argument>
          <argument key="memorize_headers" type="collection">
            <argument>Content-Type</argument>
          </argument>
