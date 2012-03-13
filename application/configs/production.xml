@@ -185,6 +185,9 @@
              <argument key="cache_with_get_variables">true</argument>
              <argument key="cache_with_cookie_variables">true</argument>
              <argument key="cache_with_session_variables">true</argument>
+             <argument key="make_id_with_post_variables">false</argument>
+             <argument key="make_id_with_cookie_variables">false</argument>
+             <argument key="make_id_with_session_variables">false</argument>
            </argument>
          </argument>
        </argument>
