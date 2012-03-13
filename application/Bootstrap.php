@@ -28,7 +28,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
   
   protected function _initPageCache() {
-    $this->getContainer()->get('cache.page')->start();
+    $this->getContainer()->get('auto.page.cache')->start();
   }
   
   protected function _initHelpers() {
@@ -58,7 +58,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
       ->registerPlugin($container->get('admin.route.plugin'), 30)
       ->registerPlugin($container->get('admin.layout.plugin'))
       ->registerPlugin($container->get('language.plugin'), 40)
-      ->registerPlugin($container->get('auto.expire.session.cookie'))
+      ->registerPlugin($container->get('auto.page.cache'))
 //      ->registerPlugin($container->get('zfdebug.plugin'))
       ->registerPlugin($container->get('anonymous.acl.init.plugin'));
   }

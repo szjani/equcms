@@ -176,9 +176,14 @@
          <argument key="lifetime">%cache.page.lifetime%</argument>
          <argument key="automatic_serialization">true</argument>
          <argument key="cache_id_prefix">%cache.prefix%</argument>
-         <argument key="cache">true</argument>
          <argument key="memorize_headers" type="collection">
            <argument>Content-Type</argument>
+         </argument>
+         <argument key="default_options" type="collection">
+           <argument key="cache_with_cookie_variables">true</argument>
+           <argument key="cache_with_session_variables">true</argument>
+           <argument key="make_id_with_cookie_variables">false</argument>
+           <argument key="make_id_with_session_variables">false</argument>
          </argument>
          <argument key="regexps" type="collection">
            <argument key="translate/dict$" type="collection">
