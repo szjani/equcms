@@ -75,7 +75,7 @@
     <div class="row" id="page">
       <div class="span12">
         <div class="page-header">
-          <h1><?php echo $this->pageTitle ?></h1>
+          <h1><?php echo $this->translate($this->headTitle()->offsetGet(0)) ?></h1>
         </div>
       	<?php echo $this->flashMessenger() ?>
         <?php print $this->layout()->content ?>
