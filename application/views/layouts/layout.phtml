@@ -1,16 +1,16 @@
 <?php echo $this->doctype() ?>
 <html>
 <head>
-<meta name="description" content="EquCMS" />
-<meta name="keywords" content="equcms" />
-<meta name="revisit-after" content="3 days" />
-<meta name="robots" content="all" />
-<meta name="author" content="Szurovecz János" />
-<meta name="rating" content="General" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="EquCMS">
+<meta name="keywords" content="equcms">
+<meta name="revisit-after" content="3 days">
+<meta name="robots" content="all">
+<meta name="author" content="Szurovecz János">
+<meta name="rating" content="General">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <?php
-  $this->headScript()
+  $this->inlineScript()
     ->prependFile('/js/site.js', 'text/javascript')
     ->prependScript("initTranslate('{$this->url(array('module' => 'translate', 'controller' => 'dict'), 'defaultlang', true)}')")
     ->prependFile('/js/init-translate.js', 'text/javascript')
@@ -25,7 +25,8 @@
   echo 
     $this->headTitle('EquCMS')->setSeparator(' - ') .
     $this->headLink() .
-    $this->headStyle();
+    $this->headStyle() .
+    $this->headScript();
 
   $mainMenuItem = $this->navigation()->findById('index_index');
 ?>
@@ -81,6 +82,6 @@
       <div class="container_12" id="poweredby"></div>
     </div>
   </div>
-  <?php echo $this->headScript(); ?>
+  <?php echo $this->inlineScript(); ?>
 </body>
 </html>
