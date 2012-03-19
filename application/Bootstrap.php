@@ -2,10 +2,6 @@
 use
   Equ\Controller\Plugin,
   Equ\Controller\Action\Helper,
-  entities\User,
-  entities\Mvc,
-  modules\user\plugins\AclInitializer,
-  modules\user\models\Anonymous,
   Zend_Controller_Action_HelperBroker as HelperBroker;
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
@@ -27,16 +23,17 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     );
   }
   
-  protected function _initPageCache() {
-    $this->getContainer()->get('auto.page.cache')->start();
-  }
-  
-  protected function _initHelpers() {
+  protected function _initCache() {
     $container = $this->getContainer();
+    $container->get('auto.page.cache')->start();
     
     Zend_Translate::setCache($container->get('cache.system'));
     Zend_Locale::setCache($container->get('cache.system'));
     Zend_Currency::setCache($container->get('cache.system'));
+  }
+  
+  protected function _initHelpers() {
+    $container = $this->getContainer();
     
     HelperBroker::addHelper(new Helper\ServiceInjector($container));
     HelperBroker::addHelper($container->get('form.builder'));
@@ -74,7 +71,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
     return $this->getContainer()->get('log');
   }
   
-  protected function _initNavigation() {
+  protected function _initNavigationHelper() {
     $this->bootstrap('view');
     $container  = $this->getContainer();
     
