@@ -5,6 +5,7 @@ function initTranslate(urlString) {
       $.jsperanto.init(function(t) {}, {
         interpolationPrefix: '%',
         interpolationSuffix: '%',
+        keyseparator: '//',
         dictionary: data
       });
     },
