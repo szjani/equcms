@@ -16,8 +16,8 @@
     ->prependFile('/js/init-translate.js', 'text/javascript')
     ->prependFile('/js/jquery.jsperanto.js', 'text/javascript')
     ->prependFile('/js/bootstrap-typeaheadajax.js', 'text/javascript')
-    ->prependFile('/js/bootstrap.min.js', 'text/javascript')
-    ->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'text/javascript');
+    ->prependFile('/js/bootstrap.min.js', 'text/javascript');
+  $this->headScript()->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'text/javascript');
   $this->headLink()
     ->appendStylesheet($this->baseUrl('/css/bootstrap.min.css'))
     ->appendStylesheet($this->baseUrl('/css/bootstrap-responsive.min.css'))
