@@ -59,6 +59,7 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
       ->registerPlugin($container->get('admin.layout.plugin'))
       ->registerPlugin($container->get('language.plugin'), 40)
       ->registerPlugin($container->get('auto.page.cache'))
+      ->registerPlugin($container->get('navigation.builder.plugin'))
 //      ->registerPlugin($container->get('zfdebug.plugin'))
       ->registerPlugin($container->get('anonymous.acl.init.plugin'));
   }
@@ -74,19 +75,14 @@ class Bootstrap extends Equ\Application\Bootstrap\Bootstrap {
   }
   
   protected function _initNavigation() {
-    $this->bootstrap('frontController');
     $this->bootstrap('view');
-
     $container  = $this->getContainer();
-    $frontController = $this->getResource('frontController');
-    $frontController->registerPlugin(new Plugin\Navigation(
-      $container->get('user.repository'),
-      $container->get('navigation'),
-      $container->get('doctrine.entitymanager')->getRepository(Mvc::className()),
-      $container->get('cache.system'),
-      $container->get('acl'),
-      $this->getResource('view')
-    ));
+    
+    $navigationHelper = $this->getResource('view')->getHelper('navigation');
+    $navigationHelper
+      ->setContainer($container->get('navigation'))
+      ->setAcl($container->get('acl'))
+      ->setRole($container->get('user.repository')->getAuthenticatedUser());
   }
   
 }

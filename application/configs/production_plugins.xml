@@ -16,6 +16,7 @@
     <parameter key="auto.page.cache.class">Equ\Controller\Plugin\AutoPageCache</parameter>
     <parameter key="anonymous.acl.init.plugin.class">modules\user\plugins\AclInitializer</parameter>
     <parameter key="available.languages.helper.class">Equ\Controller\Action\Helper\AvailableLanguages</parameter>
+    <parameter key="navigation.builder.plugin.class">Equ\Controller\Plugin\Navigation</parameter>
   </parameters>
   <services>
     <service id="mvc.permission.helper" class="%mvc.permission.helper.class%">
@@ -25,6 +26,15 @@
     <service id="anonymous.acl.init.plugin" class="%anonymous.acl.init.plugin.class%">
       <argument type="service" id="user.repository" />
       <argument type="service" id="acl" />
+    </service>
+    <service id="navigation.builder.plugin" class="%navigation.builder.plugin.class%">
+      <argument type="service" id="navigation" />
+      <argument type="service">
+        <service class="Equ\Navigation\ItemRepository" factory-service="em" factory-method="getRepository">
+          <argument>entities\Mvc</argument>
+        </service>
+      </argument>
+      <argument type="service" id="cache.system" />
     </service>
     <service id="language.plugin" class="%language.plugin.class%">
       <argument type="service" id="translate" />
