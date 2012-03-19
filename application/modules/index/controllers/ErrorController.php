@@ -11,12 +11,14 @@ class ErrorController extends Zend_Controller_Action {
     $contextSwitch
       ->addActionContext('error', 'json')
       ->initContext();
+    
+    $this->_helper->autoTitle('An error occurred');
   }
   
   public function errorAction() {
-    $this->_helper->layout->disableLayout();
     if ($this->getInvokeArg('errorview') && $this->getInvokeArg('errorview') != 'error') {
       $this->_helper->viewRenderer($this->getInvokeArg('errorview'));
+      $this->_helper->layout->disableLayout();
     }
     
     $errors = $this->_getParam('error_handler');
@@ -37,7 +39,7 @@ class ErrorController extends Zend_Controller_Action {
       case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
         // 404 error -- controller or action not found
         $this->getResponse()->setHttpResponseCode(404);
-        $this->view->message = 'Page not found';
+        $this->view->message = 'Page not found (404)';
         break;
       default:
         // application error
