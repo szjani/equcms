@@ -32,6 +32,7 @@ class User_IndexController extends \Zend_Controller_Action {
           $form->getValue('password')
         );
         Zend_Auth::getInstance()->getStorage()->write($user->getPrincipal());
+        Zend_Session::rememberMe();
         $this->_helper->flashMessenger('Login success');
         if (!$this->_request->isXmlHttpRequest() && !$this->_helper->redirectHereAfterPost->hasUrl()) {
           $this->_helper->redirector->gotoRouteAndExit(array(), null, true);
