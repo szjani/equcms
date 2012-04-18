@@ -2,6 +2,8 @@ EquCMS
 ======
 This is a Zend Framework and Doctrine 2 based CMS system, which supports CRUD operations.
 
+Installation steps: https://github.com/szjani/equcms/blob/master/docs/INSTALL.markdown
+
 Changelog
 ---------
 
