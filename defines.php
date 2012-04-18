@@ -12,15 +12,25 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-define('PROJECT_CACHE_PREFIX', 'equcms_');
+// ==== Modify these values! ==== //
+define('PROJECT_CACHE_PREFIX', 'energiavampir_');
 
-$zfDir      = '/development/Frameworks/ZF_1.11_svn/library';
-$zfDebugDir = __DIR__ . '/library/ZFDebug/library';
+$zfDir         = '/development/Frameworks/ZF_1.11_svn';
+$doctrineDir   = '/development/Frameworks/Doctrine-2.2';
+$fixturesDir   = '/development/Frameworks/doctrine-fixtures';
+$migrationsDir = '/development/Frameworks/migrations';
+// ============================== //
 
+$zfDebugDir    = __DIR__ . '/library/ZFDebug/library';
+$zfDir .= '/library';
 $sources = array(
   'Zend'     => array($zfDir, '_'),
   'ZFDebug'  => array($zfDebugDir, '_'),
-  'Doctrine' => '/development/Frameworks/Doctrine-2.2/lib',
+  'Doctrine\ORM' => $doctrineDir . '/lib',
+  'Doctrine\Common\DataFixtures' => $fixturesDir . '/lib',
+  'Doctrine\DBAL\Migrations'     => $migrationsDir . '/lib',
+  'Doctrine\Common' => $doctrineDir . '/lib/vendor/doctrine-common/lib',
+  'Doctrine\DBAL'   => $doctrineDir . '/lib/vendor/doctrine-dbal/lib',
   'Gedmo'    => __DIR__ . '/library/Gedmo/lib',
   'library'  => APPLICATION_PATH,
   'entities' => APPLICATION_PATH,
@@ -55,5 +65,5 @@ foreach ($sources as $namespace => $source) {
 }
 Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
   'Doctrine\ORM\Mapping',
-  $sources['Doctrine']
+  $sources['Doctrine\ORM']
 );
