@@ -13,7 +13,7 @@ defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 // ==== Modify these values! ==== //
-define('PROJECT_CACHE_PREFIX', 'energiavampir_');
+define('PROJECT_CACHE_PREFIX', 'equcms_');
 
 $zfDir         = '/development/Frameworks/ZF_1.11_svn';
 $doctrineDir   = '/development/Frameworks/Doctrine-2.2';
