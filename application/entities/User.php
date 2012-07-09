@@ -39,7 +39,7 @@ class User extends \Equ\Entity implements Validatable, UserInterface {
   protected $email;
 
   /**
-   * @ORM\Column(name="password_hash", type="string", length=32, nullable=false)
+   * @ORM\Column(name="password_hash", type="string", length=40, nullable=false)
    * @var string
    */
   protected $passwordHash;
@@ -118,7 +118,7 @@ class User extends \Equ\Entity implements Validatable, UserInterface {
    * @return string
    */
   public static function generatePasswordHash($password) {
-    return md5($password . self::PASSWORD_SALT);
+    return sha1($password . self::PASSWORD_SALT);
   }
 
   /**
