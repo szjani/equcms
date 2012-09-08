@@ -15,7 +15,7 @@ defined('APPLICATION_ENV')
 // ==== Modify these values! ==== //
 define('PROJECT_CACHE_PREFIX', 'equcms_');
 
-$zfDir         = '/development/Frameworks/ZF_1.11_svn';
+$zfDir         = '/development/Frameworks/ZF_1.12_svn';
 $doctrineDir   = '/development/Frameworks/Doctrine-2.2';
 $fixturesDir   = '/development/Frameworks/doctrine-fixtures';
 $migrationsDir = '/development/Frameworks/migrations';
