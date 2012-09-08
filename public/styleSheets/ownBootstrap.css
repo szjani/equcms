@@ -1,6 +1,5 @@
 .subnav {
-  margin: 0 auto;
-  width: 100%;
+  margin: 0 20px;
 /*  height: 36px;*/
   background-color: #eeeeee; /* Old browsers */
   background-repeat: repeat-x; /* Repeat the gradient */
@@ -64,6 +63,9 @@
 
 /* Fixed subnav on scroll, but only for 980px and up (sorry IE!) */
 @media (min-width: 980px) {
+  .subnav {
+    margin: 0 auto;
+  }
   .navbar {
     margin-bottom: 0px !important;
   }

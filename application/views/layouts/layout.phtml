@@ -16,11 +16,10 @@
     ->prependFile('/js/init-translate.js', 'text/javascript')
     ->prependFile('/js/jquery.jsperanto.js', 'text/javascript')
     ->prependFile('/js/bootstrap-typeaheadajax.js', 'text/javascript')
-    ->prependFile('/js/bootstrap.min.js', 'text/javascript');
+    ->prependFile('//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js', 'text/javascript');
   $this->headScript()->prependFile('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', 'text/javascript');
   $this->headLink()
-    ->appendStylesheet($this->baseUrl('/css/bootstrap.min.css'))
-    ->appendStylesheet($this->baseUrl('/css/bootstrap-responsive.min.css'))
+    ->appendStylesheet('//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap-combined.min.css')
     ->appendStylesheet($this->baseUrl('/styleSheets/ownBootstrap.css'));
   echo 
     $this->headTitle('EquCMS')->setSeparator(' - ') .
@@ -32,9 +31,8 @@
 ?>
 </head>
 <body>
-  <div class="container">
-    <div class="row navbar-fixed-top">
-      <div class="navbar">
+    <div class="navbar-fixed-top">
+      <div class="navbar navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -71,6 +69,7 @@
         <?php echo $this->navigation()->menu()->renderMenu($mainMenuItem, array('onlyActiveBranch' => true, 'renderParents' => false, 'ulClass' => 'nav nav-pills')) ?>
       </div>
     </div>
+  <div class="container">
     <div class="row" id="page">
       <div class="span12">
         <div class="page-header">
