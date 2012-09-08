@@ -38,8 +38,6 @@
         <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Bootstrap\Factory</parameter>
         <parameter key="filter.query.builder.creator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
         <parameter key="paginator.creator.class">Equ\Doctrine\PaginatorCreator</parameter>
-        <parameter key="form.formClass">\Equ\Form\ElementCreator\Bootstrap\Form\Form</parameter>
-        <parameter key="form.subFormClass">\Equ\Form\ElementCreator\Bootstrap\Form\SubForm</parameter>
         <parameter key="form.builder.class">Equ\Controller\Action\Helper\CreateFormBuilder</parameter>
         <parameter key="acl.class">library\LazyAcl</parameter>
     </parameters>
@@ -51,8 +49,6 @@
         <service id="form.builder" class="%form.builder.class%">
             <argument type="service" id="em" />
             <argument type="service" id="form.elementcreator.factory" />
-            <argument>%form.formClass%</argument>
-            <argument>%form.subFormClass%</argument>
         </service>
         <service id="paginator.creator" class="%paginator.creator.class%">
             <argument type="service" id="filter.query.builder.creator" />

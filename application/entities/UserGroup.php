@@ -1,7 +1,9 @@
 <?php
 namespace entities;
+
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Equ\Object\Validatable;
 
 /**
  * Group entity
@@ -15,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\Table(name="user_group")
  */
-class UserGroup extends Role {
+class UserGroup extends Role implements Validatable {
 
   /**
    * @ORM\Column(name="name", type="string", length=255)
@@ -50,6 +52,11 @@ class UserGroup extends Role {
     $this->name = $name;
     $this->setRoleId($name);
     return $this;
+  }
+
+  public static function loadValidators(\Equ\Object\Validator $validator)
+  {
+
   }
 
 }

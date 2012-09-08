@@ -13,6 +13,8 @@ class Create implements IMappedType {
       ->add('email')
       ->add('password', 'password')
       ->add('userGroup');
+    
+    $builder->getForm()->password->setRequired();
   }
   
   public function getObjectClass() {

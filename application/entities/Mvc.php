@@ -2,6 +2,7 @@
 namespace entities;
 use Equ\Navigation\Item as NavigationItem;
 use Doctrine\ORM\Mapping as ORM;
+use Equ\Object\Validatable;
 
 /**
  * Mvc URL entity
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="entities\MvcRepository")
  * @ORM\Table(name="mvc")
  */
-class Mvc extends Resource implements NavigationItem {
+class Mvc extends Resource implements NavigationItem, Validatable {
 
   const SEPARATOR = '/';
 
@@ -148,5 +149,9 @@ class Mvc extends Resource implements NavigationItem {
     $this->action = $serialized['action'];
   }
 
+  public static function loadValidators(\Equ\Object\Validator $validator)
+  {
+      
+  }
 
 }

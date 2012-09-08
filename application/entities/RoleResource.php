@@ -1,6 +1,7 @@
 <?php
 namespace entities;
 use Doctrine\ORM\Mapping as ORM;
+use Equ\Object\Validatable;
 
 /**
  * JoinClass between Role and Resource entities
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  *   }
  * )
  */
-class RoleResource extends \Equ\Entity {
+class RoleResource extends \Equ\Entity implements Validatable {
 
   /**
    * @ORM\Column(name="id", type="integer")
@@ -108,6 +109,11 @@ class RoleResource extends \Equ\Entity {
   
   public static function getDisplayField() {
     return 'id';
+  }
+
+  public static function loadValidators(\Equ\Object\Validator $validator)
+  {
+
   }
 
 }

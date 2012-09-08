@@ -20,6 +20,7 @@ class Login implements IMappedType {
     $builder
       ->add('email')
       ->add('password', 'password');
+    $builder->getForm()->password->setRequired();
   }
 
   public function getObjectClass() {
