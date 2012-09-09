@@ -120,6 +120,12 @@ class Mvc extends \entities\Mvc implements \Doctrine\ORM\Proxy\Proxy
         return parent::getResourceId();
     }
 
+    public function setResourceId($resource)
+    {
+        $this->__load();
+        return parent::setResourceId($resource);
+    }
+
     public function __toString()
     {
         $this->__load();

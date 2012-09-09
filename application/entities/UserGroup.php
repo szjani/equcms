@@ -32,7 +32,7 @@ class UserGroup extends Role implements Validatable {
   protected $users;
 
   public function __construct($name) {
-    parent::__construct();
+    parent::__construct($name);
     $this->setName($name);
     $this->users = new ArrayCollection();
   }

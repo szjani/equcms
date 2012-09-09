@@ -23,9 +23,9 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"mvc" = "Mvc"})
+ * @ORM\DiscriminatorMap({"resource" = "Resource", "mvc" = "Mvc"})
  */
-abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interface, \Serializable {
+class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interface, \Serializable {
 
   /**
    * @ORM\Column(name="id", type="integer")
@@ -79,9 +79,10 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
    */
   protected $roleResources;
 
-  public function __construct() {
+  public function __construct($resourceId) {
     $this->roleResources = new ArrayCollection();
     $this->children      = new ArrayCollection();
+    $this->setResourceId($resourceId);
   }
 
   /**
@@ -111,7 +112,7 @@ abstract class Resource extends \Equ\Entity implements \Zend_Acl_Resource_Interf
     return $this->resource;
   }
 
-  protected function setResourceId($resource) {
+  public function setResourceId($resource) {
     $this->resource = (string)$resource;
     return $this;
   }

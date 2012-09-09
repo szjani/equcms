@@ -66,7 +66,7 @@ class UserGroup extends \entities\UserGroup implements \Doctrine\ORM\Proxy\Proxy
         return parent::getParent();
     }
 
-    public function setParent(\entities\UserGroup $parent = NULL)
+    public function setParent(\entities\Role $parent = NULL)
     {
         $this->__load();
         return parent::setParent($parent);
@@ -76,6 +76,12 @@ class UserGroup extends \entities\UserGroup implements \Doctrine\ORM\Proxy\Proxy
     {
         $this->__load();
         return parent::getRoleResources();
+    }
+
+    public function setRoleId($roleId)
+    {
+        $this->__load();
+        return parent::setRoleId($roleId);
     }
 
     public function __toString()

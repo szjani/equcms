@@ -23,9 +23,9 @@ use Doctrine\ORM\Mapping as ORM;
  * })
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"usergroup" = "UserGroup"})
+ * @ORM\DiscriminatorMap({"role" = "Role", "usergroup" = "UserGroup"})
  */
-abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
+class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 
   /**
    * @ORM\Column(name="id", type="integer")
@@ -37,7 +37,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
 
   /**
    * @Gedmo\TreeParent
-   * @ORM\ManyToOne(targetEntity="UserGroup", inversedBy="children")
+   * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
    * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
    * @var UserGroup
    */
@@ -79,9 +79,10 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
    */
   protected $role;
 
-  public function __construct() {
+  public function __construct($roleId) {
     $this->roleResources = new ArrayCollection();
     $this->children      = new ArrayCollection();
+    $this->setRoleId($roleId);
   }
 
   /**
@@ -92,10 +93,10 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
   }
 
   /**
-   * @param UserGroup $parent
+   * @param Role $parent
    * @return Role
    */
-  public function setParent(UserGroup $parent = null) {
+  public function setParent(Role $parent = null) {
     $this->parent = $parent;
     return $this;
   }
@@ -111,7 +112,7 @@ abstract class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
     return $this->role;
   }
 
-  protected function setRoleId($roleId) {
+  public function setRoleId($roleId) {
     $this->role = (string)$roleId;
     return $this;
   }
