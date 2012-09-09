@@ -41,6 +41,7 @@ class User_IndexController extends \Zend_Controller_Action {
     } catch (\Exception $e) {
       $this->_helper->redirectHereAfterPost->setAutoRedirect(false);
       $this->_helper->flashMessenger($e, Equ\Message::ERROR);
+      $this->log->debug($e);
     }
     $this->view->loginForm = $form;
   }
