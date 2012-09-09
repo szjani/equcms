@@ -34,12 +34,6 @@ class AclInitializer extends \Zend_Controller_Plugin_Abstract {
   public function __construct(AuthenticatedUserStorage $storage, Zend_Acl $acl) {
     $this->storage = $storage;
     $this->acl     = $acl;
-  }
-  
-  /**
-   * @param Zend_Controller_Request_Abstract $request
-   */
-  public function routeStartup(\Zend_Controller_Request_Abstract $request) {
     $user = $this->storage->getAuthenticatedUser();
     if (!$this->acl->hasRole($user)) {
       $this->acl->addRole($user, 'Everybody');
