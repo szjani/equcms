@@ -96,6 +96,8 @@
    <arg value="${builddir}/phpmd.xml" />
    <arg value="--reportfile" />
    <arg value="${builddir}/logs/pmd.xml" />
+   <arg value="--exclude" />
+   <arg value="*application/entities/Proxy*" />
   </exec>
  </target>
 
@@ -111,6 +113,7 @@
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
   <exec executable="phpcs" output="/dev/null">
    <arg value="--extensions=php" />
+   <arg value="--ignore=*application/entities/Proxy*,*application/lang/validation*" />
    <arg value="--report=checkstyle" />
    <arg value="--report-file=${builddir}/logs/checkstyle.xml" />
    <arg value="--standard=${builddir}/phpcs.xml" />
