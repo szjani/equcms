@@ -1,5 +1,6 @@
 <?php
 namespace entities;
+
 use Equ\Navigation\Item as NavigationItem;
 use Doctrine\ORM\Mapping as ORM;
 use Equ\Object\Validatable;
@@ -16,142 +17,153 @@ use Equ\Object\Validatable;
  * @ORM\Entity(repositoryClass="entities\MvcRepository")
  * @ORM\Table(name="mvc")
  */
-class Mvc extends Resource implements NavigationItem, Validatable {
+class Mvc extends Resource implements NavigationItem, Validatable
+{
+    const SEPARATOR = '/';
 
-  const SEPARATOR = '/';
+    protected $defaultModule     = 'index';
+    protected $defaultController = 'index';
+    protected $defaultAction     = 'index';
 
-  protected $defaultModule     = 'index';
-  protected $defaultController = 'index';
-  protected $defaultAction     = 'index';
+    /**
+     * @ORM\Column(name="module", type="string", length=84, nullable=true)
+     * @var string
+     */
+    protected $module;
 
-  /**
-   * @ORM\Column(name="module", type="string", length=84, nullable=true)
-   * @var string
-   */
-  protected $module;
+    /**
+     * @ORM\Column(name="controller", type="string", length=84, nullable=true)
+     * @var string
+     */
+    protected $controller;
 
-  /**
-   * @ORM\Column(name="controller", type="string", length=84, nullable=true)
-   * @var string
-   */
-  protected $controller;
+    /**
+     * @ORM\Column(name="action", type="string", length=84, nullable=true)
+     * @var string
+     */
+    protected $action;
 
-  /**
-   * @ORM\Column(name="action", type="string", length=84, nullable=true)
-   * @var string
-   */
-  protected $action;
+    /**
+     * @var \Zend_Navigation_Page_Mvc
+     */
+    private $navigationPage = null;
 
-  /**
-   * @var \Zend_Navigation_Page_Mvc
-   */
-  private $navigationPage = null;
-  
-  public function __construct() {
-    $this->generateUrl();
-  }
-
-  protected function generateUrl() {
-    $resource = 'mvc:';
-    $resource .= $this->createPath('.');
-    $this->setResourceId($resource);
-  }
-
-  public function getModule() {
-    return $this->module;
-  }
-
-  public function setModule($module) {
-    $this->module = (string)$module;
-    $this->generateUrl();
-    return $this;
-  }
-
-  public function getController() {
-    return $this->controller;
-  }
-
-  public function setController($controller) {
-    if (!empty($controller) && empty($this->module)) {
-      $this->setModule($this->defaultModule);
+    public function __construct()
+    {
+        $this->generateUrl();
     }
-    $this->controller = (string)$controller;
-    $this->generateUrl();
-    return $this;
-  }
 
-  public function getAction() {
-    return $this->action;
-  }
-
-  public function setAction($action) {
-    if (!empty($action) && empty($this->controller)) {
-      $this->setController($this->defaultController);
+    protected function generateUrl()
+    {
+        $resource = 'mvc:';
+        $resource .= $this->createPath('.');
+        $this->setResourceId($resource);
     }
-    $this->action = (string)$action;
-    $this->generateUrl();
-    return $this;
-  }
 
-  protected function createPath($separator = self::SEPARATOR) {
-    $path = $this->getModule();
-    if (!empty($this->controller)) {
-      $path .= $separator . $this->controller;
+    public function getModule()
+    {
+        return $this->module;
     }
-    if (!empty($this->action)) {
-      $path .= $separator . $this->action;
+
+    public function setModule($module)
+    {
+        $this->module = (string) $module;
+        $this->generateUrl();
+        return $this;
     }
-    return $path;
-  }
 
-  /**
-   * @return \Zend_Navigation_Page_Mvc
-   */
-  public function getNavigationPage($refresh = false) {
-    if ($this->navigationPage === null || $refresh) {
-      $id = $this->createPath('_');
-      $page = new \Zend_Navigation_Page_Mvc();
-      $page
-        ->setClass($this->createPath(' '))
-        ->setModule($this->module)
-        ->setController($this->controller)
-        ->setAction($this->action)
-        ->setResource($this->getResourceId())
-        ->setPrivilege('list')
-        ->setId($id !== '' ? $id : 'main');
-      if ($this->getResourceId() == 'mvc:') {
-        $page
-          ->setLabel('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'label')
-          ->setTitle('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'title');
-      } else {
-        $page
-          ->setLabel('Navigation' . self::SEPARATOR . $this->createPath() . self::SEPARATOR . 'label')
-          ->setTitle('Navigation' . self::SEPARATOR . $this->createPath() . self::SEPARATOR . 'title');
-      }
-      $this->navigationPage = $page;
+    public function getController()
+    {
+        return $this->controller;
     }
-    return $this->navigationPage;
-  }
 
-  public function serialize() {
-    $res = \unserialize(parent::serialize());
-    $res['module'] = $this->module;
-    $res['controller'] = $this->controller;
-    $res['action'] = $this->action;
-    return \serialize($res);
-  }
+    public function setController($controller)
+    {
+        if (!empty($controller) && empty($this->module)) {
+            $this->setModule($this->defaultModule);
+        }
+        $this->controller = (string) $controller;
+        $this->generateUrl();
+        return $this;
+    }
 
-  public function unserialize($serialized) {
-    parent::unserialize($serialized);
-    $serialized = \unserialize($serialized);
-    $this->module = $serialized['module'];
-    $this->controller = $serialized['controller'];
-    $this->action = $serialized['action'];
-  }
+    public function getAction()
+    {
+        return $this->action;
+    }
 
-  public static function loadValidators(\Equ\Object\Validator $validator)
-  {
-      
-  }
+    public function setAction($action)
+    {
+        if (!empty($action) && empty($this->controller)) {
+            $this->setController($this->defaultController);
+        }
+        $this->action = (string) $action;
+        $this->generateUrl();
+        return $this;
+    }
+
+    protected function createPath($separator = self::SEPARATOR)
+    {
+        $path = $this->getModule();
+        if (!empty($this->controller)) {
+            $path .= $separator . $this->controller;
+        }
+        if (!empty($this->action)) {
+            $path .= $separator . $this->action;
+        }
+        return $path;
+    }
+
+    /**
+     * @return \Zend_Navigation_Page_Mvc
+     */
+    public function getNavigationPage($refresh = false)
+    {
+        if ($this->navigationPage === null || $refresh) {
+            $id = $this->createPath('_');
+            $page = new \Zend_Navigation_Page_Mvc();
+            $page
+                ->setClass($this->createPath(' '))
+                ->setModule($this->module)
+                ->setController($this->controller)
+                ->setAction($this->action)
+                ->setResource($this->getResourceId())
+                ->setPrivilege('list')
+                ->setId($id !== '' ? $id : 'main');
+            if ($this->getResourceId() == 'mvc:') {
+                $page
+                    ->setLabel('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'label')
+                    ->setTitle('Navigation' . self::SEPARATOR . 'main' . self::SEPARATOR . 'title');
+            } else {
+                $page
+                    ->setLabel('Navigation' . self::SEPARATOR . $this->createPath() . self::SEPARATOR . 'label')
+                    ->setTitle('Navigation' . self::SEPARATOR . $this->createPath() . self::SEPARATOR . 'title');
+            }
+            $this->navigationPage = $page;
+        }
+        return $this->navigationPage;
+    }
+
+    public function serialize()
+    {
+        $res = \unserialize(parent::serialize());
+        $res['module'] = $this->module;
+        $res['controller'] = $this->controller;
+        $res['action'] = $this->action;
+        return \serialize($res);
+    }
+
+    public function unserialize($serialized)
+    {
+        parent::unserialize($serialized);
+        $serialized = \unserialize($serialized);
+        $this->module = $serialized['module'];
+        $this->controller = $serialized['controller'];
+        $this->action = $serialized['action'];
+    }
+
+    public static function loadValidators(\Equ\Object\Validator $validator)
+    {
+    }
 
 }

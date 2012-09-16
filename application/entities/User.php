@@ -1,11 +1,11 @@
 <?php
 namespace entities;
-use
-  Equ\ClassMetadata,
-  Equ\Object\Validatable,
-  Equ\Object\Validator,
-  Equ\Auth\UserInterface,
-  Doctrine\ORM\Mapping as ORM;
+
+use Equ\ClassMetadata;
+use Equ\Object\Validatable;
+use Equ\Object\Validator;
+use Equ\Auth\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * User entity
@@ -20,207 +20,230 @@ use
  * @ORM\Table(name="user", indexes={@ORM\Index(name="user_password_idx", columns={"password_hash"})})
  * @ORM\HasLifecycleCallbacks
  */
-class User extends \Equ\Entity implements Validatable, UserInterface {
-  
-  const PASSWORD_SALT = '$2a$09$L9Q99B6e28o3aMf2MPKV2x$';
-  
-  /**
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue
-   * @var int
-   */
-  protected $id;
+class User extends \Equ\Entity implements Validatable, UserInterface
+{
+    const PASSWORD_SALT = '$2a$09$L9Q99B6e28o3aMf2MPKV2x$';
 
-  /**
-   * @ORM\Column(name="email", type="string", unique=true, nullable=false)
-   * @var string
-   */
-  protected $email;
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @var int
+     */
+    protected $id;
 
-  /**
-   * @ORM\Column(name="password_hash", type="string", length=60, nullable=false)
-   * @var string
-   */
-  protected $passwordHash;
+    /**
+     * @ORM\Column(name="email", type="string", unique=true, nullable=false)
+     * @var string
+     */
+    protected $email;
 
-  /**
-   * @ORM\Column(name="activation_code", type="string", length=12)
-   * @var string
-   */
-  protected $activationCode;
-  
-  /**
-   * @ORM\ManyToOne(targetEntity="UserGroup", inversedBy="users")
-   * @ORM\JoinColumn(name="user_group_id", referencedColumnName="id", nullable=false, onDelete="cascade")
-   * @var UserGroup
-   */
-  protected $userGroup;
-  
-  protected $isLoggedIn = false;
+    /**
+     * @ORM\Column(name="password_hash", type="string", length=60, nullable=false)
+     * @var string
+     */
+    protected $passwordHash;
 
-  /**
-   * @param string $email
-   * @param string $password
-   */
-  public function __construct($email, $password) {
-    $this
-      ->setEmail($email)
-      ->setPassword($password);
-  }
-  
-  public function getId() {
-    return $this->id;
-  }
-  
-  public function getPrincipal() {
-    return $this->getEmail();
-  }
-  
-  public static function loadValidators(Validator $validator) {
-    $validator
-      ->add('email', new \Zend_Validate_EmailAddress())
-      ->add('password', new \Zend_Validate_NotEmpty())
-      ->add('password', new \Zend_Validate_StringLength(5, 12));
-  }
-  
-  /**
-   * @ORM\PrePersist
-   */
-  public function initActivationCode() {
-    $this->setActivationCode(self::generateString(12));
-  }
+    /**
+     * @ORM\Column(name="activation_code", type="string", length=12)
+     * @var string
+     */
+    protected $activationCode;
 
-  /**
-   * Generates a random password
-   *
-   * @param int $length
-   * @return string
-   */
-  public static function generateString($length = 8) {
-    $length = (int) $length;
-    if ($length < 0) {
-      throw new Exception("Invalid password length '$length'");
+    /**
+     * @ORM\ManyToOne(targetEntity="UserGroup", inversedBy="users")
+     * @ORM\JoinColumn(name="user_group_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+     * @var UserGroup
+     */
+    protected $userGroup;
+
+    /**
+     * @var boolean
+     */
+    protected $isLoggedIn = false;
+
+    /**
+     * @param string $email
+     * @param string $password
+     */
+    public function __construct($email, $password)
+    {
+        $this
+            ->setEmail($email)
+            ->setPassword($password);
     }
-    $set = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $num = strlen($set);
-    $ret = '';
-    for ($i = 0; $i < $length; $i++) {
-      $ret .= $set[rand(0, $num - 1)];
+
+    public function getId()
+    {
+        return $this->id;
     }
-    return $ret;
-  }
 
-  /**
-   * Generates a password hash
-   *
-   * @param string $password
-   * @return string
-   */
-  public static function generatePasswordHash($password) {
-    return crypt($password, self::PASSWORD_SALT);
-  }
+    public function getPrincipal()
+    {
+        return $this->getEmail();
+    }
 
-  /**
-   * @return string
-   */
-  public function getEmail() {
-    return $this->email;
-  }
+    public static function loadValidators(Validator $validator)
+    {
+        $validator
+            ->add('email', new \Zend_Validate_EmailAddress())
+            ->add('password', new \Zend_Validate_NotEmpty())
+            ->add('password', new \Zend_Validate_StringLength(5, 12));
+    }
 
-  /**
-   * @param string $email
-   * @return User
-   */
-  public function setEmail($email) {
-    $this->email = $email;
-    return $this;
-  }
+    /**
+     * @ORM\PrePersist
+     */
+    public function initActivationCode()
+    {
+        $this->setActivationCode(self::generateString(12));
+    }
 
-  /**
-   * @return string
-   */
-  public function getPasswordHash() {
-    return $this->passwordHash;
-  }
+    /**
+     * Generates a random password
+     *
+     * @param int $length
+     * @return string
+     */
+    public static function generateString($length = 8)
+    {
+        $length = (int) $length;
+        if ($length < 0) {
+            throw new Exception("Invalid password length '$length'");
+        }
+        $set = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $num = strlen($set);
+        $ret = '';
+        for ($i = 0; $i < $length; $i++) {
+            $ret .= $set[rand(0, $num - 1)];
+        }
+        return $ret;
+    }
 
-  /**
-   * @param string $password
-   * @return User
-   */
-  public function setPassword($password) {
-    $this->passwordHash = self::generatePasswordHash(trim($password));
-    return $this;
-  }
+    /**
+     * Generates a password hash
+     *
+     * @param string $password
+     * @return string
+     */
+    public static function generatePasswordHash($password)
+    {
+        return crypt($password, self::PASSWORD_SALT);
+    }
 
-  /**
-   * @return string
-   */
-  public function getActivationCode() {
-    return $this->activationCode;
-  }
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-  /**
-   * @param string $activationCode
-   * @return User
-   */
-  public function setActivationCode($activationCode) {
-    $this->activationCode = $activationCode;
-    return $this;
-  }
-  
-  /**
-   * @return boolean
-   */
-  public function isLoggedIn() {
-    return $this->isLoggedIn;
-  }
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
 
-  /**
-   * @param boolean $loggedIn
-   * @return User 
-   */
-  public function setLoggedIn($loggedIn = true) {
-    $this->isLoggedIn = (boolean)$loggedIn;
-    return $this;
-  }
-  
-  /**
-   * @return string
-   */
-  public function getRoleId() {
-    return $this->getUserGroup()->getRoleId();
-  }
+    /**
+     * @return string
+     */
+    public function getPasswordHash()
+    {
+        return $this->passwordHash;
+    }
 
-  /**
-   * @return UserGroup
-   */
-  public function getUserGroup() {
-    return $this->userGroup;
-  }
-  
-  /**
-   * @param UserGroup $group
-   * @return User 
-   */
-  public function setUserGroup(UserGroup $group) {
-    $this->userGroup = $group;
-    return $this;
-  }
-  
-  public function __toString() {
-    return $this->email;
-  }
-  
-  /**
-   * @return array
-   */
-  public function toArray() {
-    return array(
-      'id' => $this->getId(),
-      'roleId' => $this->getRoleId(),
-      'email' => $this->getEmail()
-    );
-  }
-  
+    /**
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->passwordHash = self::generatePasswordHash(trim($password));
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivationCode()
+    {
+        return $this->activationCode;
+    }
+
+    /**
+     * @param string $activationCode
+     * @return User
+     */
+    public function setActivationCode($activationCode)
+    {
+        $this->activationCode = $activationCode;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoggedIn()
+    {
+        return $this->isLoggedIn;
+    }
+
+    /**
+     * @param boolean $loggedIn
+     * @return User 
+     */
+    public function setLoggedIn($loggedIn = true)
+    {
+        $this->isLoggedIn = (boolean) $loggedIn;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoleId()
+    {
+        return $this->getUserGroup()->getRoleId();
+    }
+
+    /**
+     * @return UserGroup
+     */
+    public function getUserGroup()
+    {
+        return $this->userGroup;
+    }
+
+    /**
+     * @param UserGroup $group
+     * @return User 
+     */
+    public function setUserGroup(UserGroup $group)
+    {
+        $this->userGroup = $group;
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'roleId' => $this->getRoleId(),
+            'email' => $this->getEmail()
+        );
+    }
+
 }

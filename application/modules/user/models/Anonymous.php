@@ -1,5 +1,6 @@
 <?php
 namespace modules\user\models;
+
 use Equ\Auth\UserInterface;
 
 /**
@@ -12,30 +13,35 @@ use Equ\Auth\UserInterface;
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Anonymous implements UserInterface {
+class Anonymous implements UserInterface
+{
+    const NAME = 'anonymous';
 
-  const NAME = 'anonymous';
+    public function getRoleId()
+    {
+        return self::NAME;
+    }
 
-  public function getRoleId() {
-    return self::NAME;
-  }
-  
-  public function isLoggedIn() {
-    return false;
-  }
-  
-  public function toArray() {
-    return array(
-      'roleId' => $this->getRoleId()
-    );
-  }
-  
-  public function getPrincipal() {
-    return self::NAME;
-  }
-  
-  public function __toString() {
-    return $this->getRoleId();
-  }
+    public function isLoggedIn()
+    {
+        return false;
+    }
+
+    public function toArray()
+    {
+        return array(
+            'roleId' => $this->getRoleId()
+        );
+    }
+
+    public function getPrincipal()
+    {
+        return self::NAME;
+    }
+
+    public function __toString()
+    {
+        return $this->getRoleId();
+    }
 
 }

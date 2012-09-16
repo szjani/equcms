@@ -1,5 +1,6 @@
 <?php
 namespace entities;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,108 +26,118 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"role" = "Role", "usergroup" = "UserGroup"})
  */
-class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface {
+class Role extends \Equ\Entity implements \Zend_Acl_Role_Interface
+{
 
-  /**
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue
-   * @var int
-   */
-  protected $id;
+    /**
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @var int
+     */
+    protected $id;
 
-  /**
-   * @Gedmo\TreeParent
-   * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
-   * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
-   * @var UserGroup
-   */
-  protected $parent;
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="cascade")
+     * @var UserGroup
+     */
+    protected $parent;
 
-  /**
-   * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
-   * @var Doctrine\Common\Collections\ArrayCollection
-   */
-  protected $children;
+    /**
+     * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
+     * @var Doctrine\Common\Collections\ArrayCollection
+     */
+    protected $children;
 
-  /**
-   * @Gedmo\TreeLeft
-   * @ORM\Column(name="lft", type="integer")
-   */
-  protected $lft;
+    /**
+     * @Gedmo\TreeLeft
+     * @ORM\Column(name="lft", type="integer")
+     */
+    protected $lft;
 
-  /**
-   * @Gedmo\TreeRight
-   * @ORM\Column(name="rgt", type="integer")
-   */
-  protected $rgt;
+    /**
+     * @Gedmo\TreeRight
+     * @ORM\Column(name="rgt", type="integer")
+     */
+    protected $rgt;
 
-  /**
-   * @ORM\OneToMany(targetEntity="RoleResource", mappedBy="role")
-   * @var ArrayCollection
-   */
-  protected $roleResources;
+    /**
+     * @ORM\OneToMany(targetEntity="RoleResource", mappedBy="role")
+     * @var ArrayCollection
+     */
+    protected $roleResources;
 
-  /**
-   * @Gedmo\TreeLevel
-   * @ORM\Column(name="lvl", type="integer")
-   */
-  protected $lvl;
+    /**
+     * @Gedmo\TreeLevel
+     * @ORM\Column(name="lvl", type="integer")
+     */
+    protected $lvl;
 
-  /**
-   * @ORM\Column(name="role", type="string", length=255, nullable=false, unique=true)
-   * @var string
-   */
-  protected $role;
+    /**
+     * @ORM\Column(name="role", type="string", length=255, nullable=false, unique=true)
+     * @var string
+     */
+    protected $role;
 
-  public function __construct($roleId) {
-    $this->roleResources = new ArrayCollection();
-    $this->children      = new ArrayCollection();
-    $this->setRoleId($roleId);
-  }
+    public function __construct($roleId)
+    {
+        $this->roleResources = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->setRoleId($roleId);
+    }
 
-  /**
-   * @return UserGroup
-   */
-  public function getParent() {
-    return $this->parent;
-  }
+    /**
+     * @return UserGroup
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
 
-  /**
-   * @param Role $parent
-   * @return Role
-   */
-  public function setParent(Role $parent = null) {
-    $this->parent = $parent;
-    return $this;
-  }
+    /**
+     * @param Role $parent
+     * @return Role
+     */
+    public function setParent(Role $parent = null)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
 
-  /**
-   * @return ArrayCollection
-   */
-  public function getRoleResources() {
-    return $this->roleResources;
-  }
+    /**
+     * @return ArrayCollection
+     */
+    public function getRoleResources()
+    {
+        return $this->roleResources;
+    }
 
-  public function getRoleId() {
-    return $this->role;
-  }
+    public function getRoleId()
+    {
+        return $this->role;
+    }
 
-  public function setRoleId($roleId) {
-    $this->role = (string)$roleId;
-    return $this;
-  }
+    public function setRoleId($roleId)
+    {
+        $this->role = (string) $roleId;
+        return $this;
+    }
 
-  public function __toString() {
-    return $this->getRoleId();
-  }
+    public function __toString()
+    {
+        return $this->getRoleId();
+    }
 
-  public function getId() {
-    return $this->id;
-  }
-  
-  public static function getDisplayField() {
-    return 'role';
-  }
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public static function getDisplayField()
+    {
+        return 'role';
+    }
 
 }

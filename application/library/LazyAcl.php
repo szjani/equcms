@@ -1,5 +1,6 @@
 <?php
 namespace library;
+
 use Doctrine\ORM\EntityManager;
 use library\LazyAcl\RoleRegistry;
 use entities\Role;
@@ -8,89 +9,80 @@ use entities\Resource;
 use entities\Mvc;
 use Zend_Cache_Core;
 
-class LazyAcl extends \Zend_Acl {
+class LazyAcl extends \Zend_Acl
+{
+    const KEY = 'acl';
 
-  const KEY = 'acl';
-  
-  /**
-   * @var EntityManager
-   */
-  private $entityManager;
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
 
-  /**
-   * @param EntityManager $em
-   * @return Acl
-   */
-  public function setEntityManager(EntityManager $em) {
-    $this->entityManager = $em;
-    return $this;
-  }
-
-  /**
-   * @return EntityManager
-   */
-  public function getEntityManager() {
-    return $this->entityManager;
-  }
-
-  /**
-   * @param EntityManager $em
-   * @param Zend_Cache_Core $cache 
-   */
-  public function __construct(EntityManager $em, Zend_Cache_Core $cache) {
-    $this->setEntityManager($em);
-    $this->_roleRegistry = new RoleRegistry($this);
-    
-    $resources = $cache->load(self::KEY);
-    if ($resources !== false) {
-      $this->_resources = $resources;
-    } else {
-      $query = $em->createQuery('SELECT r, p FROM entities\Resource r LEFT JOIN r.parent p ORDER BY r.lvl');
-      $resources = $query->getResult();
-      /* @var $resource Resource */
-      foreach ($resources as $resource) {
-        $this->addResource($resource->getResourceId(), $resource->getParent());
-      }
-      $cache->save($this->_resources, self::KEY);
+    /**
+     * @param EntityManager $em
+     * @return Acl
+     */
+    public function setEntityManager(EntityManager $em)
+    {
+        $this->entityManager = $em;
+        return $this;
     }
-  }
 
-  /**
-   * @param string $role
-   * @param string $resource
-   * @param string $privilege
-   * @return boolean
-   */
-  public function isAllowed($role = null, $resource = null, $privilege = null) {
-    while ($resource !== null) {
-      try {
-        return parent::isAllowed($role, $resource, $privilege);
-      } catch (\Zend_Acl_Exception $e) {
-        if ($resource instanceof \Zend_Acl_Resource_Interface) {
-          $resource = $resource->getResourceId();
-        }
-        if (\substr($resource, 0, 4) !== 'mvc:' || $resource == 'mvc:') {
-          throw $e;
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param Zend_Cache_Core $cache 
+     */
+    public function __construct(EntityManager $em, Zend_Cache_Core $cache)
+    {
+        $this->setEntityManager($em);
+        $this->_roleRegistry = new RoleRegistry($this);
+
+        $resources = $cache->load(self::KEY);
+        if ($resources !== false) {
+            $this->_resources = $resources;
         } else {
-          $parts = \explode('.', \substr($resource, 4));
-          array_pop($parts);
-          $resource = 'mvc:' . (empty($parts) ? '' : \implode('.', $parts));
+            $query = $em->createQuery('SELECT r, p FROM entities\Resource r LEFT JOIN r.parent p ORDER BY r.lvl');
+            $resources = $query->getResult();
+            /* @var $resource Resource */
+            foreach ($resources as $resource) {
+                $this->addResource($resource->getResourceId(), $resource->getParent());
+            }
+            $cache->save($this->_resources, self::KEY);
         }
-      }
     }
-  }
 
-//  public function serialize() {
-//    return serialize(array(
-//      '_resources' => $this->_resources,
-//    ));
-//  }
-//
-//  public function unserialize($serialized) {
-//    $serialized = unserialize($serialized);
-//    $this->_resources = $serialized['_resources'];
-//    $this->_roleRegistry = new RoleRegistry($this);
-//  }
-
+    /**
+     * @param string $role
+     * @param string $resource
+     * @param string $privilege
+     * @return boolean
+     */
+    public function isAllowed($role = null, $resource = null, $privilege = null)
+    {
+        while ($resource !== null) {
+            try {
+                return parent::isAllowed($role, $resource, $privilege);
+            } catch (\Zend_Acl_Exception $e) {
+                if ($resource instanceof \Zend_Acl_Resource_Interface) {
+                    $resource = $resource->getResourceId();
+                }
+                if (\substr($resource, 0, 4) !== 'mvc:' || $resource == 'mvc:') {
+                    throw $e;
+                } else {
+                    $parts = \explode('.', \substr($resource, 4));
+                    array_pop($parts);
+                    $resource = 'mvc:' . (empty($parts) ? '' : \implode('.', $parts));
+                }
+            }
+        }
+    }
 
 }

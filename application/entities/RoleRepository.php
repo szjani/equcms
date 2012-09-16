@@ -1,8 +1,8 @@
 <?php
 namespace entities;
-use
-  Gedmo\Tree\Entity\Repository\NestedTreeRepository,
-  Equ\Crud\LookUpable;
+
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use Equ\Crud\LookUpable;
 
 /**
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
@@ -11,25 +11,27 @@ use
  * @version     $Revision$
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class RoleRepository extends NestedTreeRepository implements LookUpable {
-  
-  public function findForLookUp($search, $key, $value) {
-    return $this->createQueryBuilder('r')
-      ->select("r.id as $key, r.role as $value")
-      ->where('r.role LIKE :search')
-      ->orderBy('r.role')
-      ->setMaxResults(3)
-      ->setParameter('search', '%' . $search . '%')
-      ->getQuery()
-      ->getArrayResult();
-  }
-  
-  public function findOneForLookUp($id, $key, $value) {
-    $obj = $this->find($id);
-    return array(
-      $key => $obj->getId(),
-      $value => $obj->getRoleId()
-    );
-  }
-  
+class RoleRepository extends NestedTreeRepository implements LookUpable
+{
+    public function findForLookUp($search, $key, $value)
+    {
+        return $this->createQueryBuilder('r')
+            ->select("r.id as $key, r.role as $value")
+            ->where('r.role LIKE :search')
+            ->orderBy('r.role')
+            ->setMaxResults(3)
+            ->setParameter('search', '%' . $search . '%')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function findOneForLookUp($id, $key, $value)
+    {
+        $obj = $this->find($id);
+        return array(
+            $key => $obj->getId(),
+            $value => $obj->getRoleId()
+        );
+    }
+
 }

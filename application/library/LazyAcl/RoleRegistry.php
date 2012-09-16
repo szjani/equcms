@@ -1,87 +1,93 @@
 <?php
 namespace library\LazyAcl;
+
 use library\LazyAcl;
 use Doctrine\ORM\EntityManager;
 use entities\Role;
 use library\LazyAcl\Exception;
 
-class RoleRegistry extends \Zend_Acl_Role_Registry {
+class RoleRegistry extends \Zend_Acl_Role_Registry
+{
+    /**
+     * @var LazyAcl
+     */
+    private $acl;
 
-  /**
-   * @var LazyAcl
-   */
-  private $acl;
+    /**
+     * @var string
+     */
+    private $activeRole = null;
 
-  /**
-   * @var string
-   */
-  private $activeRole = null;
-
-  /**
-   * @param LazyAcl $acl
-   */
-  public function __construct(LazyAcl $acl) {
-    $this->acl = $acl;
-  }
-
-  /**
-   * @return EntityManager
-   */
-  protected function getEntityManager() {
-    return $this->acl->getEntityManager();
-  }
-
-  protected function storePermissionsByDb(Role $role) {
-    /* @var $roleResource \entities\RoleResource */
-    foreach ($role->getRoleResources() as $roleResource) {
-      if ($roleResource->isAllowed()) {
-        $this->acl->allow($role, $roleResource->getResource(), $roleResource->getPrivilege());
-      } else {
-        $this->acl->deny($role, $roleResource->getResource(), $roleResource->getPrivilege());
-      }
+    /**
+     * @param LazyAcl $acl
+     */
+    public function __construct(LazyAcl $acl)
+    {
+        $this->acl = $acl;
     }
-  }
 
-  protected function storeRoleByDb($role) {
-    $repo = $this->getEntityManager()->getRepository(Role::className());
-    /* @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
-    if (\is_string($role)) {
-      $role = $repo->findOneBy(array('role' => (string)$role));
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->acl->getEntityManager();
     }
-    if ($role instanceof \entities\User) {
-      $role = $role->getUserGroup();
-    }
-    if (!($role instanceof Role)) {
-      return;
-    }
-    /* @var $role entities\Role */
-    $nodes = $repo->getPathQueryBuilder($role)
-      ->select('node, rr, res')
-      ->leftJoin('node.roleResources', 'rr')
-      ->leftJoin('rr.resource', 'res')
-      ->getQuery()
-      ->getResult();
 
-    /* @var $node entities\Role */
-    foreach ($nodes as $node) {
-      $this->activeRole = $node->getRoleId();
-      if (!$this->has($node)) {
-        $parent = $node->getParent();
-        $this->add($node, $parent ?: null);
-        $this->storePermissionsByDb($node);
-      }
+    protected function storePermissionsByDb(Role $role)
+    {
+        /* @var $roleResource \entities\RoleResource */
+        foreach ($role->getRoleResources() as $roleResource) {
+            if ($roleResource->isAllowed()) {
+                $this->acl->allow($role, $roleResource->getResource(), $roleResource->getPrivilege());
+            } else {
+                $this->acl->deny($role, $roleResource->getResource(), $roleResource->getPrivilege());
+            }
+        }
     }
-  }
 
-  public function has($role) {
-    if (!parent::has($role)) {
-      $roleString = ($role instanceof \Zend_Acl_Role_Interface ? $role->getRoleId() : $role);
-      if ($this->activeRole === $roleString) {
-        return false;
-      }
-      $this->storeRoleByDb($role);
+    protected function storeRoleByDb($role)
+    {
+        $repo = $this->getEntityManager()->getRepository(Role::className());
+        /* @var $repo \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
+        if (\is_string($role)) {
+            $role = $repo->findOneBy(array('role' => (string) $role));
+        }
+        if ($role instanceof \entities\User) {
+            $role = $role->getUserGroup();
+        }
+        if (!($role instanceof Role)) {
+            return;
+        }
+        /* @var $role entities\Role */
+        $nodes = $repo->getPathQueryBuilder($role)
+            ->select('node, rr, res')
+            ->leftJoin('node.roleResources', 'rr')
+            ->leftJoin('rr.resource', 'res')
+            ->getQuery()
+            ->getResult();
+
+        /* @var $node entities\Role */
+        foreach ($nodes as $node) {
+            $this->activeRole = $node->getRoleId();
+            if (!$this->has($node)) {
+                $parent = $node->getParent();
+                $this->add($node, $parent ?: null);
+                $this->storePermissionsByDb($node);
+            }
+        }
     }
-    return parent::has($role);
-  }
+
+    public function has($role)
+    {
+        if (!parent::has($role)) {
+            $roleString = ($role instanceof \Zend_Acl_Role_Interface ? $role->getRoleId() : $role);
+            if ($this->activeRole === $roleString) {
+                return false;
+            }
+            $this->storeRoleByDb($role);
+        }
+        return parent::has($role);
+    }
 
 }

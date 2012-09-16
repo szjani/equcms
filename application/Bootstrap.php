@@ -1,8 +1,8 @@
 <?php
 
-use Equ\Controller\Plugin,
-    Equ\Controller\Action\Helper,
-    Zend_Controller_Action_HelperBroker as HelperBroker;
+use Equ\Controller\Plugin;
+use Equ\Controller\Action\Helper;
+use Zend_Controller_Action_HelperBroker as HelperBroker;
 
 class Bootstrap extends Equ\Application\Bootstrap\Bootstrap
 {

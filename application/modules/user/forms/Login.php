@@ -1,9 +1,9 @@
 <?php
 namespace modules\user\forms;
-use
-  Equ\Form\IBuilder,
-  Equ\Form\IMappedType,
-  entities\User;
+
+use Equ\Form\IBuilder;
+use Equ\Form\IMappedType;
+use entities\User;
 
 /**
  * Login form
@@ -14,17 +14,19 @@ use
  * @subpackage  forms
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class Login implements IMappedType {
-  
-  public function buildForm(IBuilder $builder) {
-    $builder
-      ->add('email')
-      ->add('password', 'password');
-    $builder->getForm()->password->setRequired();
-  }
+class Login implements IMappedType
+{
+    public function buildForm(IBuilder $builder)
+    {
+        $builder
+            ->add('email')
+            ->add('password', 'password');
+        $builder->getForm()->password->setRequired();
+    }
 
-  public function getObjectClass() {
-    return User::className();
-  }
+    public function getObjectClass()
+    {
+        return User::className();
+    }
 
 }

@@ -1,4 +1,6 @@
 <?php
 namespace library\LazyAcl;
 
-class Exception extends \Exception {}
+class Exception extends \Exception
+{
+}

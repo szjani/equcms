@@ -1,4 +1,6 @@
 <?php
 namespace entities;
 
-class Exception extends \Exception {}
+class Exception extends \Exception
+{
+}

@@ -1,9 +1,8 @@
 <?php
 namespace modules\user\plugins;
-use
-  modules\user\models\Anonymous,
-  Equ\Auth\AuthenticatedUserStorage,
-  Zend_Acl;
+
+use Equ\Auth\AuthenticatedUserStorage;
+use Zend_Acl;
 
 /**
  * Add anonymous user to ACL
@@ -14,29 +13,31 @@ use
  * @subpackage  plugin
  * @author      Szurovecz János <szjani@szjani.hu>
  */
-class AclInitializer extends \Zend_Controller_Plugin_Abstract {
+class AclInitializer extends \Zend_Controller_Plugin_Abstract
+{
+    /**
+     * @var AuthenticatedUserStorage
+     */
+    private $storage;
 
-  /**
-   * @var AuthenticatedUserStorage
-   */
-  private $storage;
-  
-  /**
-   *
-   * @var Zend_Acl
-   */
-  private $acl;
-  
-  /**
-   * @param AuthenticatedUserStorage $storage
-   * @param Zend_Acl $acl
-   */
-  public function __construct(AuthenticatedUserStorage $storage, Zend_Acl $acl) {
-    $this->storage = $storage;
-    $this->acl     = $acl;
-    $user = $this->storage->getAuthenticatedUser();
-    if (!$this->acl->hasRole($user)) {
-      $this->acl->addRole($user, 'Everybody');
+    /**
+     *
+     * @var Zend_Acl
+     */
+    private $acl;
+
+    /**
+     * @param AuthenticatedUserStorage $storage
+     * @param Zend_Acl $acl
+     */
+    public function __construct(AuthenticatedUserStorage $storage, Zend_Acl $acl)
+    {
+        $this->storage = $storage;
+        $this->acl = $acl;
+        $user = $this->storage->getAuthenticatedUser();
+        if (!$this->acl->hasRole($user)) {
+            $this->acl->addRole($user, 'Everybody');
+        }
     }
-  }
+
 }
