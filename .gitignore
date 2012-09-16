@@ -4,4 +4,11 @@ tests/log/*
 .buildpath
 nbproject/
 tests/bin/selenium-server.jar
+/build/api
+/build/code-browser
+/build/coverage
+/build/logs
+/build/pdepend
+/build/phpdox
+cache.properties
 !.gitignore
