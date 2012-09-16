@@ -22,7 +22,7 @@ use
  */
 class User extends \Equ\Entity implements Validatable, UserInterface {
   
-  const PASSWORD_SALT = '958rg!DdfJko$~tz)3/Tiq3rf9;a43gFT]A46DFaAeg;a43';
+  const PASSWORD_SALT = '$2a$09$L9Q99B6e28o3aMf2MPKV2x$';
   
   /**
    * @ORM\Column(name="id", type="integer")
@@ -39,7 +39,7 @@ class User extends \Equ\Entity implements Validatable, UserInterface {
   protected $email;
 
   /**
-   * @ORM\Column(name="password_hash", type="string", length=40, nullable=false)
+   * @ORM\Column(name="password_hash", type="string", length=60, nullable=false)
    * @var string
    */
   protected $passwordHash;
@@ -118,7 +118,7 @@ class User extends \Equ\Entity implements Validatable, UserInterface {
    * @return string
    */
   public static function generatePasswordHash($password) {
-    return sha1($password . self::PASSWORD_SALT);
+    return crypt($password, self::PASSWORD_SALT);
   }
 
   /**
