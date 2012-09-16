@@ -10,6 +10,7 @@
     <parameters>
         <parameter key="APPLICATION_PATH" type="constant">APPLICATION_PATH</parameter>
         <parameter key="cache.prefix" type="constant">PROJECT_CACHE_PREFIX</parameter>
+        <parameter key="cache.dir">%APPLICATION_PATH%/../data/cache</parameter>
         <parameter key="cache.data.backend">Apc</parameter>
         <parameter key="cache.data.lifetime">1800</parameter>
         <parameter key="cache.system.backend">Apc</parameter>
@@ -17,12 +18,12 @@
         <parameter key="cache.page.backend">File</parameter>
         <parameter key="cache.page.lifetime">360</parameter>
         <parameter key="translate.adapter">gettext</parameter>
-        <parameter key="translate.content">lang/other</parameter>
+        <parameter key="translate.content">%APPLICATION_PATH%/lang/other</parameter>
         <parameter key="translate.scan">filename</parameter>
         <parameter key="translate.logUntranslated">false</parameter>
         <parameter key="translate.disableNotices">true</parameter>
         <parameter key="validation.translate.adapter">array</parameter>
-        <parameter key="validation.translate.content">lang/validation</parameter>
+        <parameter key="validation.translate.content">%APPLICATION_PATH%/lang/validation</parameter>
         <parameter key="validation.translate.scan">filename</parameter>
         <parameter key="locale.default">hu_HU</parameter>
         <parameter key="mailer.class">Zend_Mail</parameter>
@@ -31,9 +32,10 @@
         <parameter key="mail.transport.username">info@test.com</parameter>
         <parameter key="mail.transport.password">testpass</parameter>
         <parameter key="log.writer">Zend_Log_Writer_Stream</parameter>
-        <parameter key="log.writer.file">../data/logs/</parameter>
+        <parameter key="log.writer.file">%APPLICATION_PATH%/../data/logs/</parameter>
+        <parameter key="log.class">Equ\Log</parameter>
         <parameter key="translatelog.writer">Stream</parameter>
-        <parameter key="translatelog.writer.file">../data/logs/untranslated.log</parameter>
+        <parameter key="translatelog.writer.file">%APPLICATION_PATH%/../data/logs/untranslated.log</parameter>
         <parameter key="translatelog.writer.writerNamespace">Zend_Log_Writer</parameter>
         <parameter key="form.elementcreator.factory.class">Equ\Form\ElementCreator\Bootstrap\Factory</parameter>
         <parameter key="filter.query.builder.creator.class">Equ\Doctrine\FilterQueryBuilderCreator</parameter>
@@ -68,7 +70,7 @@
                     <argument key="writerName">%translatelog.writer%</argument>
                     <argument key="writerNamespace">%translatelog.writer.writerNamespace%</argument>
                     <argument key="writerParams" type="collection">
-                        <argument key="stream">%APPLICATION_PATH%/%translatelog.writer.file%</argument>
+                        <argument key="stream">%translatelog.writer.file%</argument>
                         <argument key="mode">a</argument>
                     </argument>
                 </argument>
@@ -78,11 +80,11 @@
             <argument type="service" id="log" />
         </service>
         <service id="log.formatter" class="Equ\Log\Formatter\Extended" />
-        <service id="log" class="Equ\Log">
+        <service id="log" class="%log.class%">
             <call method="addWriter">
                 <argument type="service">
                     <service class="%log.writer%">
-                        <argument>%APPLICATION_PATH%/%log.writer.file%/error.log</argument>
+                        <argument>%log.writer.file%/error.log</argument>
                         <argument>a</argument>
                         <call method="setFormatter">
                             <argument type="service" id="log.formatter" />
@@ -100,7 +102,7 @@
             <call method="addWriter">
                 <argument type="service">
                     <service class="%log.writer%">
-                        <argument>%APPLICATION_PATH%/%log.writer.file%/warn.log</argument>
+                        <argument>%log.writer.file%/warn.log</argument>
                         <argument>a</argument>
                         <call method="setFormatter">
                             <argument type="service" id="log.formatter" />
@@ -119,7 +121,7 @@
             <call method="addWriter">
                 <argument type="service">
                     <service class="%log.writer%">
-                        <argument>%APPLICATION_PATH%/%log.writer.file%/notice.log</argument>
+                        <argument>%log.writer.file%/notice.log</argument>
                         <argument>a</argument>
                         <call method="setFormatter">
                             <argument type="service" id="log.formatter" />
@@ -138,7 +140,7 @@
             <call method="addWriter">
                 <argument type="service">
                     <service class="%log.writer%">
-                        <argument>%APPLICATION_PATH%/%log.writer.file%/info.log</argument>
+                        <argument>%log.writer.file%/info.log</argument>
                         <argument>a</argument>
                         <call method="setFormatter">
                             <argument type="service" id="log.formatter" />
@@ -157,7 +159,7 @@
             <call method="addWriter">
                 <argument type="service">
                     <service class="%log.writer%">
-                        <argument>%APPLICATION_PATH%/%log.writer.file%/debug.log</argument>
+                        <argument>%log.writer.file%/debug.log</argument>
                         <argument>a</argument>
                         <call method="setFormatter">
                             <argument type="service" id="log.formatter" />
@@ -187,7 +189,7 @@
                 <argument key="cache_id_prefix">%cache.prefix%</argument>
             </argument>
             <argument type="collection">
-                <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
+                <argument key="cache_dir">%cache.dir%</argument>
             </argument>
         </service>
         <service id="cache.system" class="Zend_Cache" factory-class="Zend_Cache" factory-method="factory">
@@ -199,7 +201,7 @@
                 <argument key="cache_id_prefix">%cache.prefix%</argument>
             </argument>
             <argument type="collection">
-                <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
+                <argument key="cache_dir">%cache.dir%</argument>
             </argument>
         </service>
         <service id="cache.page" class="Zend_Cache" factory-class="Zend_Cache" factory-method="factory">
@@ -230,7 +232,7 @@
                 </argument>
             </argument>
             <argument type="collection">
-                <argument key="cache_dir">%APPLICATION_PATH%/../data/cache</argument>
+                <argument key="cache_dir">%cache.dir%</argument>
             </argument>
         </service>
         <service id="mail.transport" class="Zend_Mail_Transport_Smtp">
@@ -270,7 +272,7 @@
         <service id="translate" class="Zend_Translate">
             <argument type="collection">
                 <argument key="adapter">%translate.adapter%</argument>
-                <argument key="content">%APPLICATION_PATH%/%translate.content%</argument>
+                <argument key="content">%translate.content%</argument>
                 <argument key="scan">%translate.scan%</argument>
                 <argument key="disableNotices">%translate.disableNotices%</argument>
                 <argument key="logUntranslated">%translate.logUntranslated%</argument>
@@ -301,7 +303,7 @@
         <service id="validation.translate" class="Zend_Translate">
             <argument type="collection">
                 <argument key="adapter">%validation.translate.adapter%</argument>
-                <argument key="content">%APPLICATION_PATH%/%validation.translate.content%</argument>
+                <argument key="content">%validation.translate.content%</argument>
                 <argument key="scan">%validation.translate.scan%</argument>
                 <argument key="disableNotices">%translate.disableNotices%</argument>
                 <argument key="logUntranslated">%translate.logUntranslated%</argument>
